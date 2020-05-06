@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>spring与Struts2 自定义标签无缝整合(支持ognl) </title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>spring与Struts2 自定义标签无缝整合(支持ognl) </a></h1><div class="tags"><a href="#h1" title="分析struts2 的源代码">分析struts2 的源代码</a><a href="#h2" title="定义基Bean">定义基Bean</a><a href="#h3" title="添加时间控件">添加时间控件</a><a href="#h4" title="定义实现标签">定义实现标签</a><a href="#h5" title="定义freemarker 模板文件">定义freemarker 模板文件</a><a href="#h6" title="添加tld 文件到WEB-INF目录下">添加tld 文件到WEB-INF目录下</a><a href="#h7" title="使用自定义标签">使用自定义标签</a></div></header><article class="article-content"><h2>开发步骤</h2><div class="sc_act">分析struts2 的源代码</div><div class="sc_act">定义基Bean</div><div class="sc_act">添加时间控件</div><div class="sc_act">定义实现标签</div><div class="sc_act">定义freemarker 模板文件</div><div class="sc_act">添加tld 文件到WEB-INF目录下</div><div class="sc_act">使用自定义标签</div><h2 id="h1">分析struts2 的源代码</h2><p>首先我们来读一读struts2 的源代码</p><pre class="prettyprint linenums"><xmp>private static final Logger LOG = LoggerFactory.getLogger(UIBean.class);  
+  
+protected HttpServletRequest request;  
+protected HttpServletResponse response;  
+  
+public UIBean(ValueStack stack, HttpServletRequest request, HttpServletResponse response) {  
+    super(stack);  
+    this.request = request;  
+    this.response = response;  
+    this.templateSuffix = ContextUtil.getTemplateSuffix(stack.getContext());  
+}  
+  
+// The templateSuffic to use, overrides the default one if not null.  
+protected String templateSuffix;  
+  
+// The template to use, overrides the default one.  
+protected String template;  
+  
+// templateDir and theme attributes  
+//定义freemark.ftl文件夹  
+protected String templateDir;  
+//对应根目录  
+protected String theme;  
+  
+// shortcut, sets label, name, and value  
+protected String key;  
+  
+protected String id;  
+protected String cssClass;  
+protected String cssStyle;  
+protected String cssErrorClass;  
+protected String cssErrorStyle;  
+protected String disabled;  
+protected String label;  
+protected String labelPosition;  
+protected String labelSeparator;  
+protected String requiredposition;  
+protected String name;  
+protected String required;  
+protected String tabindex;  
+protected String value;  
+protected String title;  
+  
+// HTML scripting events attributes  
+protected String onclick;  
+protected String ondblclick;  
+protected String onmousedown;  
+protected String onmouseup;  
+protected String onmouseover;  
+protected String onmousemove;  
+protected String onmouseout;  
+protected String onfocus;  
+protected String onblur;  
+protected String onkeypress;  
+protected String onkeydown;  
+protected String onkeyup;  
+protected String onselect;  
+protected String onchange;  
+  
+// common html attributes  
+protected String accesskey;  
+  
+// javascript tooltip attribute  
+protected String tooltip;  
+protected String tooltipConfig;  
+protected String javascriptTooltip;  
+protected String tooltipDelay;  
+protected String tooltipCssClass;  
+protected String tooltipIconPath;  
+  
+// dynamic attributes  
+protected Map<String,Object> dynamicAttributes = new HashMap<String,Object>();  
+  
+protected String defaultTemplateDir;  
+protected String defaultUITheme;  
+protected TemplateEngineManager templateEngineManager;  
+  
+//注入对应的目录文件夹内容  
+@Inject(StrutsConstants.STRUTS_UI_TEMPLATEDIR)  
+public void setDefaultTemplateDir(String dir) {  
+    this.defaultTemplateDir = dir;  
+}</xmp></pre><h2 id="h2">定义基Bean</h2><pre class="prettyprint linenums"><xmp>package org.cxkj.struts2.components;
+import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletResponse;  
+  
+import org.apache.struts2.components.UIBean;  
+import org.apache.struts2.views.annotations.StrutsTagAttribute;  
+  
+import com.opensymphony.xwork2.util.ValueStack;  
+  
+public abstract class HtmlBean extends UIBean {  
+      
+    protected String width;  
+      
+    protected String height;  
+      
+    protected String align;  
+  
+    public HtmlBean(ValueStack stack, HttpServletRequest request,  
+            HttpServletResponse response) {  
+        super(stack, request, response);  
+    }  
+
+    @Override  
+    public void evaluateParams() {  
+        super.evaluateParams();  
+        if (width != null) {  
+            addParameter("width", findString(width));  
+        }  
+        if (height != null) {  
+            addParameter("height", findString(height));  
+        }  
+        if (align != null) {  
+            addParameter("align", findString(align));  
+        }  
+    }  
+
+    @StrutsTagAttribute(description="")  
+    public void setWidth(String width) {  
+        this.width = width;  
+    }  
+  
+    @StrutsTagAttribute(description="")  
+    public void setHeight(String height) {  
+        this.height = height;  
+    }  
+  
+    @StrutsTagAttribute(description="")  
+    public void setAlign(String align) {  
+        this.align = align;  
+    }  
+}</xmp></pre><h2 id="h3">添加时间控件</h2><pre class="prettyprint linenums"><xmp>import org.apache.struts2.views.jsp.ui.AbstractUITag;  
+import org.cxkj.struts2.components.HtmlBean;  
+  
+public abstract class HtmlDateboxTag extends AbstractUITag {  
+      
+    protected String width;  
+      
+    protected String height;  
+      
+    protected String align;  
+  
+    @Override  
+    protected void populateParams() {  
+        super.populateParams();  
+        HtmlBean html = (HtmlBean)this.component;  
+        html.setWidth(width);  
+        html.setHeight(height);  
+        html.setAlign(align);  
+        html.setDynamicAttributes(dynamicAttributes);  
+    }  
+  
+    public void setWidth(String width) {  
+        this.width = width;  
+    }  
+  
+    public void setHeight(String height) {  
+        this.height = height;  
+    }  
+  
+    public void setAlign(String align) {  
+        this.align = align;  
+    }  
+  
+}</xmp></pre><h2 id="h4">定义实现标签</h2><pre class="prettyprint linenums"><xmp>import javax.servlet.http.HttpServletRequest;  
+import javax.servlet.http.HttpServletResponse;  
+  
+import org.apache.struts2.components.Component;  
+import org.cxkj.struts2.components.DateboxBean;  
+  
+import com.opensymphony.xwork2.util.ValueStack;  
+  
+public class DateboxTag extends HtmlDateboxTag {  
+  
+    @Override  
+    public Component getBean(ValueStack valueStack, HttpServletRequest request,  
+            HttpServletResponse response) {  
+        return new DateboxBean(valueStack,request,response);  
+    }  
+  
+}</xmp></pre><h2 id="h5">定义freemarker 模板文件</h2><pre class="prettyprint linenums"><xmp><div style="margin:2px;text-align:<#rt></div>  
+<#if parameters.align??>  
+${parameters.align?html};"> <#rt/>  
+</#if>  
+<input type="text"<#rt/>  
+ name="${parameters.name?default("")?html}"<#rt/>  
+ class="easyui-datebox" <#rt/>  
+<#if parameters.get("size")??>  
+ size="${parameters.get("size")?html}"<#rt/>  
+</#if>  
+<#if parameters.maxlength??>  
+ maxlength="${parameters.maxlength?html}"<#rt/>  
+</#if>  
+<#if parameters.nameValue??>  
+ value="<@s.property value="parameters.nameValue"/>"<#rt/>  
+</#if>  
+<#if parameters.disabled?default(false)>  
+ disabled="disabled"<#rt/>  
+</#if>  
+<#if parameters.readonly?default(false)>  
+ readonly="readonly"<#rt/>  
+</#if>  
+<#if parameters.tabindex??>  
+ tabindex="${parameters.tabindex?html}"<#rt/>  
+</#if>  
+<#if parameters.id??>  
+ id="${parameters.id?html}"<#rt/>  
+</#if><#rt/>  
+ style="<#rt/>  
+<#if parameters.width??>  
+width:${parameters.width?html}px;<#rt/>  
+<#else>  
+width:160px;<#rt/>  
+</#if><#rt/>  
+<#if parameters.height??>  
+height:${parameters.height?html}px;<#rt/>  
+<#else>  
+height:26px;<#rt/>  
+</#if>" <#rt/>  
+<#include "/${parameters.templateDir}/simple/css.ftl" />  
+<#if parameters.title??>  
+ title="${parameters.title?html}"<#rt/>  
+</#if>  
+<#include "/${parameters.templateDir}/simple/scripting-events.ftl" />  
+<#include "/${parameters.templateDir}/simple/common-attributes.ftl" />  
+<#include "/${parameters.templateDir}/simple/dynamic-attributes.ftl" />  
+/>  
+</div></xmp></pre><h2 id="h6">添加tld 文件到WEB-INF目录下</h2><pre class="prettyprint linenums"><xmp><taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">  
+  <description><![CDATA["To make it easier to access dynamic data; 
+                    the Apache Struts framework includes a library of custom tags. 
+                    The tags interact with the framework's validation and internationalization features; 
+                    to ensure that input is correct and output is localized. 
+                    The Struts Tags can be used with JSP FreeMarker or Velocity."]]></description>  
+  <display-name>"Struts Tags"</display-name>  
+  <tlib-version>2.2.3</tlib-version>  
+  <short-name>sx</short-name>  
+  <uri>/struts-tags-cxkj</uri>  
+  <tag>  
+    <description><![CDATA[Execute an action from within a view]]></description>  
+    <name>datebox</name>  
+    <tag-class>org.cxkj.struts2.views.jsp.ui.DateboxTag</tag-class>  
+    <body-content>JSP</body-content>  
+    <attribute>  
+      <description>
+        <![CDATA[Whether the result of this action (probably a view) 
+        should be executed/rendered]]>
+      </description>  
+      <name>executeResult</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Whether the writer should be 
+        flush upon end of action component tag, default to true]]>
+      </description>  
+      <name>flush</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Deprecated. Use 'var' instead]]></description>  
+      <name>width</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Deprecated. Use 'var' instead]]></description>  
+      <name>height</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Deprecated. Use 'var' instead]]></description>  
+      <name>id</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Whether the request parameters 
+        are to be included when the action is invoked]]>
+      </description>  
+      <name>ignoreContextParams</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Name of the action to be executed 
+        (without the extension suffix eg. .action)]]>
+      </description>  
+      <name>name</name>  
+      <required>true</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description>
+        <![CDATA[Namespace for action to call]]>
+      </description>  
+      <name>namespace</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description>
+        <![CDATA[Namespace for action to call]]>
+      </description>  
+      <name>value</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Namespace for action to call]]></description>  
+      <name>align</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Whether an exception should be 
+        rethrown, if the target action throws an exception]]>
+      </description>  
+      <name>rethrowException</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <attribute>  
+      <description><![CDATA[Name used to reference the value 
+        pushed into the Value Stack]]>
+      </description>  
+      <name>var</name>  
+      <required>false</required>  
+      <rtexprvalue>false</rtexprvalue>  
+    </attribute>  
+    <dynamic-attributes>false</dynamic-attributes>  
+  </tag>  
+    
+ </taglib></xmp></pre><h2 id="h7">使用自定义标签</h2><pre class="prettyprint linenums"><xmp><%@taglib prefix="sx" uri="/struts-tags-cxkj" %>
+<sx:datebox name="umlj" width="400" height="80" align="right" value="%{'1008-10-23'}">  
+</sx:datebox>  </xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

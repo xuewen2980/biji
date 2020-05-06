@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>Spring IOC 容器</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>Spring IOC 容器</a></h1><div class="tags"><a href="#h1" title="框架概述：">框架概述：</a><a href="#h2" title="Spring 第一个案例">Spring 第一个案例</a><a href="#h3" title="Spring IOC 容器">Spring IOC 容器</a><a href="#h4" title="Bean生命周期：">Bean生命周期：</a><a href="#h5" title="创建对象的几种方式">创建对象的几种方式</a><a href="#h6" title="处理对象的依赖关系">处理对象的依赖关系</a><a href="#h7" title="依赖注入的几种方式">依赖注入的几种方式</a></div></header><article class="article-content"><h2 id="h1">框架概述：</h2><ul><li>Struts2:  基于mvc模式的应用层框架！主要是作为控制层组件，javabean， jsp！</li><li>Hibernate: 持久层组件，简化jdbc操作！</li><li>Spring:   主要有六大模块功能、事务管理、与其他框架整合！</li></ul><img src="/biji/htmlFiles/spring.png"><p>Mvc开发模式：</p><ul><li>基于mvc模式的项目分层!</li></ul><h3>Spring框架简述</h3><p>1)	框架理解</p><div class="sc_act">框架，都会预先实现一些功能，给开发人员开发提供便利！ 提高开发效率、提升程序可扩展性、健壮！</div><p>2)	专业术语</p><div class="sc_act"><font color="red"><b>高内聚、低耦合： </b></font></div><ul><li>类内部的关系越紧密越好，类与类的关系越少越好！</li></ul><div class="sc_act"><font color="red"><b>侵入式设计：</b></font></div><ul><li>引入的组件对现有的类的结构会有影响，这种就是“侵入式设计”的组件！</li><li>Struts2:     侵入式设计！</li><li>Hibernate:   非侵入式设计！</li></ul><div class="sc_act"><font color="red"><b>非侵入式设计：</b></font></div><ul><li>引入组件对现有的类的结构没有影响！</li><li>Spring, 非侵入式设计</li></ul><div class="sc_act"><font color="red"><b>IOC 容器</b></font></div><p>Inversion of control  控制反转</p><ul><li>控制反转容器!   就是解决对象创建的问题！</li></ul><p>解释：现在需要对象，自己不创建，交给外部的容器创建，叫控制反转！<br>IOC容器= bean.xml配置 + ApplicationContext容器类</p><h2 id="h2">Spring 第一个案例</h2><div class="sc_act">  1) 引入jar文件 (3.2版本)</div><ul><li>commons-logging-1.1.3.jar       【单独下载】</li><li>spring-beans-3.2.5.RELEASE.jar		【spring源码, bean节点管理】</li><li>spring-context-3.2.5.RELEASE.jar      【spring上下文类】</li><li>spring-core-3.2.5.RELEASE.jar         【IOC容器】</li><li>spring-expression-3.2.5.RELEASE.jar    【spring表达式】</li></ul><div class="sc_act">2) 新建applicationContext.xml , 源码中拷贝约束</div><p>找到这个文件\docs\spring-framework-reference\htmlsingle\index.html</p><pre class="prettyprint linenums"><xmp><?xml version="1.0" encoding="UTF-8"?>
+<!--搜索xmlns(这里提供最全版的xml约束配置)-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+		">
+</beans></xmp></pre><div class="sc_act">3) 配置</div><pre class="prettyprint linenums"><xmp><!-- 创建Dao实例 -->
+<bean id="userDao" class="cn.itcast.dao.UserDao"></bean>
+<!-- 创建Service实例 -->
+<bean id="userService" class="cn.itcast.service.UserService">
+	<property name="userDao" ref="userDao"></property>
+</bean>
+<!-- 创建Action实例 -->
+<bean id="userAction" class="cn.itcast.action.UserAction">
+	<property name="userService" ref="userService"></property>
+</bean>	</xmp></pre><div class="sc_act">4)测试</div><pre class="prettyprint linenums">// 容器对象(加载applicationContext.xml配置文件)
+ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+// 获取对象
+UserAction userAction = (UserAction) ac.getBean("userAction");
+userAction.execute();</pre><h3>加载Spring配置文件</h3><pre class="prettyprint linenums">// 加载Spring配置文件, 在Spring中所有的文件称为资源 Resource
+Resource resource=new ClassPathResource(path);
+// Spring的工厂类,通过读取资源,可以创建资源中任意的对象
+BeanFactory beanFactory=new XmlBeanFactory(resource);</pre><h2 id="h3">Spring IOC 容器</h2><h3>实例化spring容器</h3><p>方法一:在类路径下寻找配置文件来实例化容器</p><pre class="prettyprint linenums"><xmp>ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"beans.xml"});
+//或者
+ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");</xmp></pre><p>方法二:在文件系统路径下寻找配置文件来实例化容器</p><pre class="prettyprint linenums"><xmp>ApplicationContext ctx = new FileSystemXmlApplicationContext(new String[]{"d:\\beans.xml"});</xmp></pre><h3>创建bean细节：</h3><pre class="prettyprint linenums"><xmp><?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<!-- 把对象加入IOC容器 -->
+	<!-- 
+	细节1：id 与   name：
+			id 不能以数字开头，不能含有特殊符号, 不能有空格、逗号等；  id 不能重复！
+			name 可以以数字开头，可以有特殊符合，如果name值重复，编译没有问题但运行报错！
+	 
+	<bean id="user" name="user2,user3 user4" class="cn.itcast.a_config.User"></bean>
+	<bean name="user5" class="cn.itcast.a_config.User"></bean>
+	<bean id="user6" class="cn.itcast.a_config.User"></bean>
+	<bean id="user6" class="cn.itcast.a_config.User"></bean>
+	-->
+	
+	<!-- 细节2： (单例/多例)  -->
+	<!-- 
+		scope="singleton"   默认表示单例！
+		              prototype    多例
+		init-method=""      在创建完对象之后执行初始化方法
+		destroy-method=""   在调用容器类的destroy()方法时候，对单例的对象有效！
+		lazy-init="true"    延迟初始化 / 这个属性的设置只对单例有影响，对多例没有任何影响！
+                                             单例的对象默认是在创建容器的时候就创建所有单例的对象，
+                                             如果希望在第一次访问的时候创建单例的对象，就设置延迟初始化		
+	 -->
+	<bean id="user" 
+		class="cn.itcast.a_config.User" 
+		init-method="init" 
+		destroy-method="destroy_" 
+		lazy-init="false" 
+		scope="prototype"></bean>
+</beans> </xmp></pre><h2 id="h4">Bean生命周期：</h2><h3> singleton  单例</h3><p>1) 创建对象</p><ul><li>如果有配置延迟初始化，即lazy-init=true</li><li>如果单例的对象有配置延迟初始化，在创建容器之后,在第一次从容器获取对象的时候创建单例的对象！</li><li>如果没有配置或延迟初始化为默认值, 单例的对象会在创建容器的时候创建对象</li></ul><p>2) 执行初始化方法 , init-method配置的方法会执行<br>3) 调用容器destroy() 方法时候，容器在销毁单例对象的实例的时候，会调用destroy-method对应的方法<br>此时bean对象会被销毁！</p><h3> prototype  多例</h3><ul><li>1) 每次在从容器获取对象的时候，都会创建新的对象</li><li>2) 每次创建完对象后，就执行初始化方法</li><li>3) java回回收不用资源(jvm gc)</li></ul><h2 id="h5">创建对象的几种方式</h2><ul><li>1） 调用无参数构造器</li><li>2） 调用有参数构造器</li><li>3） 工厂</li><li>4)  反射</li></ul><h3>1） 调用无参数构造器</h3><pre class="prettyprint linenums"><xmp><bean id="user1" class="cn.itcast.b_create_obj.User"></bean></xmp></pre><div class="sc_act">2） 调用有参数构造器, 创建对象</div><pre class="prettyprint linenums"><xmp><!-- String str = new String("Jack"); -->
+<bean id="str" class="java.lang.String">
+	<constructor-arg value="Jack"></constructor-arg>
+</bean>
+
+<!-- 创建user对象，且赋值 -->
+<!-- 
+	value 当直接给属性值的时候使用value赋值
+	ref   当引用的是IOC容器中的对象的时候，使用ref    
+ -->
+<bean id="user" class="cn.itcast.b_create_obj.User">
+	<constructor-arg index="0" type="int" value="10000"></constructor-arg>
+	<constructor-arg index="1" type="String" ref="str"></constructor-arg>
+</bean></xmp></pre><p><mark>(小技巧:ref都是引用,value代表的是值)</mark></p><h3>3） 工厂创建对象</h3><ul><li>静态方法创建</li></ul><pre class="prettyprint linenums"><xmp><!-- 
+	class 指定工厂的类型；  
+	factory-method: 工厂类的静态方法
+-->
+<bean id="user1" class="cn.xw.UserFactory" factory-method="getStaticInstace"></bean></xmp></pre><ul><li>非静态方法</li></ul><pre class="prettyprint linenums"><xmp><bean id="factory" class="cn.itcast.b_create_obj.UserFactory"></bean>
+<!-- factory-bean相当与ref也是引用 -->
+<bean id="user" factory-bean="factory" factory-method="getInstace"></bean></xmp></pre><h2 id="h6">处理对象的依赖关系</h2><div class="sc_act">给对象属性赋值(DI, 依赖注入)，几种方式：</div><h3>1) 构造函数赋值</h3><h3>2) set 方法注入值(必须提供setXxx方法)</h3><pre class="prettyprint linenums"><xmp><bean id="user" class="cn.itcast.c_di.User">
+	<!-- 普通字段赋值 -->
+	<property name="id" value="1000"></property>
+	<property name="name" value="Jacky"></property>
+	<!--设置集合为空-->
+    <property name="listnull">
+         <null></null>
+    </property>
+	<!-- list集合赋值 -->
+	<property name="list">
+		<!--value-type:属性的类型-->
+		<list>
+			<!--这里只有type一个属性-->
+			<value>cn</value>
+			<value>usa</value>
+			<!-- 或者是直接一行<value>cn,usa</value>和上面效果是一样的-->
+		</list>
+	</property>
+	
+	<!-- map 集合赋值 -->
+	<property name="map">
+		<!--如果要指定key-type,value-type属性,最好在map节点上指定,-->
+		<map>
+			<!--这里还有key-ref,value-ref属性,-->
+			<entry key="cn" value="China"></entry>
+			<entry key="usa" value="1234"></entry>
+		</map>
+	</property>
+	
+	<!-- Properties对象赋值 -->
+	<property name="prop">
+		<props>
+			<prop key="cn">China</prop>
+			<prop key="usa">America</prop>
+		</props>
+	</property>
+</bean>		</xmp></pre><h2 id="h7">依赖注入的几种方式</h2><ul><li>* 常用的通过set方法注入</li><li>* 内部bean</li><li>* p 名称空间</li><li>* 自动装配</li><li>* 注解</li></ul><h3>方式1：通过set方法注入，这种方式最常用！ </h3><pre class="prettyprint linenums"><xmp><bean id="userdao" class="cn.itcast.d_di2.UserDao"></bean>
+<bean id="userService" class="cn.itcast.d_di2.UserService">
+	<property name="userDao" ref="userdao"></property>
+</bean>
+<bean id="userAction" class="cn.itcast.d_di2.UserAction" scope="prototype">
+	<property name="userService" ref="userService"></property>
+</bean></xmp></pre><h3>方式2： 内部bean</h3><pre class="prettyprint linenums"><xmp><!-- 总结： 当创建的对象，不被容器其他地方引用的时候，可以这样写！ 
+				但是这样写不通用，内部对象只能用一次 -->
+<!-- 这里，action如果是单例，内部bean默认就是单例; action如果是多例，内部bean就是多例 -->
+<bean id="userAction2" class="cn.itcast.d_di2.UserAction" scope="prototype">
+	<property name="userService">
+		<bean class="cn.itcast.d_di2.UserService">
+			<property name="userDao">
+				<bean class="cn.itcast.d_di2.UserDao"></bean>
+			</property>
+		</bean>
+	</property>
+</bean></xmp></pre><h3>方式3： p名称空间，给属性注入值 </h3><pre class="prettyprint linenums"><xmp><bean id="userDao" class="cn.itcast.d_di2.UserDao"></bean>
+<!--p:userDao="200"是直接给id属性复制,p:userDao-ref是引用-->
+<bean id="userService" class="cn.itcast.d_di2.UserService" 
+		p:userDao-ref="userDao">
+</bean>
+<bean id="userAction" class="cn.itcast.d_di2.UserAction" 
+		p:userService-ref="userService">
+</bean></xmp></pre><h3>自动装配</h3><pre class="prettyprint linenums"><xmp><bean id="userDao" class="cn.auto.UserDao" autowire="byName"></bean>
+<bean id="userService" class="cn.auto.UserService" autowire="byName"></bean>
+<bean id="userAction" class="cn.auto.UserAction"></bean></xmp></pre><p>autowire属性介绍:</p><ul><li>defult:不自动装配</li><li>byName:根据名称自动装配， 会去容器找指定名称的对象，注入到set方法的参数中！</li><li>byType:根据类型自动装配, 要确保改类型对应的对象在IOC容器中唯一，否则报错！</li></ul><div class="sc_act">可以在<beans>节点下配置全局的装配模式defulet-autowire=""</beans></div><p><mark>总结：简化配置，但是维护麻烦！</mark></p><h3>注解方式依赖注入</h3><ul><li>@Component  把当前组件(类)加入ioc容器,加入容器的组件的名称默认是类名第一个字母小写</li><li>@Component("")   具体指定加入ioc容器的组件类的类名</li></ul><div class="sc_act">下面三个是用来区分@Component的组件的一个标记(可以理解为继承自@Component)</div><ul><li>@Repository    标识是一个持久层的组件</li><li>@Service          标识是一个业务逻辑层的组件</li><li>@Controller     标识是一个控制层的组件</li></ul><p></p><ul><li>@Scope("prototype")	指定对象单例/多例</li></ul><p>@Resource</p><div class="sc_act">1. 默认根据修饰的字段名称会取ioc容器找对象自动注入找到后注入</div><div class="sc_act">2. 如果名称没有找到，再根据类型查找  找到后就立刻注入 如果改类型在ioc容器中有多个对象，报错！		</div><div class="sc_act">3. 根据类型也没有找到对象，报错！</div><p>@Resource(name ="") 会根据指定的名称去容器找对象自动注入<br>给字段加上@Resource注解,可以不提供setXxx方法就可以注入</p></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

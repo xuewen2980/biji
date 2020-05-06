@@ -1,0 +1,114 @@
+<pre>一、设计项目目录结构
+	|-src
+	    |-gz.itcast.entity  实体对象
+	    |-gz.itcast.util    工具类
+	    |-gz.itcast.filter   过滤器
+	    |-gz.itcast.listener  监听器
+            |-gz.itcast.exception  自定义业务异常类
+	    |-gz.itcast.biz       存放业务模块的类
+		|-admin    后台业务代码
+		     |- admin  管理员模块
+			|-dao  管理员模块的dao
+			|-service  管理员模块的service
+			|-web      管理员模块的web
+		     .....
+
+		|-front    前台业务代码
+		     |-index  主页模块
+			|-dao  主页模块的dao
+			|-service  主页模块的service
+			|-web      主页模块的web
+		     |-user  用户模块
+			|-dao  用户模块的dao
+			|-service  用户模块的service
+			|-web      用户模块的web
+		      ....	
+	   |-WebRoot
+	      |-css    存放css样式文件
+	      |-js     存放javascript文件
+	      |-imgs    存放图片文件
+	      |-jsp     存放页面文件
+		|-admin  后台页面
+		  |- admin  管理员模块页面
+		  |- type   图书分类页面
+	          ....
+                |- front  前台页面	
+		  |-index  主页页面
+		  |-user  用户模块页面
+		  |-book   图书分类，图书显示页面
+		  ..				
+			
+二、图书分类 与	 图书的 关系(多对多关系)
+		            
+	需求： 一个工程可以由多个职工负责，一个职工可以负责多个工程。（多对多关系）		
+	工程  与  职工 
+
+	工程表： 工程id  工程名称 
+		    1      A
+		    2      B	
+
+	职工表： 职工id  职工姓名   。。。
+		    1      a
+		    2     b
+
+	工程工时表：  工程id  职工id   工时     (关系表)
+                         1      1       40
+                         1      2       30
+			 2      1       25
+                         2      2       50 
+                         2      2       30    不合法的数据
+
+                   这时工程工时表应该把  工程id和职工id同时作为主键！！！！ primary key(pid,eid)
+
+	需求1：一个分类可以包含多本书，一本书只有一个分类。  （ 一对多）
+                类似的需求： 一个部门可以包含多个员工，一个员工只在一个部门 （一对多）
+
+			  员工表：  员工id  员工姓名  。。。  部门id	
+					1     a                 1
+				        2     b                 1
+					1     a                 2   不合法的数据
+                                      
+			  部门表：  部门id  部门名称 。。。。
+					 1    A
+				         2    B	
+			
+		 图书分类表： 分类id  分类名称
+		 图书表：    图书id   图书名称。。。。 分类id
+
+	需求2：一个分类多本图书，一本图书属于多个分类     (多对多)
+
+		 图书分类表： 分类id  分类名称
+			        1        A
+				2        B
+		 图书表：    图书id   图书名称。。。。 
+				1        a
+				2        b
+
+		 图书分类关系表： 分类id   图书id
+				    1        1
+				    1        2
+				    2        1
+				    2        2
+				    2        1    不合法数据     priamry  key(分类id,图书id)
+
+三、验证码生成和验证码登录
+
+1）把验证码向浏览器输出数据： response.getOutputStream();
+2）把系统生成的验证码放入session域中，在用户登录时共享使用！
+                                    
+		
+
+		
+
+
+				 
+         
+		
+
+	
+
+
+
+
+
+	</pre>

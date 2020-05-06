@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>Struts2的执行过程和跳转类型</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>Struts2的执行过程和跳转类型</a></h1><div class="tags"><a href="#h1" title="struts必须的jar包">struts必须的jar包</a><a href="#h2" title="Struts2的执行过程">Struts2的执行过程</a><a href="#h3" title="跳转类型">跳转类型</a><a href="#h4" title="Action创建">Action创建</a></div></header><article class="article-content"><h2 id="h1">struts必须的jar包</h2><img src="/biji/htmlFiles/struts-jar.png"><ul><li>commons-beautils  [beanutils工具包]</li><li>commons-filupload.ajr    [文件上传]</li><li>commons-io.jar</li><li>commons-lang   [struts2对java.lang.*类的支持]</li><li>freemarker.jar        [视图显示技术]</li><li>javassit.jar            [struts2对字节码运算的支持]</li><li>ognl.jar            [struts2对ognl表达式的支持]</li><li>struts2-core.jar      [ struts2的核心包 ]</li><li>xwork-core.jar		  [webwork框架的支持，struts2的前身就是webwork(对webwork的封装)]</li></ul><h2 id="h2">Struts2的执行过程</h2><h3>1）创建核心过滤器StrutsPrepareAndExecuteFilter对象</h3><h3>2）执行核心过滤器的init方法读取了依次以下的配置</h3><ul><li>struts-default.xml      [struts2框架的默认配置文件(不需要自定修改)]</li><li>struts-plugin.xml       [struts2的插件配置文件]</li><li>struts.xml             [我们写的业务配置文件（包含配置的Action）]</li></ul><h3>3) 在内存中查询对应的Action配置，得到class内容，创建Action对象。</h3><h3>4）读取Action配置的method内容，执行Action对象对应的方法。</h3><pre class="prettyprint linenums"><xmp><package name="xxx" extends="struts-default">
+    <!-- 配置Action localhost:/struts/login.action-->
+    <action name="login" class="gz.itcast.action.LoginAction">
+        <result name="success" type="redirect">/index.jsp</result>
+    </action>
+</package></xmp></pre><h2 id="h3">跳转类型</h2><h3>dispatcher </h3><p>dispatcher 为默认跳转类型，用于返回一个视图资源</p><pre class="prettyprint linenums"><xmp><result name="success" type="dispatcher"> 
+        <param name="location">/maini.jsp</param> 
+</result></xmp></pre><p>用于页面转发，页面跳转过程一直是同一个线程，Action中的数据一直保存在。<br>location只能是页面，不能是另一个action（可用type="chain"解决）。</p><h3>redirect</h3><p>redirect 类型用于重定向到一个页面，另一个action或一个网址</p><pre class="prettyprint linenums"><xmp><result name="success" type="redirect">www.baidu.com</result></xmp></pre><div class="sc_act">缺点：redirect把一个http返回码（SUCCESS）以及返回的页面位置一起重新发给web服务器，容纳后由web服务器产生一个新的HTTP请求，就会产生一个新的线程，保存在原来Action执行的线程中的数据就无法访问。所以，result需要包含Action的数据，那么redirect不是一个可行的办法。因为新的HTTP请求时在Servlet容器的新的线程中处理的，ActionContext中的所有状态都不会存在。</div><p>处理方法：</p><pre class="prettyprint linenums"><xmp><!--方法1-->
+<result name="topic" type="redirect">/topicAction!findTopics.do?topicId=${topicId}</result> 
+<!--方法二:--> 
+<result name="topic" type="redirectAction"> 
+    <param name="actionName">findTopics</param> 
+    <param name="topicId">${topicId}</param> 
+</result>
+</xmp></pre><h3>chain </h3><p>chain 用于把相关的几个action连接起来，共同完成一个功能。</p><pre class="prettyprint linenums"><xmp><action name="step1" class="test.Step1Action"> 
+     <result name="success" type="chain">step2.action</result> 
+</action> 
+<action name="step2" class="test.Step2Action"> 
+<result name="success">finish.jsp</result> 
+</action> </xmp></pre><div class="sc_act">处于chain中的action属于同一个http请求，共享一个ActionContext </div><h3>plainText </h3><p>plainText 结果类型用于直接在页面上显示源代码</p><pre class="prettyprint linenums"><xmp><result name="err" type="plainText"> 
+    <param name="location">具体的位置</param> 
+    <param name="charSet">字符规范(如GBK)</param> 
+</result></xmp></pre><h3>redirectAction</h3><p>redirectAction结果类型与redirect结果类型非常相似，都是重新生成一个新的请求，都是重新定向.<br>但是使用redirectAction类型时不需要加后缀“.action”.</p>
+<h3>stream</h3><p>用于文件下载</p>
+<h2 id="h4">Action创建</h2>
+Struts2中的Action在每一次web请求的时候都要新建一个实例。
+至于这个实例何时销毁，由XWORK来控制。
+</article></div><script src="/biji/temple/defult/global.js"></script></body></html>

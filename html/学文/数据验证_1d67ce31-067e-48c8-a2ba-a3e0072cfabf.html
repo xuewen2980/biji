@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>数据验证</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>数据验证</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="代码验证">代码验证</a><a href="#h2" title="xml配置文件验证">xml配置文件验证</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">代码验证</h2>
+			<h3>用代码方式对action的所有方法进行验证</h3>
+			<ul>
+				<li>Action类继承ActionSupport（为了实现Valiateable接口）</li>
+				<li>Action类覆盖validate方法(验证所有方法)</li>
+			</ul>
+			<h3>如何存储错误信息</h3>
+			<ul>
+				<li>利用super.addFiledError(?,?)方法存储错误信息</li>
+				<li>也可以通过在ActionSupport中定义Map actionError;来存储错误信息</li>
+			</ul>
+			<h3>显示错误信息</h3>
+			<p>在jsp界面用s:fielderror标签打印出错误信息</p>
+			<h3>用代码方式对action的指定方法进行验证</h3>
+			<div class="sc_act">validateRegister() -&gt; 可以验证register()方法</div>
+			<h2 id="h2">xml配置文件验证</h2>
+			<h3>用xml配置方式对action的所有方法进行验证</h3>
+			<div class="sc_act">编写一个xml文件，名称： Action文件名-validation.xml</div>
+			<div class="sc_act">该xml文件必须放在Action文件的同一目录</div>
+			<pre class="prettyprint linenums"><xmp><validators>
+  <!-- 验证用户名 -->
+  <field name="user.name">
+     <!-- type: 代表xwork中定义的可以使用的验证类型 -->
+  	 <field-validator type="requiredstring">
+  	 	<!-- 当出现错误时，提示的错误信息 -->
+  	 	<message>用户名必填</message>
+  	 </field-validator>
+  	 <field-validator type="stringlength">
+  	 	<param name="minLength">6</param>
+  	 	<param name="maxLength">16</param>
+  	 	<message>用户名必须是6-16位</message>
+  	 </field-validator>
+  </field>
+  </field>
+</validators></xmp></pre>
+			<h3>用xml配置方式对action的指定方法进行验证</h3>
+			<div class="sc_act">编写一个xml文件，名称：
+				Action文件名-访问方法路径-validation.xml</div>
+			<div class="sc_act">例如： UserAction的register方法：
+				user_register路径访问 文件名： UserAction-user_register-validation.xml</div>
+			<div class="sc_act">该xml文件必须放在Action文件的同一目录</div>
+		<h2 id="h3">验证类型(type属性)</h2>
+		<pre class="prettyprint linenums"><xmp><validators>
+		<!-- *代表com.opensymphony.xwork2.validator.validators -->
+	<validator name="required" class="*.RequiredFieldValidator"/>
+	<validator name="requiredstring" class="*.RequiredStringValidator"/>
+	<validator name="int" class="*.IntRangeFieldValidator"/>
+	<validator name="long" class="*.LongRangeFieldValidator"/>
+	<validator name="short" class="*.ShortRangeFieldValidator"/>
+	<validator name="double" class="*.DoubleRangeFieldValidator"/>
+	<validator name="date" class="*.DateRangeFieldValidator"/>
+	<validator name="expression" class="*.ExpressionValidator"/>
+	<validator name="fieldexpression" class="*.FieldExpressionValidator"/>
+	<validator name="email" class="*.EmailValidator"/>
+	<validator name="url" class="*.URLValidator"/>
+	<validator name="visitor" class="*.VisitorFieldValidator"/>
+	<validator name="conversion" class="*.ConversionErrorFieldValidator"/>
+	<validator name="stringlength" class="*.StringLengthFieldValidator"/>
+	<validator name="regex" class="*.RegexFieldValidator"/>
+	<validator name="conditionalvisitor" class="*.ConditionalVisitorFieldValidator"/>
+</validators></xmp></pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

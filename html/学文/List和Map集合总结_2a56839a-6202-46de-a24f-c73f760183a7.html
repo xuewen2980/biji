@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>List和Map集合总结</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>List和Map集合总结</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="List集合3种遍历方式">List集合3种遍历方式</a><a href="#h2"
+					title="Map集合3种遍历方式">Map集合3种遍历方式</a><a href="#h3"
+					title="数组和List、set集合之间的转换">数组和List、set集合之间的转换</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">List集合3种遍历方式</h2>
+<pre class="prettyprint linenums">
+<xmp>/**
+ * list集合遍历方式
+*/
+List<String> list = new ArrayList<String>();
+Iterator<String> iterator = list.iterator();
+// 1)迭代器
+while (iterator.hasNext()) {
+    String value = iterator.next();
+    System.out.println(value);
+}
+// foreach语句
+for (String item : list) {
+    System.out.println(item);
+}							
+// for循环
+for (int i = 0; i < list.size(); i++) {
+    String value = list.get(i);
+    System.out.println(value);
+}</xmp></pre>
+			<h2 id="h2">Map集合3种遍历方式</h2>
+			<pre class="prettyprint linenums">
+<xmp>Map<String,String[]> map= new HashMap<>(); 
+/**
+* 	Map集合遍历
+*     1）entrySet（）
+*     2）keySet()
+*     3) values() 		
+*/
+//1)entrySet()方法：获取键值对对象的Set集合
+//    Entry对象中包含一个键对象，和一个值对象
+		
+Set<Entry<String,String[]>> entrySet = map.entrySet();
+for (Entry<String, String[]> entry : entrySet) {
+	//获取键对象
+	String key = entry.getKey();
+	//获取值对象(数组的第一个元素就是参数值)
+	String[] value = entry.getValue();
+	System.out.println(key+"="+value[0]);
+}
+
+//2)keySet()： 获取所有键对象的Set集合
+Set<String> keySet = map.keySet();
+for (String key : keySet) {
+	//通过键对象获取值对象
+	String[] value = map.get(key);
+	System.out.println(key+"="+value[0]);
+}
+
+//3)values(): 获取所有值对象的Collection集合(只能获取值对象，不能获取键对象)
+Collection<String[]> values = map.values();
+for (String[] value : values) {
+	System.out.println(value[0]);
+}</xmp></pre>
+<h2 id="h3">数组和List、set集合之间的转换</h2>
+<p>这里用String类型数组作为示例数组</p>
+<pre class="prettyprint linenums">String[] strArr = new String[]{"张三", "李四", "王五"};</pre>
+<p>通过Arrays.asList(T...)方法将数组转换为List</p>
+<pre class="prettyprint linenums"><xmp>List<String> array = new ArrayList<String>(Arrays.asList(strArr));</xmp></pre>
+<p>注意:<mark>如果不借用new关键字则此List还是数组,不能实现增删改</mark><br>示例</p>
+<pre class="prettyprint linenums"><xmp>List<String> list = Arrays.asList(strArr);
+array.add("你们好");
+....运行后会抛出异常UnsupportedOperationException
+</xmp></pre>
+<p>同理通过Arrays.asList(T...)方法将数组转换为set</p>
+<pre class="prettyprint linenums"><xmp>Set<String> strSet = new HashSet<>(Arrays.asList(strArr));</xmp></pre>
+<p><mark>用java.util.Collections来实现</mark></p>
+<pre class="prettyprint linenums"><xmp>//addAll方法实际上是重复调用了add方法的
+List<String> strList = new ArrayList<>();   
+Set<String> strSet = new HashSet<>();
+Collections.addAll(strList, strArr);
+Collections.addAll(strSet);</xmp></pre>
+<p>下面是List和set转换为数组了,这就比较简单了<br>利用Collection的两个方法即可</p>
+<ul>
+	<li>Object[] toArray()</li>
+	<li>T[] toArray(T[] a)</li>
+</ul>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

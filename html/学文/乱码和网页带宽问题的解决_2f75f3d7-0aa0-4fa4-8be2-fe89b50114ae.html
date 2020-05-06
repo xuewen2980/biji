@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>乱码和网页带宽问题的解决</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>乱码和网页带宽问题的解决</a></h1><div class="tags"><a href="#h1" title="解决中文乱码问题">解决中文乱码问题</a><a href="#h2" title="解决web服务器带宽">解决web服务器带宽</a></div></header><article class="article-content"><h2 id="h1">解决中文乱码问题</h2><div class="sc_act">实现Filter接口(可过滤全局请求)</div><div class="sc_act">执行过滤任务doFilter方法</div><div class="sc_act">解决POST方式提交</div><div class="sc_act">解决GET方式提交需要加强request.getParameter("")方法</div><h3>代码</h3><pre class="prettyprint linenums">public class EncodingFilter implements Filter {
+         public void destroy() {}
+         public void init(FilterConfig filterConfig) throws ServletException {}
+	/**
+	 * 执行过滤任务
+	 */
+	public void doFilter(ServletRequest req, ServletResponse resp,
+			FilterChain chain) throws IOException, ServletException {
+		// 强制转换
+		HttpServletRequest request = (HttpServletRequest) req;
+		//解决 post提交参数
+		request.setCharacterEncoding("utf-8");
+		// 创建一个HttpServletRequest实现类的装饰者类,重写getParameter方法
+		MyHttpRequest myRequest = new MyHttpRequest(request);
+
+		//放行 注意： 这里放行的应该是装饰后的request对象，这样在业务的servlet调用getParameter才是新的重写后的方法。
+		chain.doFilter(myRequest, resp);
+	}
+}</pre><h3>HttpRequest装饰者类</h3><pre class="prettyprint linenums">class MyHttpRequest extends HttpServletRequestWrapper {
+	/**
+	 * 2)声明一个被装饰者类型的成员变量
+	 */
+	private HttpServletRequest request;
+
+	/**
+	 * 3)接收被装饰者类对象
+	 */
+	public MyHttpRequest(HttpServletRequest request) {
+		super(request);
+		this.request = request;
+	}
+
+	/**
+	 * 重写getParameter方法  对get提交参数处理
+	 */
+	@Override
+	public String getParameter(String name) {
+		try {
+			// 1)得到原来的参数
+			String value = request.getParameter(name); // iso-8859-1
+
+			// 2）手动解码
+			if ("GET".equals(request.getMethod())) {
+				value = new String(value.getBytes("iso-8859-1"), "utf-8");
+			}
+			return value;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}</pre><h3>装饰者模式</h3><ul><li>1  )编写一个BufferedReader装饰者类，继承被装饰者类。(不能是final的)</li><li>2）在装饰类中定义一个成员变量，用于接收被装饰者类的对象。</li><li>3）在装饰者类的构造方法中传入被装饰者类，使用第二步定义的变量接收被转入的 被装饰者类。</li><li>4）在装饰类类中重写被装饰者类方法，对其方法进行增强。</li></ul><h2 id="h2">解决web服务器带宽</h2><div class="sc_act">实现Filter接口(可过滤全局请求)</div><div class="sc_act">装饰getWriter()方法，让其返回一个带缓存功能的PrintWriter</div><div class="sc_act">从缓存容器对象得到压缩前的内容</div><div class="sc_act">告诉浏览器发送内容的压缩格式</div><div class="sc_act">将内容输出到浏览器中</div><h3>代码实现</h3><pre class="prettyprint linenums">public class GZIPFilter implements Filter {
+         public void destroy() {}
+         public void init(FilterConfig filterConfig) throws ServletException {}
+	 public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		//1)过滤请求
+		//创建一个response的装饰者对象
+		MyHttpResponse myResponse = new MyHttpResponse((HttpServletResponse)response);
+		chain.doFilter(request, myResponse);// 放行
+		//3）过滤响应
+		//从缓存容器对象得到压缩前的内容
+		//注意：response对象中没有方法获取实体内容，怎么办？
+		char[] content = myResponse.getCharArray();
+		//gzip压缩
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		GZIPOutputStream gzip = new GZIPOutputStream(buf);
+		gzip.write(new String(content).getBytes());
+		gzip.finish();
+		byte[] result = buf.toByteArray();
+		//告诉浏览器发送内容的压缩格式
+		myResponse.setHeader("content-encoding", "gzip");
+		//输出
+		response.getOutputStream().write(result);
+		//myRresponse.getWriter().write(new String(result,0,result.length));
+	}
+}</pre><h3> HttpServletResponse的装饰者类</h3><pre class="prettyprint linenums">class MyHttpResponse extends HttpServletResponseWrapper{
+	private HttpServletResponse response;
+	//定义一个缓存容器对象
+	private CharArrayWriter charArray = new CharArrayWriter();
+	/**
+	 * 提供一个获取charArray内容的方法(包含网页内容)
+	 */
+	public char[] getCharArray(){
+		return charArray.toCharArray();
+	}
+	public MyHttpResponse(HttpServletResponse response) {
+		super(response);
+		this.response = response;
+	}
+	/**
+	 * 重写getWriter()方法，让其返回一个带缓存功能的PrintWriter
+	 */
+	@Override
+	public PrintWriter getWriter() throws IOException {
+		/**
+		 * 现在已经创建了一个带CharArrayWriter缓存容器的PrintWriter了，
+		 * 如果我们调用带缓存PrintWriter对象的write()方法，那么内容会直接写入到CharrArrayWriter缓存容器中。
+		 */
+		return new PrintWriter(charArray);
+	}
+}</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

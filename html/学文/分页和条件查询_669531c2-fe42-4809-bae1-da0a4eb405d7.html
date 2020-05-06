@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>分页和条件查询</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>分页和条件查询</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="分页对象">分页对象</a><a href="#h2" title="员工对象">员工对象</a><a
+					href="#h3" title="DAO层">DAO层</a><a href="#h4" title="Service层">Service层</a><a
+					href="#h5" title="WEB层">WEB层</a><a href="#h6" title="jsp页面">jsp页面</a><a
+					href="#h7" title="条件查询">条件查询</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">分页对象</h2>
+			<pre class="prettyprint linenums"><xmp>public class PageBean {
+	private List<Employee> data;//当前页的数据
+	private Integer firstPage;//首页
+	private Integer prePage;//上一页
+	private Integer nextPage;//下一页
+	private Integer totalPage;//末页、总页数
+	private Integer currentPage;//当前页
+	private Integer totalCount;//总记录数
+	private Integer pageSize;//每页显示的记录数
+	public List<Employee> getData() {
+		return data;
+	}
+	public void setData(List<Employee> data) {
+		this.data = data;
+	}
+	public Integer getFirstPage() {
+		return 1;
+	}
+	public void setFirstPage(Integer firstPage) {
+		this.firstPage = firstPage;
+	}
+	/**
+	 * 计算上一页
+	 */
+	public Integer getPrePage() {
+		return this.getCurrentPage()==this.getFirstPage() ? 1 : this.getCurrentPage()-1;
+	}
+	public void setPrePage(Integer prePage) {
+		this.prePage = prePage;
+	}
+	/**
+	 * 计算下一页
+	 */
+	public Integer getNextPage() {
+		return this.getCurrentPage()==this.getTotalPage()?
+				this.getTotalPage()
+					: this.getCurrentPage()+1;
+	}
+	public void setNextPage(Integer nextPage) {
+		this.nextPage = nextPage;
+	}
+	public Integer getTotalPage() {
+		return this.getTotalCount()%this.getPageSize()==0 ?
+				this.getTotalCount()/this.getPageSize()
+					:this.getTotalCount()/this.getPageSize()+1;
+	}
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
+	}
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+}</xmp>
+			</pre>
+			<h2 id="h2">员工对象</h2>
+			<pre class="prettyprint linenums">public class Employee {
+	private int id;
+	private String name;
+	private String gender;
+	private int age;
+	private String title;
+	private String phone;
+	private String email;
+	//getter,setter略
+}</pre>
+			<h2 id="h3">DAO层</h2>
+			<h3>查询总记录数和查询当前页数据</h3>
+			<pre class="prettyprint linenums"><xmp>public class EmpDao {
+
+	/**
+	 * 提供一个查询当前页员工的方法
+	 */
+	public List<Employee> queryCurrentData(Integer currentPage,Integer pageSize){
+		try {
+			//1.创建QueryRunner对象
+			QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+			//2.执行查询sql操作
+			//计算查询的起始行
+			int startNo = (currentPage-1)*pageSize; 
+			List<Employee> list = (List<Employee>)qr.query("SELECT * FROM employee LIMIT ?,?",
+					new BeanListHandler(Employee.class),
+					new Object[]{startNo,pageSize});
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 提供查询总记录数的方法
+	 */
+	public Integer queryTotalCount(){
+		try {
+			//1.创建QueryRunner
+			QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+			//2.执行sql查询
+			Long count = (Long)qr.query("SELECT COUNT(*) FROM employee", new ScalarHandler(1));
+			return count.intValue();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}</xmp>
+			</pre>
+			<h2 id="h4">Service层</h2>
+			<h3>封装PageBean对象</h3>
+			<pre class="prettyprint linenums"><xmp>public class EmpService {
+
+	/**
+	 * 提供用于封装PageBean对象方法（处理业务逻辑）
+	 */
+	public PageBean queryPageBean(Integer currentPage,Integer pageSize){
+		//封装PageBean分页对象数据
+		PageBean pageBean = new PageBean();
+		
+		//设置当前页
+		pageBean.setCurrentPage(currentPage);
+		
+		//设置每页显示的记录数
+		pageBean.setPageSize(pageSize);
+		
+		EmpDao empDao = new EmpDao();
+		/**
+		 * 从数据库中查询出总记录数
+		 */
+		int totalCount = empDao.queryTotalCount();
+		//设置总记录数
+		pageBean.setTotalCount(totalCount);
+		
+		//设置当前页的数据
+		/**
+		 * 从数据库中查询出当前页的员工数据
+		 */
+		List<Employee> list = empDao.queryCurrentData(pageBean.getCurrentPage(), pageBean.getPageSize());
+		pageBean.setData(list);
+		
+		return pageBean;
+	}
+}</xmp>
+			</pre>
+			<h2 id="h5">WEB层</h2>
+			<h3>接收用户输入</h3>
+			<pre class="prettyprint linenums">public class PageServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		/***********一、获取用户输入**************/
+		//设置当前页(获取用户的输入)
+		String currentPageStr = request.getParameter("currentPage");
+			//如果用户没有输入，就是默认第1页
+		if(currentPageStr==null || currentPageStr.equals("")){
+			currentPageStr = "1";
+		}
+		
+		//设置每页显示的记录数(获取用户的输入)
+		String pageSizeStr = request.getParameter("pageSize");
+		if(pageSizeStr==null || pageSizeStr.equals("")){
+			pageSizeStr = "5";
+		}
+		
+		/***************二、调用业务方法，获取PageBean对象***********************/
+		EmpService empService = new EmpService();
+		PageBean pageBean = empService.queryPageBean(Integer.parseInt(currentPageStr), 
+                                        Integer.parseInt(pageSizeStr));
+		
+		
+		/****************三、得到业务数据，跳转视图*********************/
+		//把PageBean数据发送到jsp页面中显示
+		request.setAttribute("pageBean", pageBean);
+		//转发
+		request.getRequestDispatcher("/list.jsp").forward(request, response);
+	}
+}</pre>
+			<h2 id="h6">jsp页面</h2>
+			<pre class="prettyprint linenums"><xmp><table border="1" align="center" width="700px">
+    <tr>
+        <th>编号</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>职位</th>
+        <th>电话</th>
+        <th>邮箱</th>
+    </tr>
+    <c:forEach items="${requestScope.pageBean.data}" var="emp">
+        <tr>
+            <td>${emp.id }</td>
+            <td>${emp.name }</td>
+            <td>${emp.gender }</td>
+            <td>${emp.age}</td>
+            <td>${emp.title }</td>
+            <td>${emp.phone }</td>
+            <td>${emp.email }</td>
+        </tr>
+    </c:forEach>
+    <tr>
+        <td colspan="7" align="center">
+          <%--
+          1）如果当前页是首页，则不显示“首页”和“上一页”的连接
+          2）如果当前页是末页，则不显示“末页”和“下一页”的连接
+          --%>
+          <c:choose>
+              <c:when test="${pageBean.currentPage==pageBean.firstPage}">
+                  首页&nbsp;
+                  上一页
+              </c:when>
+              <c:otherwise>
+                  <a href="${pageContext.request.contextPath }/PageServlet?
+                  currentPage=${pageBean.firstPage }&pageSize=${pageBean.pageSize}">首页</a>                   &nbsp;<a href="${pageContext.request.contextPath }/PageServlet?currentPage=${pageBean.prePage }&pageSize=${pageBean.pageSize}">上一页</a>&nbsp;
+                </c:otherwise>
+            </c:choose>
+
+            <c:choose>
+                <c:when test="${pageBean.currentPage==pageBean.totalPage}">
+                	下一页&nbsp;末页
+                </c:when>
+            <c:otherwise>
+            	<a href="${pageContext.request.contextPath }/PageServlet
+            	?currentPage=${pageBean.nextPage}&pageSize=${pageBean.pageSize}">下一页</a>&nbsp;
+            	<a href="${pageContext.request.contextPath }/PageServlet
+            	?currentPage=${pageBean.totalPage }&pageSize=${pageBean.pageSize}">末页</a>&nbsp;
+            </c:otherwise>
+            </c:choose>
+            当前第${pageBean.currentPage }页/共${pageBean.totalPage }页，
+            &nbsp;共${pageBean.totalCount }条&nbsp;每页显示
+            <input type="text" name="pageSize" id="pageSize" size="2"
+                   value="${pageBean.pageSize }" onblur="changePageSize()"/> 条
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    //改变每页显示记录数的方法
+    function changePageSize() {
+        //获取用户输入的记录数
+        var pageSize = document.getElementById("pageSize").value;
+        //判断是否输入的数值
+        var reg = /^[1-9][0-9]?$/;
+        if (!reg.test(pageSize)) {
+            alert("请输入数组类型！");
+            return;
+        }
+        //把记录数发送到后台
+        var url = "${pageContext.request.contextPath}/PageServlet?pageSize="+ pageSize;
+        window.location.href = url;
+    }
+</script></xmp></pre>
+			<h2 id="h7">条件查询</h2>
+			<h3>根据用户的查询条件组装sql语句：</h3>
+			<pre class="prettyprint linenums">
+				<xmp>//2.组装sql
+StringBuffer sql = new StringBuffer("select * from department where 1=1 ");
+if (query != null) {
+    //部门名称不为空时
+    if (query.getDeptName() != null && !query.getDeptName().equals("")) {
+        sql.append(" and deptName like '%" + query.getDeptName() + "%'");
+    }
+    //部门负责人不为空时
+    if (query.getPrincipal() != null && !query.getPrincipal().equals("")) {
+        sql.append(" and principal like '%" + query.getPrincipal() + "%'");
+    }
+    //部门职能不为空时
+    if (query.getFunctional() != null && !query.getFunctional().equals("")) {
+        sql.append(" and functional like '%" + query.getFunctional() + "%'");
+    }
+}</xmp>
+			</pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

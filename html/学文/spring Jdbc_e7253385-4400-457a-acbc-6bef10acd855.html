@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>spring Jdbc</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>spring Jdbc</a></h1><div class="tags"><a href="#h1" title="Spring jdbc">Spring jdbc</a><a href="#h2" title="JdbcTemplate API">JdbcTemplate API</a></div></header><article class="article-content"><h2 id="h1">Spring jdbc</h2><p>Spring 对象Jdbc的支持，</p><ul><li>Spring 对jdbc的操作进行了简化！</li><li>提供了JdbcTemplate模板工具类，简化jdbc的操作！</li></ul><p>如果想用spring jdbc功能，先引入jar文件：</p><ul><li>spring-jdbc-3.2.5.RELEASE.jar     工具类包</li><li>spring-tx-3.2.5.RELEASE.jar       事务支持依赖包</li><li>连接池、数据库驱动包！</li></ul><h3>开发步骤：</h3><ul><li>1. 原始的jdbc操作代码</li><li>2. 对连接管理</li><li>3. 对jdbc操作进行简化</li><li>JdbcTemplate  工具类Api</li><li>JdbcTemplate与DataSource依赖关系</li></ul><h2 id="h2">JdbcTemplate API</h2><p>执行 update/delete/insert语句</p><ul><li>int update(String sql,Object... args)</li></ul><p>把每一行都封装为map对象，再添加到list中</p><ul><li>List&lt;Map&lt;String, Object&gt;  queryForList(String sql,Object... args);</li></ul><p>传入类型参数，表示查询的列的类型；  这里只能查询一列</p><ul><li>List&lt;T&gt; queryForList(String sql, Class&lt;T&gt; elementType,Object... args)</li></ul><p>查询并返回List</p><ul><li>List&lt;T&gt; query(String sql, RowMapper&lt;T&gt; rowMapper, Object... args)</li></ul><h3>实例:</h3><pre class="prettyprint linenums"><xmp>//部门对象
+public class Dept{
+	private int id;
+	private String name;
+}
+// 接口
+public interface IDeptDao {
+	public void save(Dept dept);
+	public void update(Dept dept);
+	public void delete(Serializable id);
+	public Dept findById(Serializable id);
+	public List<Dept> getAll();
+}</xmp></pre><p>接口实现</p><pre class="prettyprint linenums"><xmp>public class DeptDao implements IDeptDao {
+	
+	// 接收容器注入的JdbcTemplate对象
+	private JdbcTemplate jdbcTemplate;
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	@Override
+	public void save(Dept dept) {
+		jdbcTemplate.update("insert into t_dept(deptName) values(?)", dept.getName());
+	}
+
+
+	@Override
+	public void delete(Serializable id) {
+		jdbcTemplate.update("delete from t_dept where id=?", id);
+	}
+	
+	@Override
+	public void update(Dept dept) {
+		jdbcTemplate.update("update t_dept set deptName=? where id=?", dept.getName(),dept.getId());
+	}
+
+
+	@Override
+	public Dept findById(Serializable id) {
+		// queryForList 把每一行都封装为map对象，再添加到list中
+//		List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from t_dept");
+		
+// 传入类型参数，表示查询的列的类型；  这里只能查询一列
+//List<String> list = jdbcTemplate.queryForList("select deptName from t_dept", String.class);
+
+		 List<Dept> list = jdbcTemplate.query("select * from t_dept where id=?",  new MyRowMapper(), id);
+		
+		return (list!=null&&list.size()>0)?list.get(0):null;
+	}
+
+
+	@Override
+	public List<Dept> getAll() {
+		List<Dept> list = jdbcTemplate.query("select * from t_dept", new MyRowMapper());
+		return list;
+	}
+	
+	
+	
+	// 封装Springjdbc查询的结果集
+	class MyRowMapper implements RowMapper<Dept>{
+		// 如何解析一行
+		@Override
+		public Dept mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Dept dept = new Dept();
+			dept.setId(rs.getInt("id"));
+			dept.setName(rs.getString("deptName"));
+			return dept;
+		}
+		
+	}
+}</xmp></pre><h3>配置jdbcTemplate</h3><pre class="prettyprint linenums"><xmp><!-- 加载Proerties配置文件 -->
+<context:property-placeholder location="classpath:cn/itcast/h_jdbc/db.properties"></context:property>
+
+<!-- 1.  实例化连接池  -->
+<!--${driverClass}获取Properties文件中的键-->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<property name="driverClass" value="${driverClass}"></property>
+	<property name="jdbcUrl" value="${jdbcUrl}"></property>
+	<property name="user" value="${user}"></property>
+	<property name="password" value="${password}"></property>
+	<property name="initialPoolSize" value="${initialPoolSize}"></property>
+	<property name="maxPoolSize" value="${maxPoolSize}"></property>
+	<property name="acquireIncrement" value="${acquireIncrement}"></property>
+</bean>
+
+<!--  2. 创建JdbcTemplate对象 -->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="dataSource"></property>
+</bean>
+
+<!-- 实例化dao -->
+<bean id="deptDao" class="cn.itcast.h_jdbc.DeptDao">
+	<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+</bean></xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

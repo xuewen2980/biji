@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>组件和继承映射&级联操作</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>组件和继承映射&级联操作</a></h1><div class="tags"><a href="#h1" title="组件映射">组件映射</a><a href="#h2" title="继承映射">继承映射</a><a href="#h3" title="cascade 级联操作">cascade 级联操作</a></div></header><article class="article-content"><h2 id="h1">组件映射</h2><p>对象之间的关系：</p><ul><li>组合关系: 一个类中包含对另外一个类的引用，这2个类就是组合关系！</li><li>继承关系: 一个类继承另外一个类！</li><li>而组合关系的映射就是“组件映射”！,继承关系就是继承映射</li></ul><p>组件类和包含的组件类同时映射到一个表</p><h3>实例:(汽车与车轮直接的关系)</h3><p>设计javaBean</p><pre class="prettyprint linenums">//汽车
+public class Car {
+	private int id;
+	private String type;
+	// 车轮
+	private Wheel wheel;	
+}
+//车轮
+public class Wheel {
+	// 车轮个数
+	private int count;
+	// 尺寸
+	private double size;	
+}</pre><p>映射文件(Car.hbm.xml)</p><pre class="prettyprint linenums"><xmp><hibernate-mapping package="cn.itcast.e_component">
+	<class name="Car" table="t_car">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="type"></property>
+		
+		<!-- 组件映射 -->
+		<component name="wheel" class="Wheel">
+			<property name="count"></property>
+			<property name="size"></property>
+		</component>
+	</class>
+</hibernate-mapping></xmp></pre><h2 id="h2">继承映射</h2><h3>第一种继承</h3><div class="sc_act">javaBean有Animal(id,name),Dog(play)</div><div class="sc_act">映射配置(Dog.hbm.xml)</div><pre class="prettyprint linenums"><xmp><hibernate-mapping package="cn.itcast.f_extends1">
+	<class name="Dog" table="t_dog">
+		<!-- 继承父类的属性，直接写 -->
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="20"></property>
+		
+		<!-- 子类属性 -->
+		<property name="play" length="20"></property>
+	</class>
+</hibernate-mapping></xmp></pre><p>特点：</p><ul><li>父类、子类写到一个映射文件中！</li><li>有多少个子类，要写多少个映射文件.</li></ul><p>总结：</p><ul><li>缺点就是映射文件过多！</li></ul><h3>第二种继承</h3><div class="sc_act">javaBean有Animal(id,name),Dog(play),Cat(catching)</div><div class="sc_act">映射配置(整个继承结构一张表)(Animal.hbm.xml)</div><pre class="prettyprint linenums"><xmp><!-- 整个继承结构一张表！ -->
+<hibernate-mapping package="cn.itcast.f_extends2">
+	<class name="Animal" table="t_animal">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<!-- 
+			类别区分
+			改标签指定鉴别器字段(类中可以没有此变量,但是数据库会自动生成此字段)，用于区分不同的子类信息
+		-->
+		<discriminator column="type_"></discriminator>
+		
+		<property name="name" length="20"></property>
+		
+		<!-- 子类：猫 -->
+		<!--  discriminator-value 指定鉴别器字段的值，如果没有指定，默认是类的全名! -->
+		<subclass name="Cat" discriminator-value="cat_">
+			<property name="catching"></property>
+		</subclass>
+		
+		<!-- 子类：狗 -->
+		<subclass name="Dog" discriminator-value="dog_">
+			<property name="play"></property>
+		</subclass>
+	</class>
+</hibernate-mapping></xmp></pre><p>特点：</p><ul><li>所有的子类都写到一个映射文件中！</li><li>用一张表存储所有的子类信息！</li></ul><p>总结：</p><ul><li>生成的表，不符合数据库设计原则！</li><li>因为所有子类都用一张表存储，存在很大的冗余字段！</li></ul><p><mark>注意：在继承关系中，如果hql语句是通过父类查找，需要指定全名</mark></p><h3>第三种继承(三张表)</h3><div class="sc_act">javaBean有Animal(id,name),Dog(play),Cat(catching)</div><div class="sc_act">映射配置(Animal.hbm.xml)</div><pre class="prettyprint linenums"><xmp><!-- 每个类一张表， 三张表 -->
+<hibernate-mapping package="cn.itcast.f_extends3">
+	<class name="Animal" table="t_animal">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		
+		<property name="name" length="20"></property>
+		
+		<!-- 子类：猫 -->
+		<joined-subclass name="Cat" table="t_cat">
+			<key column="id"></key>
+			<property name="catching"></property>
+		</joined-subclass>
+		
+		<!-- 子类：狗 -->
+		<joined-subclass name="Dog" table="t_dog">
+			<key column="id"></key>
+			<property name="play"></property>
+		</joined-subclass>
+	</class>
+</hibernate-mapping></xmp></pre><p>特点：</p><ul><li>完全按照面向对象设计表结构！</li></ul><p>总结：</p><ul><li>设计的表，是符合数据库设计原则（三大范式）!</li><li>但是，表结构、关系变得负责，影响数据访问效率！</li></ul><h3>第四种继承(每个子类用一张表)</h3><div class="sc_act">javaBean有Animal(id,name),Dog(play),Cat(catching)</div><div class="sc_act">映射配置(Animal.hbm.xml)</div><pre class="prettyprint linenums"><xmp><!-- 
+	每个子类一张表， 2张表
+	abstract="true"  表示当前类不对应表!
+ -->
+<hibernate-mapping package="cn.itcast.f_extends4">
+	<class name="Animal" abstract="true">
+		<id name="id">
+			<generator class="assigned"></generator>
+		</id>
+		
+		<property name="name" length="20"></property>
+		
+		<!-- 注意：使用union-subclass要求主键不能自增长！ -->
+		<!-- 子类：猫 -->
+		<union-subclass name="Cat" table="t_cat">
+			 <property name="catching"></property>
+		</union-subclass>
+		
+		<!-- 子类：狗 -->
+		<union-subclass name="Dog" table="t_dog">
+			<property name="play"></property>
+		</union-subclass>
+	</class>
+</hibernate-mapping></xmp></pre><p>特点：</p><ul><li>一个映射文件</li><li>有多少个子类对应多少个表，父类不对应表！</li></ul><p>总结：</p><ul><li>推荐使用！</li><li><mark>注意：主键不能为自增长！</mark></li></ul><h2 id="h3">cascade 级联操作</h2><div class="sc_act">cascade   表示级联操作，在一对多、多对一、一对一种都可以设置</div><p>属性:</p><ul><li>save-update   级联保存或更新</li><li>delete        级联删除</li><li>save-update,delete  级联保存、更新、删除</li><li>all           同(save-update,delete)一样</li><li>none           不级联(默认值)</li><li>all-delete-orphan: 当一个节点在对象图中成为孤儿节点时，删除该节点。</li><li>比如在一个一对多的关系中，Student包含多个book，当在对象关系中删除一个book时，此book即成为孤儿节点。</li></ul><p>级联更新和保存</p><div class="sc_act">session.save(dept);  // cascade="save-update" 设置后，保存对象，会保存关联的对象！</div></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

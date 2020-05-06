@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>JSP 13个内置标签</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>JSP 13个内置标签</a></h1><div class="tags"><a href="#h1" title="param标签">param标签</a><a href="#h2" title="include标签">include标签</a><a href="#h3" title="forward标签">forward标签</a><a href="#h4" title="useBean标签">useBean标签</a><a href="#h5" title="setProperty标签">setProperty标签</a><a href="#h6" title="getProperty标签">getProperty标签</a><a href="#h7" title="plugin标签">plugin标签</a><a href="#h8" title="element标签">element标签</a><a href="#h9" title="attribute和body标签">attribute和body标签</a><a href="#h10" title="output标签">output标签</a></div></header><article class="article-content"><h2 id="h1">param标签</h2><p>操作被用来以“名-值”对的形式为其他标签提供附加信息。<br>它和&lt;jsp:include&gt;、&lt;jsp:forward&gt;、&lt;jsp:plugin&gt;<mark>一起使用</mark>。向一个动态文件发送一个或多个参数，<br>这个文件一定是动态文件。如果你想传递多个参数，你可以在一个JSP文件中使用多个&lt;jsp:param&gt;。</p><p>示例</p><pre class="prettyprint linenums"><xmp><jsp:param name="abc" value="123" ></jsp:param>//支持EL表达式</xmp></pre><h2 id="h2">include标签</h2><p>这里你必须使用flush="true",你不能使用false值.缺省值为false。page属性值且为相对路径<br>示例</p><pre class="prettyprint linenums"><xmp><jsp:include page="1.jsp" flush="true">
+   <jsp:param name="abc" value="123" ></jsp:param>
+</jsp:include></xmp></pre><h2 id="h3">forward标签</h2><p>重定向一个HTML文件，JSP文件，或者是一个程序段(servlet)。<br>&lt;jsp:forward&gt;标签从一个JSP文件向另一个文件传递一个包含用户请求的request对象。<br>&lt;jsp:forward&gt;标签下面的代码，将不能执行。<br>如果你使用了非缓冲输出的话，那么使用<jsp:forward>时就要小心。如果在你使用&lt;jsp:forward&gt;之前，jsp文件已经有了数据，那么文件执行就会出错.<br>示例</jsp:forward></p><pre class="prettyprint linenums"><xmp><jsp:forward page="">
+   <jsp:param name="abc" value="123" ></jsp:param>
+</jsp:forward></xmp></pre><h2 id="h4">useBean标签</h2><p>&lt;jsp:useBean&gt; 指的是创建一个Bean实例并指定它的名字和作用范围。<br>jsp:useBean动作只有在不存在同样id和scope的Bean时才创建新的对象实例。<br>jsp代码</p><pre class="prettyprint linenums"><xmp>  <jsp:useBean id="checking" scope="session" class="bank.Checking">
+     <jsp:setProperty name="checking" property="balance" value="0.0" ></jsp:setProperty>
+  </jsp:useBean>
+//还可以接收form表单的参数
+    <jsp:useBean id="user" scope="page" class="gz.itcast.entity.User"></jsp:useBean>
+    	<jsp:setProperty property="userName" name="user" param="userName"></jsp:setProperty>
+	<jsp:setProperty property="password" name="user" param="password"></jsp:setProperty>
+	<jsp:setProperty property="age" name="user" param="age"></jsp:setProperty>
+    </jsp:useBean></xmp></pre><h2 id="h5">setProperty标签</h2><p>通过Bean给定的setter方法给bean实例赋值，在Bean中设置一个或多个属性值。你在使用这个元素之前<br><mark>必须</mark>得使用&lt;jsp:useBean&gt;声明此Bean。因为&lt;jsp:useBean&gt;和&lt;jsp:setProperty&gt;是联系在一起使用的，<br>同时他们使用的Bean实例的名字也应当相匹配（就是说，在&lt;jsp:setProperty&gt;中的name的值应当和&lt;jsp:useBean&gt;中id的值相同)。<br>注意:</p><ul><li><mark>你不能在一个&lt;jsp:setProperty&gt;中同时使用param和value。</mark></li><li>如果你使用了property="*",那么Bean的属性没有必要按Html表单中的顺序排序。</li></ul><p>jsp代码</p><pre class="prettyprint linenums"><xmp>   <jsp:setProperty name="mybean" property="*" ></jsp:setProperty>
+   <jsp:setProperty name="mybean" property="username" ></jsp:setProperty>
+   <jsp:setProperty name="mybean" property="username" value="Steve" ></jsp:setProperty></xmp></pre><h2 id="h6">getProperty标签</h2><p>获取Bean的属性值，用于显示在页面中。&lt;jsp:getProperty&gt;将获得Bean的属性值，并可以使用或显示在JSP页面中。<br>在你使用&lt;jsp:getProperty&gt;之前，你必须用&lt;jsp:useBean&gt; 创建它。<br>如果获取为null,则会抛出NullPoionExcetioin异常<br>jsp代码</p><pre class="prettyprint linenums"><xmp><jsp:getProperty property="" name=""></jsp:getProperty></xmp></pre><h2 id="h7">plugin标签</h2><p>例子1</p><pre class="prettyprint linenums"><xmp><jsp:plugin type=applet code="Molecule.class" codebase="/html">
+
+    <jsp:params>
+        <jsp:param name="molecule" value="molecules/benzene.mol" ></jsp:param>
+    </jsp:params>
+
+    <jsp:fallback>
+        <p>Unable to load applet</p>
+    </jsp:fallback>
+
+</jsp:plugin></xmp></pre><p>例子2</p><pre class="prettyprint linenums"><xmp>//指定其Java类为Clock.class,所在目录为Applet，类型为applet
+<jsp:plugin code ="Clock.class" codebase="Applet" type="applet">
+    <jsp:params>
+        //传递三个参数
+        <jsp:param name="bgcolor" value="000000" ></jsp:param>
+        <jsp:param name="fgcolor" value="ff0000" ></jsp:param>
+        <jsp:param name="fgcolor" value="00ff00" ></jsp:param>
+    </jsp:params>
+    //无法加载时输出错误信息
+    <jsp:fallback>
+        无法加载该Applet。
+    </jsp:fallback>
+</jsp:plugin></xmp></pre><p>pulings属性介绍</p><img src="/biji/htmlFiles/pulings.png"><p>type="bean | applet"  将被执行的插件对象的类型，你必须得指定这个是Bean还是applet，因为这个属性没有缺省值。<br>code="classFileName"  将会被Java插件执行的Java Class的名字，必须以.class结尾。这个文件必须存在于codebase属性指定的目录中。<br>codebase="classFileDirectoryName"  将会被执行的Java Class文件的目录（或者是路径)，如果你没有提供此属性，那么使用&lt;jsp:plugin&gt;的jsp文件的目录将会被使用。<br>name="instanceName"  这个Bean或applet实例的名字，它将会在Jsp其它的地方调用.<br>archive="URIToArchive, ..."  一些由逗号分开的路径名，这些路径名用于预装一些将要使用的class,这会提高applet的性能。<br>align="bottom | top | middle | left | right"  图形，对象，Applet的位置。<br>height="displayPixels" width="displayPixels"  Applet或Bean将要显示的长宽的值，此值为数字，单位为象素.<br>hspace="leftRightPixels" vspace="topBottomPixels"  Applet或Bean显示时在屏幕左右，上下所需留下的空间，单位为象素.<br>jreversion="JREVersionNumber | 1.1"  Applet或Bean运行所需的Java Runtime Environment (JRE) 的版本. 缺省值是 1.1.<br>nspluginurl="URLToPlugin"  Netscape Navigator用户能够使用的JRE的下载地址，此值为一个标准的URL，如http://www.aspcn.com/jspiepluginurl="URLToPlugin"IE用户能够使用的JRE的下载地址，此值为一个标准的URL，如http://www.aspcn.com/jsp<br>&lt;jsp:params&gt;  [ &lt;jsp:param name="parameterName" value="{parameterValue | &lt;%= expression %&gt;}" /&gt; ]+ &lt;/jsp:params&gt;  你需要向applet或Bean传送的参数或参数值。  &lt;jsp:fallback&gt; unable to start plugin &lt;/jsp:fallback&gt;  一段文字用于：当不能启动Applet 或Bean 时，那么浏览器会有一段错误信息</p><h2 id="h8">element标签</h2><p>temp.html:17 &lt;jsp:element&gt;只有一个属性name。name 的值就是XML 元素标签的名称。<br>例子</p><pre class="prettyprint linenums"><xmp><jsp:element name="xuewen">哈哈</jsp:element></xmp></pre><h2 id="h9">attribute和body标签</h2><p>例子</p><pre class="prettyprint linenums"><xmp><jsp:element name="xuewen">
+<jsp:attribute name="id">Mike</jsp:attribute>
+<jsp:body>Hello</jsp:body>
+</jsp:element>
+//效果如下
+<xuewen id="Mike">Hello</xuewen></xmp></pre><h2 id="h10">output标签</h2></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

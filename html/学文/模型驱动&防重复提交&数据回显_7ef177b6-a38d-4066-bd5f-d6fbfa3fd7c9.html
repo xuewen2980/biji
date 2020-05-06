@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>模型驱动&防重复提交&数据回显</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>模型驱动&防重复提交&数据回显</a></h1><div class="tags"><a href="#h1" title="模型驱动">模型驱动</a><a href="#h2" title="防止重复提交">防止重复提交</a><a href="#h3" title="数据回显">数据回显</a></div></header><article class="article-content"><h2 id="h1">模型驱动</h2><h3>作用</h3><p>请求数据封装：</p><ul><li>方式一： 表单： name    -&gt;  基本数据类型： String name</li><li>方式二： 表单： user.name - &gt; javabean数据类型： User user    (User:  String name)</li><li>方式三： 表单： name  -&gt;   javabean数据类型： User user     (User:  String name) （<mark>使用模型驱动方式</mark>）</li></ul><h3>实现</h3><pre class="prettyprint linenums"><xmp>public class UserAction extends ActionSupport implements ModelDriven<User>{
+	//注意：使用模型驱动的方式，存放数据的模型引用不能为空
+	private User user = new User();
+	/**
+	 * 该方法struts2可以把值栈中的请求参数封装到User对象
+	 */
+	public User getModel() {
+		return user;
+	}
+}</xmp></pre><h2 id="h2">防止重复提交</h2><div class="sc_act">利用&lt;s:token /&gt;标签防止重复提交</div><p>第一步：在表单中加入&lt;s:token&gt;标签</p><pre class="prettyprint linenums"><xmp><s:form action="helloworld_other" method="post" namespace="/test">
+    <s:textfield name="person.name"></s:textfield>
+    <s:token></s:token>
+    <s:submit value="登录"></s:submit>
+</s:form></xmp></pre><p>第二步：</p><pre class="prettyprint linenums"><xmp><action name="helloworld_*" class="cn.itcast.action.HelloWorldAction" method="{1}">
+         <interceptor-ref name="defaultStack"></interceptor>
+          <!-- 增加令牌拦截器 -->
+          <interceptor-ref name="token">
+                  <!-- 哪些方法被令牌拦截器拦截 -->
+                  <param name=“includeMethods">save</param>
+          </interceptor-ref>    
+         <!-- 当表单重复提交转向的页面 -->
+        <result name="invalid.token">/WEB-INF/page/message.jsp</result>  	
+</action></xmp></pre><h3>问题</h3><div class="sc_act">在debug状态,控制台出现下面信息,是因为Action中并没有struts.token和struts.token.name属性,我们不用关心这个错误：严重: ParametersInterceptor - [setParameters]: Unexpected Exception caught setting 'struts.token' on 'class xxx: Error setting expression 'struts.token' with value '[Ljava.lang.String;@39f16f'严重: ParametersInterceptor - [setParameters]: Unexpected Exception caught setting 'struts.token.name'</div><h2 id="h3">数据回显</h2><div class="sc_act">只要request中有name属性的值,struts标签就会自动回显</div><pre class="prettyprint linenums"><xmp><s:textfield name="userName" label="用户名"></s:textfield>
+<s:password name="userPwd" label="密码" showPassword="true"></s:password></xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

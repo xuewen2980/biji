@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>Cookie和Session会话管理</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>Cookie和Session会话管理</a></h1><div class="tags"><a href="#h1" title="Cookie-api">Cookie-api</a><a href="#h2" title="Cookie的原理">Cookie的原理</a><a href="#h3" title="Cookie的细节">Cookie的细节</a><a href="#h4" title="代码描述Cookie">代码描述Cookie</a><a href="#h5" title="Session-api">Session-api</a><a href="#h6" title="Session细节">Session细节</a></div></header><article class="article-content"><h2 id="h1">Cookie-api</h2><p>1）创建Cookie对象，用于保存会话数据</p><ul><li>new Cookie(java.lang.String name, java.lang.String value)</li></ul><p>2）设置Cookie对象</p><ul><li>void setPath(java.lang.String uri)  <mark>设置cookie有效路径</mark></li><li>void setMaxAge(int expiry)     <mark>设置cookie的有效时长(单位是秒)</mark></li><li>void setValue(java.lang.String newValue)  <mark>设置cookie的值</mark></li></ul><p>3）发送Cookie数据到浏览器保存</p><ul><li>response.addCookie(cookie);</li></ul><p>4）接收浏览器发送的Cookie数据</p><ul><li>Cookie[] request.getCookies()</li></ul><h2 id="h2">Cookie的原理</h2><p>1）服务器端创建Cookie数据，然后通过set-cookie的响应头把cookie数据发送给浏览器保存<br><mark>响应头： 例如： set-cookie: name=eric</mark></p><p>2）浏览器得到服务器发送cookie数据，保存在浏览器目录中。</p><p>3）浏览器在下次访问服务器时，会带着cookie数据访问服务器。通过cookie的请求头把cookie数据发送给服务器端<br>请求头： 例如 ： cookie: name=eric</p><p>4）服务器可以接受浏览器发送的cookie数据<br>request.getCookies();</p><h2 id="h3">Cookie的细节</h2><p>1）设置cookie有效路径： setPath(uri) 。</p><ul><li>如果cookie在有效路径下，那么浏览器在下次访问该有效路径时就会带着cookie数据到服务器。</li></ul><p>2）设置cookie的有效时长： setMaxAge(整数)</p><ul><li>正整数： cookie数据保存在浏览器的缓存目录中（硬盘中）。(从最后一次访问cookie开始计算）</li><li>负整数： cookie数据保存在浏览器的内存中，浏览器关闭cookie数据就会丢失。</li><li>零：  删除同名的cookie</li></ul><p>3）可以同时往浏览器发送多个cookie数据，必须是字符串类型的。浏览器一般只允许存放300个Cookie，<br>每个站点最多存放20个Cookie，每个Cookie的大小限制为4KB。</p><h2 id="h4">代码描述Cookie</h2><pre class="prettyprint linenums">/**
+ * 使用cookie技术
+ * @author xuewen
+ */
+public class CookieDemo1 extends HttpServlet {
+	private static final long serialVersionUID = 4L;
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		//1)创建Cookie对象，保存会话数据
+		//如果要发送中文，必须先使用URLEncoder进行加密
+		String n = URLEncoder.encode("张三", "utf-8");
+		Cookie c = new Cookie("name",n);
+		Cookie c2 = new Cookie("email","jacky@qq.com");	
+		/**
+		 *   1)设置有效路径。默认情况下，设置当前项目的根目录下
+		 *    什么是有效路径？ 如果把该cookie设置到某个有效路径下，然后当浏览器访问这个有效路径的时候，才会携带这个cookie数据给服务器。
+		 */
+		//c.setPath("/day11");
+		
+		//c.setMaxAge(20); //20秒之后cookie丢失！！！
+		c.setMaxAge(-1); //浏览器关闭cookie丢失！！！（默认情况下）
+		
+		//2)把cookie发送给浏览器.通过响应头携带cookie数据给浏览器(set-cookie)
+		//response.setHeader("set-cookie", "name=jacky");
+		/**
+		 *简化版本
+		 */
+		response.addCookie(c);
+		response.addCookie(c2);
+		
+		//3)浏览器在下次访问的时候携带了cookie数据，通过请求头发送给服务器（cookie）
+		
+		//4)服务器获取浏览器发送的cookie数据
+		//String name = request.getHeader("cookie");
+		/**
+		 * 简化版本
+		 */
+		Cookie[] cookies = request.getCookies();
+		if(cookies!=null){
+			for (Cookie cookie : cookies) {
+				//cookie的名称
+				String name = cookie.getName();
+				//对加密之后的name进行解密
+				String value = cookie.getValue();
+				value = URLDecoder.decode(value, "utf-8");
+				System.out.println(name+"="+value);
+			}
+		}else{
+			System.out.println("没有cookie信息");
+		}
+	}
+}</pre><h2 id="h5">Session-api</h2><p>1）创建HttpSession对象，用于保存会话数据</p><ul><li>session = request.getSession();   创建或获取session对象</li></ul><p>2）修改HttpSession对象</p><ul><li>void setMaxInactiveInterval(int interval)  设置session对象的有效时间</li><li>void invalidate()   手动销毁session对象</li></ul><p>3）保存会话数据(作为域对象)</p><ul><li>session.setAttribute("name",Object);  保存数据</li><li>session.getAttribute("name")   获取数据</li><li>session.removeAttribute("name") 删除数据</li></ul><h2 id="h6">Session细节</h2><p>1）setMaxInactiveInterval（秒数）: 设置session对象的有效时间<br>问题：session在什么销毁？<br>注意：不是浏览器关闭，session对象就销毁！！！<br>默认情况： 等待30分钟空闲时间，session对象才会销毁。</p><pre class="prettyprint linenums"><xmp><!-- 设置全局的session对象的过期时间 （分钟）-->
+<session-config>
+    <session-timeout>1</session-timeout>
+</session-config></xmp></pre><p>2）可以让JSESSIONID不会随着浏览器关闭而丢失！！！！</p><pre class="prettyprint linenums">/**
+* 设置JSESSIONID的时间，不会随着浏览器关闭而丢失！
+*/
+Cookie c = new Cookie("JSESSIONID",session.getId());
+c.setMaxAge(1*30*24*60*60);//1个月
+response.addCookie(c);</pre><p>3）直接手动销毁sessino对象   invalidate（）方法；</p><p>4）  创建或得到session对象</p><ul><li>request.getSession(true):      创建或得到session对象，查询session对象，如果没有sessino对象，则创建新的session对象</li><li>request.getSession(false)          得到session对象。 查询session对象，如果session对象，直接返回null</li></ul></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+    <script src="/biji/js/jquery.min.js"></script>
+    <script>window._deel = {url: 'www.xuewen.cn'}</script>
+<body>
+<div id="article">
+<header class="article-header"><h1 class="article-title"><a>CreateJs入门必知必会</a></h1></header>
+  <article class="article-content"><h2>CreateJS介绍</h2>
+                <p>CreateJS是基于HTML5开发的一套模块化的库和工具。<br/>
+                    基于这些库，可以非常快捷地开发出基于HTML5的游戏、动画和交互应用。<br/>
+                    CreateJS主要包含如下四个类库：</p>
+                <ul>
+                    <li>EaselJS &#8211; 简化处理HTML5画布
+                        <mark>（核心）</mark>
+                    </li>
+                    <li>TweenJS &#8211; 用来帮助调整HTML5和Javascript属性</li>
+                    <li>SoundJS &#8211; 用来简化处理HTML5 audio</li>
+                    <li>PreloadJS &#8211; 帮助管理和协调加载中的一些资源</li>
+                </ul>
+                <p>CreateJS官网：<a href="http://createjs.com/" target="_blank"
+                                 rel="nofollow">http://createjs.com/</a><br/>
+                    CreateJs中文网：<a href="http://www.createjs.cc/" target="_blank"
+                                   rel="nofollow">http://www.createjs.cc/</a></p>
+                <h2>学习CreateJs第一步，先要看文档</h2>
+                <p>CreateJs提供了一些显示类：</p>
+                <ul>
+                    <li>画图片用(Bitmap)</li>
+                    <li>画图形，比如矩形，圆形等用(Shape)</li>
+                    <li>画文字，用(Text)</li>
+                    <li>还有容器Container的概念，容器可以包含多个显示对象，就像div标签一样，都有
+                        <mark>局部带动全局</mark>
+                        的功能。
+                    </li>
+                    <li>&#8230;等</li>
+                </ul>
+                <p>使用CreateJs理解一些概念就好办多了，它有一个
+                    <mark>显示列表</mark>
+                    ，其中Stage是显示列表的顶级容器，然后是Container，再之后就是各种Shape了。<br/>
+                    这些显示类都是集成自DisplayObject类，它是一个抽象类，不能直接构造，它定义了核心的属性和方法，比如：x，y，alpha，rotation，scaleX，scaleY等。<br/>
+                    所以：看文档可以先看看DisplayObject类，然后去看看Stage舞台类，然后看看Container类，然后就是画图形的Shape类等其他类，先看构造函数需要传什么参数，再看看有哪些属性和方法。Ticker类也可以看看。
+                </p>
+                <h2>CreateJs一些API作用</h2>
+                <p>要画图首先要
+                    <mark>引入这个库</mark>
+                    没毛病吧，然后实例化一个舞台。<br/>
+                    然后你要画一个图形，就找
+                    <mark>Shape的文档</mark>
+                    ，文档上写的很清楚怎么画一个图形。<br/>
+                    new一个Shape对象，用它的属性graphics，我叫它画笔。它就相当于Graphics类，所以关于它的方法可以去看Graphics类的API。<br/>
+                    graphics可以设置一些样式，线条宽度，颜色等等，还可以调用一些方法绘制图形，画矩形rect或者drawRect都可以。画圆形arc或者drawCircle都可以，arc还可以画扇形。<br/>
+                    但是这样页面是不会有任何反应的，还需要把这个Shape对象
+                    <mark>添加到舞台</mark>
+                    上去，这时候页面还是没有反应，因为添加上去还要渲染，需要用舞台
+                    <mark>调用update方法</mark>
+                    。CreateJs提供了tick事件，会自动update。<br/>
+                    这里也得提一下，CreateJs提供了两种
+                    <mark>渲染模式</mark>
+                    ，一种是用setTimeout，一种是用requestAnimationFrame，默认是setTimeout，默认的帧数是20，一般的话还没啥，但是如果你设置成requestAnimationFrame模式的话，就会感觉到动画如丝般的流畅，差距一眼就看出来了。这些API里面都有，好好看文档。
+                </p>
+                <pre class="prettyprint linenums">
+createjs.Ticker.timingMode = createjs.Ticker.RAF;
+</pre>
+                <p>HTML代码</p>
+                <pre class="prettyprint linenums">
+&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;
+</pre>
+                <p>JS</p>
+                <pre class="prettyprint linenums">
+let canvas = document.querySelector(&#039;#canvas&#039;);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+//创建舞台
+let stage = new createjs.Stage(canvas);
+//舞台自动更新
+createjs.Ticker.on(&#039;tick&#039;,stage);
+//创建一个Shape对象
+let rect = new createjs.Shape();
+//用画笔设置颜色，调用方法画矩形，矩形参数猜都猜出来了：x,y,w,h
+rect.graphics.beginFill(&quot;#f00&quot;).drawRect(0, 0, 100, 100);
+//添加到舞台
+stage.addChild(rect);
+</pre>
+                <p>这就是用CreateJs画图的一个大概流程：
+                    <mark>创建显示对象→设置一些参数→调用方法绘制→添加到舞台→update()</mark>
+                    <br/>
+                    画圆形也一样，只不过调用的方法变了。
+                </p>
+                <h2>CreateJs做动效</h2>
+                <p>CreateJs就是封装了canvas的API让绘图变得简单好用，canvas做动效的原理就是不停的绘制不同的场景。<br/>
+                    对于CreateJs来说就是改变这些显示对象的属性值，比如x,y累加移动1px，就可以做移动的效果，还可以改变透明度：alpha，缩放：scaleX,scaleY，扭曲：skewX，skewY，旋转：rotation等等。<br/>
+                    接着上面的代码</p>
+                <pre class="prettyprint linenums">
+function loop () {
+    rect.x++;
+    if(rect.x == 100){
+        rect.x = 0;
+    }
+    requestAnimationFrame(loop);
+}
+loop();
+</pre>
+                <p>这样矩形就动起来了。<br/>
+                    但是有一个需要注意的地方，如果我们做的是
+                    <mark>放大或者旋转动画</mark>
+                    就有问题了。如图：<br/>
+                <pre class="prettyprint linenums">
+let circle = new createjs.Shape();
+circle.x = circle.y = 300;
+circle.graphics.beginFill(&quot;#f00&quot;).drawCircle(0, 0, 100, 100);
+stage.addChild(circle);
+function loop () {
+    circle.scaleX += 0.01;
+    circle.scaleY += 0.01;
+    if(circle.scaleX &gt;= 2){
+        circle.scaleX = 1;
+        circle.scaleY = 1;
+    }
+    requestAnimationFrame(loop);
+}
+loop();
+</pre>
+                <p>然后可以借助动画库来实现一些连贯的动画。CreateJs默认有带了一个动画库tweenjs。这API就不用说了吧，猜都猜到怎么用了。
+                    <mark>记得要先引入这个动画库</mark>
+                </p>
+                <pre class="prettyprint linenums">
+createjs.Tween.get(circle,{loop:true})
+		.wait(1000)
+		.to({x:100,y:100},1000)
+		.wait(1000)
+		.to({scaleX:1.5},1000)
+		.wait(1000)
+		.to({scaleY:1.5},1000)
+		.wait(1000)
+		.to({scaleX:1,scaleY:1},1000,createjs.Ease.bounceIn)
+		.wait(1000)
+		.to({x:0,y:0},1000);
+</pre>
+                <p>然后，需要注意的是，如果你添加多个显示对象，他们是有
+                    <mark>层级关系</mark>
+                    的，stage对象有个children属性代表子元素，是一个数组，里面的元素层级像下标一样从0开始，简单来说就是后面的覆盖前面的，addChild方法是添加到显示列表的最后。
+                </p>
+                <pre class="prettyprint linenums">
+//所以，比如有红色和蓝色两个圆，要想让红色在上面就要后添加红色，就只能
+stage.addChild(blue);
+stage.addChild(red);
+
+//当然，作为一个强大的canvas库，还有其他方法，可以设置元素的层级
+stage.setChildIndex(red,1);
+
+//还可以互换两个元素的位置
+stage.swapChildren(blue,red);
+
+//还可以根据元素下标来互换两个元素
+stage.swapChildrenAt(0,1);
+
+//然而有时候你可能并不知道元素的下标，所以你可以这样
+stage.getChildIndex(red)  //1
+
+//还有一些获取子元素的方法
+addChild，addChildAt，getChildAt，getChildByName
+
+//还可以获取元素的大小,不过这个方法不支持获取Shape对象的大小，其他图片，文字啥的可以。
+getBounds()
+
+//还有删除子元素的方法
+removeChild，removeChildAt
+
+//还有阴影类,Shadow
+red.shadow = new createjs.Shadow(&quot;#000&quot;, 0, 0, 30);
+
+//还可以画虚线,20是每个虚线的长，10是虚线的间隔，直线就是去掉setStrokeDash这个方法
+let line = new createjs.Shape();
+line.graphics.setStrokeDash([20, 10], 0).setStrokeStyle(3).beginStroke(&#039;red&#039;).moveTo(0,0).lineTo(200,0);
+
+//还有遮罩，就是溢出隐藏那种效果。
+let rect = new createjs.Shape();
+rect.graphics.rect(0,0,100,100).closePath();
+let line = new createjs.Shape();
+line.graphics.setStrokeDash([20, 10], 0).setStrokeStyle(3).beginStroke(&#039;red&#039;).moveTo(0,0).lineTo(200,0);
+//线的遮罩，这样，只能看到线条的100px长。
+line.mask = rect;
+stage.addChild(line);//遮罩不需要添加
+</pre>
+                <h2>CreateJs事件</h2>
+                <p>CreateJs事件使用也很方便，像jq一样的事件绑定和移除方式：
+                    <mark>on和off</mark>
+                </p>
+                <pre class="prettyprint linenums">
+//注意点：
+
+//用到mouseOver事件的时候需要加一句
+stage.enableMouseOver(10);
+
+//要让移动端支持createjs的点击等鼠标事件时需要加上
+createjs.Touch.enable(stage);
+
+//移除事件需要特殊注意一下，移除的时候，参数不是事件函数，而是监听事件的返回值。可以放在对象的一个自定义属性上面。方便。
+rect.handleClick = rect.on(&#039;click&#039;,() =&gt; {
+    console.log(&#039;点击事件&#039;);
+});
+rect.off(&#039;click&#039;,rect.handleClick);
+</pre>
+                <h3>高亮效果</h3>
+                <pre class="prettyprint linenums">
+//在CreateJs里面透明的地方是不响应事件的，这样就实现了事件委托。比如做一个高亮效果，直接给容器加一个事件。
+let container = new createjs.Container().set({
+    x:100,
+    y:100
+});
+for (let i = 0; i &lt; 4; i++) {
+    let rect = new createjs.Shape().set({
+        x:100 * i,
+        y:100 * i
+    });
+    rect.fillCommand = rect.graphics.beginFill(&quot;red&quot;).command;
+    rect.graphics.rect(0, 0, 100, 100);
+    container.addChild(rect);
+}
+stage.addChild(container);
+stage.enableMouseOver(10);
+container.on(&#039;mouseover&#039;,(e) =&gt; {
+    e.target.fillCommand.style = &#039;blue&#039;;
+});
+container.on(&#039;mouseout&#039;,(e) =&gt; {
+    e.target.fillCommand.style = &#039;red&#039;;
+})
+</pre>
+                <hr/>
+            </article>
+</div>
+<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

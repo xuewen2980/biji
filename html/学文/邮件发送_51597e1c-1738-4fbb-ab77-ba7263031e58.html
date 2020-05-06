@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>邮件发送</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>邮件发送</a></h1><div class="tags"><a href="#h1" title="邮件发送">邮件发送</a></div></header><article class="article-content"><h2 id="h1">邮件发送</h2><h3>工具</h3><ul><li>需导入mail.jar包</li><li>如果jdk版本是1.6以下则还需导入activtion.jar</li><li>用户对应的授权码</li></ul>
+<img src="/biji/htmlFiles/E-mail.png"><h3>代码实现</h3><p>Servlet代码</p><pre class="prettyprint linenums">@WebService(serviceName = "/mail")
+public class Mail extends HttpServlet {
+	// extends 继承 HttpServlet 有了HttpServlet就能通过http协议
+	@Override
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		try {
+			// 设置字符编码集
+			request.setCharacterEncoding("utf-8");
+			// 相应
+			response.setContentType("text/html;charset=utf-8");
+			// 接收前台传递的数据
+			// 收件人
+			String name = request.getParameter("m_name");
+			// 主题
+			String topic = request.getParameter("m_topci");
+			// 内容
+			String con = request.getParameter("c_con");
+			// 发送者
+			String username = "m17346606188@163.com";
+			// 授权码
+			String password = "xuewen9527";
+
+			Properties props = new Properties();// 用来读取邮箱的配置文件
+			props.put("mail.transport.protocol", "smtp");// 邮件的传输协议
+			props.put("mail.host", "smtp.163.com");// 设置主机
+			props.put("mail.smtp.auth", true);// 密码安全验证
+
+			Session session = Session.getInstance(props);//会话
+			// 创建一个邮箱
+			MimeMessage ms = new MimeMessage(session);
+			Address toAddress = new InternetAddress(username);
+			// 邮件的来源
+			ms.setFrom(toAddress);
+			// 接收者
+			ms.setRecipients(Message.RecipientType.TO, name);
+			// 发送主题
+			ms.setSubject(topic);
+			// 发送的内容
+			ms.setText(con);
+			ms.saveChanges();// 发完了保存
+			Transport trans = session.getTransport();
+			trans.connect(username, password);
+			trans.sendMessage(ms, ms.getAllRecipients());
+			trans.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}</pre><p>前台页面</p><pre class="prettyprint linenums"><xmp><div class="head">
+    <div class="content">
+        <img src="images/logo.png" class="pic"> <span>java开发群发系统</span>
+        <form action="./mail" method="post">
+            <div class="box">
+                <p>
+                    <span>收件人:</span><input type="text" name="m_name"/>
+                </p>
+                <p>
+                    <span>主&emsp;题:</span><input type="text" name="m_topci"/>
+                </p>
+                <p>
+                    <span>内&emsp;容:</span>
+                    <textarea class="c_con" name="c_con"></textarea>
+                </p>
+                <input type="submit" value="发送邮件" class="c_btn">
+            </div>
+        </form>
+    </div>
+</div></xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

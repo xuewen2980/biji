@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>jstl自定义标签</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>jstl自定义标签</a></h1><div class="tags"><a href="#h1" title="自定义标签的执行过程">自定义标签的执行过程</a><a href="#h2" title="自定义标签步骤">自定义标签步骤</a><a href="#h3" title="标签体输出格式">标签体输出格式</a><a href="#h4" title="自定义标签的难点">自定义标签的难点</a></div></header><article class="article-content"><h2 id="h1">自定义标签的执行过程</h2><ul><li>1）服务器读取01.demo.jsp文件，从上下往下读取文件。</li><li>2）读到&lt;%@taglib%/&gt;指令，检查是否存在指定uri的tld文件。如果没找到，报错！！</li><li>3）读到demo1的标签。在tld文件中查询是否存在name名称为demo1的tag标签。如果找不到，报错！！</li><li>4）得到tag标签中的tag-class内容。标签处理类： gz.itcast.a_tag.DemoTag1</li><li>5）实例化DemoTag1对象</li><li>6）调用DemoTag1类中的方法</li></ul><h2 id="h2">自定义标签步骤</h2><p>这里提供一个显示ip的标签实例<br>1）编写一个标签处理器程序，继承SimpleTagSupport类</p><pre class="prettyprint linenums">	public class ShowIpTag extends SimpleTagSupport {
+		/**
+		 * 执行标签
+		 */
+		@Override
+		public void doTag() throws JspException, IOException {
+			// 得到request对象
+			PageContext pageContext = (PageContext) this.getJspContext();
+			HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+			// 得到客户ip
+			String ip = request.getRemoteHost();
+			// 写出浏览器
+			pageContext.getOut().write("自定义标签实现获取客户端IP地址：" + ip);
+		}
+	}</pre><p>2）在WEB-INT目录下建立tld文件，例如itcast.tld,内容如下：</p><pre class="prettyprint linenums"><xmp><?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+ 
+  <!-- 标签库版本 -->
+  <tlib-version>1.1</tlib-version>
+  <!-- 标签库的缩写：简单名称 -->
+  <short-name>itcast</short-name>
+  <!-- tld文件的唯一标记 -->
+  <uri>http://gz.itcast.cn</uri>
+
+  <!--标签定义  -->
+  <tag>
+  	<!-- 标签名称 -->
+    <name>showIp</name>
+   <!-- 标签对应的处理器程序 -->
+    <tag-class>gz.itcast.c_tag.ShowIpTag</tag-class>
+    <!-- 标签体输出格式 -->
+    <body-content>scriptless</body-content>
+
+    <!-- 声明属性 -->
+    <attribute>
+    	<!-- 属性名称 -->
+    	<name>num</name>
+    	<!-- 该属性是否必填 -->
+    	<required>true</required>
+    	<!-- 是否指定该属性支持EL表达式 -->
+    	<rtexprvalue>true</rtexprvalue>
+    </attribute>
+
+  </tag>
+</taglib></xmp></pre><p>3）在jsp页面中导入自定义标签库，再使用标签库中的标签</p><pre class="prettyprint linenums"><xmp><%@taglib uri="http://gz.itcast.cn"  prefix="itcast"%></xmp></pre><h2 id="h3">标签体输出格式</h2><ul><li>JSP： 可以写jsp脚本或表达式，也可以执行！（只能用在传统标签）</li><li><mark>scriptless: 不能写jsp脚本或表达式，且不能执行！（可以是EL）</mark></li><li>empty:  执行的是空标签或没有标签体内容</li><li>tagdependent： 可以写jsp脚本或表达式，按照脚本的原样输出（EL也是原样输出）</li></ul><h2 id="h4">自定义标签的难点</h2><p>控制是否执行标签体内容</p><pre class="prettyprint linenums">jspFragment.invoke(null) 把标签体内容输出到浏览器,如果不调用此方法则不输出</pre><p>控制是否执行标签余下的内容<br>只需抛出SkipPageException异常就不执行了！<br>控制重复出现执行标签体内容</p><pre class="prettyprint linenums">    for(int i=1;i&lt;=5;i++){
+        jspBody.invoke(null);//默认null，也是输出到浏览器
+    }</pre><p>改变标签体内容</p><pre class="prettyprint linenums">//4.1 得到标签体内容
+JspFragment jspBody = this.getJspBody()
+//4.1.1 把标签体内容拷贝到Writer流中
+StringWriter sw = new StringWriter();
+jspBody.invoke(sw);
+//4.1.2 从Writr流中得到标签体内容
+String content = sw.toString();
+//4.2 修改标签体内容
+content = content.toLowerCase();
+//4.3 输出到浏览器
+//jspBody.invoke(null);注意：不能用再用此方法，因为输出还是原来的内容
+this.getJspContext().getOut().write(content);</pre><p>5）带属性的标签</p><ul><li>必须在标签处理器类中，添加属性成员变量和一个对应的set方法，用于接收标签的属性值</li></ul><pre class="prettyprint linenums">public class DemoTag1 extends SimpleTagSupport{
+	//1）声明一个成员变量用于接收标签属性值
+	private Integer num;
+
+	//2）用于把外面标签的属性值传入进来
+	public void setNum(Integer num) {
+		this.num = num;
+	}
+}</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>手机号码归属地查询</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>手机号码归属地查询</a></h1><div class="tags"><a href="#h1" title="Mobile类">Mobile类</a><a href="#h2" title="调用api接口">调用api接口</a></div></header><article class="article-content"><h2 id="h1">Mobile类</h2><pre class="prettyprint linenums"><xmp>public class Mobile {
+        /**
+         * 获得soap请求
+         * @param mobileCode
+         * @return
+         */
+        private static String getSoapRequest(String mobileCode){
+                StringBuilder sb = new StringBuilder();
+                sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>"+"\n"
+                		+"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""+" "
+                         +"xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""+" "
+                         +"xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"+"\n"
+                         +"<soap:Body>"+"\n"
+                         +"<getMobileCodeInfo"+" "+"xmlns=\"http://WebXml.com.cn/\">"+"\n"
+                         +"<mobileCode>"+mobileCode+"</mobileCode>"+"\n"
+                         +"<userID></userID>"+"\n"
+                         +"</getMobileCodeInfo>"+"\n"
+                         +"</soap:Body>"+"\n"
+                         +"</soap:Envelope>"
+                          );
+                return sb.toString();
+        }
+        /**
+         * 发送soap请求到服务器，并接受返回数据
+         * @param mobileCode
+         * @return
+         */
+        private static InputStream getSoapInputStream(String mobileCode){
+                try {
+                        String soap = getSoapRequest(mobileCode);
+                        if(soap == null)
+                                return null;
+                        URL url = new URL("http://www.webxml.com.cn/WebServices/MobileCodeWS.asmx");
+                        URLConnection conn = url.openConnection();
+                        conn.setUseCaches(false);
+                        conn.setDoInput(true);
+                        conn.setDoOutput(true);
+                        
+                        conn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
+                        conn.setRequestProperty("Content-Length", Integer.toString(soap.length()));
+                        conn.setRequestProperty("SOAPAction", "http://WebXml.com.cn/getMobileCodeInfo");
+                        
+                        OutputStream os = conn.getOutputStream();
+                        OutputStreamWriter osw = new OutputStreamWriter(os,"UTF-8");
+                        osw.write(soap);
+                        osw.flush();
+                        osw.close();
+                        
+                        InputStream is = conn.getInputStream();
+                        return is;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                }
+        }
+
+	public static String getMobileNoTrack(String mobileCode) {
+		try {
+			Document document = null;
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setNamespaceAware(true);
+			InputStream is = getSoapInputStream(mobileCode);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			document = db.parse(is);
+			NodeList nl = document
+					.getElementsByTagName("getMobileCodeInfoResult");
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < nl.getLength(); i++) {
+				Node n = nl.item(i);
+				if (n.getFirstChild().getNodeValue().equals("手机号码错误")) {
+					sb = new StringBuffer("#");
+					System.out.println("手机号码输入有误");
+					break;
+				}
+				sb.append(n.getFirstChild().getNodeValue() + "\n");
+			}
+			is.close();
+			return sb.toString();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}</xmp></pre>
+<h2 id="h2">调用api接口</h2>
+<div class="sc_act">访问http://sj.apidata.cn/?mobile=18879263542返回以下数据</div>
+<pre class="prettyprint linenums">
+{
+    "status": 1, 
+    "data": {
+        "prefix": 188, 
+        "province": "九江", 
+        "city": "江西", 
+        "isp": "移动", 
+        "code": 792, 
+        "zipcode": 332000, 
+        "types": "中国移动 GSM/3G", 
+        "mobile": "18879263542"
+    }, 
+    "message": "success"
+}
+</pre>
+</article></div><script src="/biji/temple/defult/global.js"></script></body></html>

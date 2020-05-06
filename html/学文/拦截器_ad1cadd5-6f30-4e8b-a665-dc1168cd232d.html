@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>拦截器</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>拦截器</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="拦截器简介">拦截器简介</a><a href="#h2" title="自定义拦截器">自定义拦截器</a><a
+					href="#h3" title="拦截器范围">拦截器范围</a><a href="#h4" title="拦截器栈">拦截器栈</a>
+				<a href="#h5" title="struts2自带的拦截器">struts2自带的拦截器</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">拦截器简介</h2>
+			<div class="sc_act">拦截器类似于过滤器的功能，过滤器可以过滤项目的任何请求，但拦截器只能拦截Action资源。</div>
+			<h2 id="h2">自定义拦截器</h2>
+			<h3>1 ) 实现Interceptor接口</h3>
+			<pre class="prettyprint linenums">// 前提：假设所有请求都被这个拦截器拦截
+	public String intercept(ActionInvocation invocation) throws Exception {
+		/**
+		 * 问题： 该拦截器不需要拦截 登录 (user_login) 和 注册请求(user_register)
+		 */
+		// 得到当前拦截的的目标Action代理对象
+		ActionProxy actionProxy = invocation.getProxy();
+		// 得到当前执行的action的方法
+		String methodName = actionProxy.getMethod(); // login / register
+
+		if ("login".equals(methodName) || "register".equals(methodName)) {
+			// 放行
+			return invocation.invoke();
+		}
+
+		// 1)获取session域中的数据
+		ActionContext ac = ActionContext.getContext();
+		Map<String, Object> sessionMap = ac.getSession();
+		User user = (User) sessionMap.get("user");
+		// 2)判断session域的数据是否存在
+		if (user == null) {
+			// 3)如果不存在，则跳转到登录
+			return "login";
+		} else {
+			// 4)如果存在，则放行
+			return invocation.invoke();
+		}
+	}</pre>
+	<h3>2）在struts.xml文件中定义和使用拦截器</h3>
+	<pre class="prettyprint linenums"><xmp><package name="inter" extends="struts-default" namespace="/inter">
+<!-- 定义拦截器 -->
+    <interceptors>
+	  <interceptor name="inter1"
+					class="gz.itcast.a_interceptor.MyInterceptor1"></interceptor>
+    </interceptors>
+    <action>
+	    <!-- 使用拦截器 -->
+	   <interceptor-ref name="inter1"></interceptor-ref>
+	   <result>/index.jsp</result>
+    </action>
+</package></xmp>
+			</pre>
+			<h2 id="h3">拦截器范围</h2>
+			<pre class="prettyprint linenums"><xmp>
+				<interceptor-ref name="inter1"></interceptor-ref> 
+<default-interceptor-ref name="inter1"></default-interceptor-ref></xmp>
+			</pre>
+			<p><mark>注意</mark>:</p>
+			<ul>
+				<li>当我们的包下引用了自定以拦截器，则会把默认包下的default-stack拦截器给覆盖掉！！！</li>
+				<li>定义拦截器栈的时候，引用拦截器的顺序决定了创建拦截器对象的顺序。（先指定就先创建）</li>
+			</ul>
+			<h2 id="h4">拦截器栈</h2>
+			<pre class="prettyprint linenums"><xmp>
+				<interceptor-stack name="myStack">
+<!-- 引入了默认的18个拦截器 -->
+	<interceptor-ref name="defaultStack"></interceptor-ref>
+<!-- 引入自定义的2个拦截器 -->
+       <interceptor-ref name="interStack"></interceptor-ref>	    		
+</interceptor-stack></xmp>
+			</pre>
+			<h2 id="h5">struts2自带的拦截器</h2>
+			<img src="/biji/htmlFiles/interceptor1.png">
+			<img src="/biji/htmlFiles/interceptor2.png">
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

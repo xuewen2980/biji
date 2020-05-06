@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>BeanUtils和DBUtils</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>BeanUtils和DBUtils</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="BeanUtil使用">BeanUtil使用</a><a href="#h2"
+					title="DBUtils使用">DBUtils使用</a><a href="#h3" title="元数据">元数据</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">BeanUtil使用</h2>
+			<h3>导入beanutills的jar包</h3>
+			<ul>
+				<li>commons-beanutils-1.8.3.jar 核心包</li>
+				<li>commons-logging-1.1.3.jar 辅助包</li>
+			</ul>
+			<p>
+				<mark>默认情况下，不能把字符串的日期转换为Date类型</mark>
+				需要注册日期转换器
+			</p>
+			<pre class="prettyprint linenums">ConvertUtils.register(new DateLocaleConverter(), java.util.Date.class);//Date就是转换后的目标类型</pre>
+			<h3>对JavaBean的属性进行赋值</h3>
+			<pre class="prettyprint linenums">BeanUtils.copyProperty(student, "name", "jacky");</pre>
+			<h3>对JavaBean的对象赋值</h3>
+			<pre class="prettyprint linenums">BeanUtils.copyProperties(student, student2);//将student2对象拷贝到student对象</pre>
+			<h3>
+				<mark>把Map数据赋值给JavaBean对象</mark>
+			</h3>
+			<pre class="prettyprint linenums">BeanUtils.copyProperties(student2, map);</pre>
+			<h2 id="h2">DBUtils使用</h2>
+			<h3>导入jar包</h3>
+			<ul>
+				<li>commons-dbutils-1.2.jar</li>
+			</ul>
+			<h3>QueryRunner类</h3>
+			<p>通过此类可以执行更新操作或者查询操作。</p>
+			<h3>ResultSetHandler接口</h3>
+			<p>用于封装查询之后的结果。</p>
+			<p>方法: Object handle(ResultSet rs) ： 用于封装数据：</p>
+			<h3>常用的实现类</h3>
+			<ul>
+				<li>ArrayHandler： 把结果集的第一行的数据封装成对象数组。</li>
+				<li>ArrayListHandler：把结果集的每一行数据封装对象数组，把这个对象数组放入List中</li>
+				<li>BeanHandler： 把结果集的第一行数据封装成javabean</li>
+				<li>BeanListHandler: 把结果集的每一行数据封装成javabean，把这个javabean放入List中</li>
+				<li>ScalarHandler： 把结果集的第一行第一列取出。通常用于聚合函数查询。例如（count()/max()）</li>
+			</ul>
+			<p>
+				如果表的字段名称和javabean的属性名称不一致时，需要
+				<mark>自定义ResultSetHandler的实现类</mark>
+			</p>
+			<h2 id="h3">元数据</h2>
+			<h3>DatabaseMetaData</h3>
+			<pre class="prettyprint linenums">DatabaseMetaData dbmd = conn.getMetaData();
+//获取此数据库产品的名称。
+System.out.println(dbmd.getDatabaseProductName());
+
+//数据库版本
+System.out.println(dbmd.getDatabaseMajorVersion());//主板本号
+System.out.println(dbmd.getDatabaseMinorVersion());//次版本号
+
+//使用驱动程序的版本
+System.out.println(dbmd.getDriverMajorVersion());//主板本号
+System.out.println(dbmd.getDriverMinorVersion());//次版本号</pre>
+			<h3>ParameterMetaData</h3>
+			<pre class="prettyprint linenums">//得到参数元数据
+ParameterMetaData pmd = stmt.getParameterMetaData();
+//得到sql中有几个参数
+int count = pmd.getParameterCount();
+//借此可以把参数值放入数组中
+Object[] values = new Object[]{2,"jacky","女",90.23,"2015-06-25"};
+//新的赋值方式
+for(int i=1;i&lt;=count;i++){
+    //setObject可以设置任何类型参数
+    stmt.setObject(i, values[i-1]);
+}</pre>
+			<h3>ResultSetMetaData</h3>
+			<pre class="prettyprint linenums">//得到结果集的元数据
+ResultSetMetaData rsmd = rs.getMetaData();
+//得到列数量
+int columnCount = rsmd.getColumnCount();
+//得到列名称
+rsmd.getColumnName(columnCount);</pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>ServletConfig和ServletContext对象</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>ServletConfig和ServletContext对象</a></h1><div class="tags"><a href="#h1" title="Servlet的自动加载机制">Servlet的自动加载机制</a><a href="#h2" title="ServletConfig对象">ServletConfig对象</a><a href="#h3" title="ServletContext对象(一个Web项目仅此一个)">ServletContext对象(一个Web项目仅此一个)</a></div></header><article class="article-content"><h2 id="h1">Servlet的自动加载机制</h2><p>设置优先级</p><pre class="prettyprint linenums"><xmp><servlet>
+    <servlet-name>LoadDemo2</servlet-name>
+    <servlet-class>gz.itcast.e_load.LoadDemo2</servlet-class>
+    <!-- 正整数：数值越大，创建对象的优先级越低 -->
+    <load-on-startup>1</load-on-startup>
+</servlet></xmp></pre><h2 id="h2">ServletConfig对象</h2><ul><li>java.lang.String getInitParameter(java.lang.String name)   --得到参数</li><li>java.util.Enumeration getInitParameterNames()</li><li>ServletContext getServletContext()    得到servlet上下文对象</li><li>java.lang.String getServletName()   得到servlet名称</li></ul><p><mark>参数配置</mark></p><pre class="prettyprint linenums"><xmp><servlet>
+    <servlet-name>ConfigDemo</servlet-name>
+    <servlet-class>gz.itcast.f_config.ConfigDemo</servlet-class>
+    <!-- servlet的初始化参数 -->
+    <init-param>
+        <param-name>path</param-name>
+        <param-value>e:/aaa.txt</param-value>
+    </init-param>
+</servlet></xmp></pre><p>参数获取</p><ul><li>config.getInitParameter("name");  根据参数名称获取参数值</li><li>config.getInitParameterNames();   获取所有参数名称</li></ul><h2 id="h3">ServletContext对象(一个Web项目仅此一个)</h2><p>转发:RequestDispatcher getRequestDispatcher(java.lang.String path)<br>web应用读取资源文件</p><ul><li>context.getRealPath("路径");   得到资源文件的绝对路径</li><li>context.getResourceAsStream("路径")  得到资源，返回输入流</li><li>context.getResource("路径") 得到资源，返回URL</li></ul><p>web应用的全局参数</p><ul><li>java.lang.String getInitParameter(java.lang.String name)</li><li>java.util.Enumeration getInitParameterNames()</li></ul><p><mark>全局参数配置</mark></p><pre class="prettyprint linenums"><xmp><context-param>
+    <param-name>AAA</param-name>
+    <param-value>AAA's value</param-value>
+</context-param>
+<context-param>
+    <param-name>BBB</param-name>
+    <param-value>BBB's value</param-value>
+</context-param></xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

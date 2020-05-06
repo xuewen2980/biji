@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>过滤器</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>过滤器</a></h1><div class="tags"><a href="#h1" title="生命周期">生命周期</a><a href="#h2" title="过滤器配置">过滤器配置</a><a href="#h3" title="过滤类型">过滤类型</a><a href="#h4" title="FilterConfig对象">FilterConfig对象</a><a href="#h5" title="过滤器链">过滤器链</a><a href="#h6" title="过滤器作用">过滤器作用</a><a href="#h7" title="案例">案例</a><a href="#h8" title="禁用资源缓存">禁用资源缓存</a><a href="#h9" title="过滤器与struts2同时使用需注意">过滤器与struts2同时使用需注意</a></div></header><article class="article-content"><h2 id="h1">生命周期</h2><ul><li>构造方法： 在web应用加载时创建过滤器对象。只执行一次。证明过滤器在web服务器中是单实例的</li><li>init方法： 在创建完过滤器对象之后被调用。只执行一次</li><li>doFilter方法： 执行过滤任务方法。执行多次。</li><li>destroy方法： web服务器停止或者web应用重新加载，销毁过滤器对象。</li></ul><h2 id="h2">过滤器配置</h2><pre class="prettyprint linenums"><xmp><filter>
+    <!-- 内部名称 -->
+    <filter-name>HelloFilter</filter-name>
+    <!-- 类全名：包+简单类名 -->
+    <filter-class>gz.itcast.a_hello.HelloFilter</filter-class>
+</filter>
+<!-- 过滤器映射配置 -->
+<filter-mapping>
+    <!-- 内部名称，和上面的名称保持一致！ -->
+    <filter-name>HelloFilter</filter-name>
+    <!-- 需要拦截的路径 -->
+    <url-pattern>/hello</url-pattern>
+</filter-mapping></xmp></pre><h2 id="h3">过滤类型</h2><h3>过滤类型：声明哪种请求才可以被拦截（过滤）</h3><p><mark>在filter-mapping中添加改配置</mark></p><pre class="prettyprint linenums"><xmp><!-- 在地址栏中直接访问、表单提交、超链接、重定向，只要在地址栏中可以看到目标资源的路径 -->
+<dispatcher>REQUEST</dispatcher><!-- 默认：来自于直接访问的请求才可以被拦截 -->
+<dispatcher>FORWARD</dispatcher><!-- 来自于转发的请求才可以被拦截 -->
+<dispatcher>INCLUDE</dispatcher><!-- 来自于包含的请求才可以被拦截 -->
+<dispatcher>ERROR</dispatcher><!-- 来自于错误的请求才可以被拦截 --></xmp></pre><h2 id="h4">FilterConfig对象</h2><h3>获取参数</h3><ul><li>String getFilterName()：获取Filter的配置名称；与&lt;filter-name&gt;元素对应；</li><li>String getInitParameter("name")</li><li>Enumeration  getInitParameterNames()</li></ul><h3>在filter中配置</h3><pre class="prettyprint linenums"><xmp><init-param>
+    <param-name>AAA</param-name>
+    <param-value>AAA'value</param-value>
+</init-param>
+<init-param>
+    <param-name>BBB</param-name>
+    <param-value>BBB'value</param-value>
+</init-param></xmp></pre><h2 id="h5">过滤器链</h2><p>由web.xml中filter-mapping的配置决定顺序。先配置的优先被执行。<br>doFilter(ServletRequest request, ServletResponse response, FilterChain chain)： 执行过滤任务</p><ul><li>参数一： ServletRequest是HttpServletRequest的父接口。实际上传入的是HttpServletRequest接口的实现类。</li><li>参数二： ServletResponse是HttpServletResponse的父接口。实际上传入HttpServletResponse接口的实现类。</li><li>参数三： FilterChain 过滤器链接口</li></ul><p><mark>doFilter方法执行过滤器链中的下一个过滤器，如果没有下一个过滤器则执行目标资源。</mark></p><h2 id="h6">过滤器作用</h2><ul><li>解决GET和Post方式提交中文乱码问题</li><li>解决网页内容压缩问题</li><li>登录、或者权限问题</li></ul>
+<h2 id="h7">案例:<mark>ip统计网站的访问次数</mark></h2><pre class="prettyprint linenums"><xmp>/**
+ * 从application中获取Map
+ * 从request中得到当前客户端的IP
+ * 进行统计工作，结果保存到Map中
+ * @author cxf
+ *
+ */
+public class IPFilter implements Filter {
+	private FilterConfig config;
+	public void destroy() {
+	}
+
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		/*
+		 * 1. 得到application中的map
+		 * 2. 从request中获取当前客户端的ip地址
+		 * 3. 查看map中是否存在这个ip对应访问次数，如果存在，把次数+1再保存回去
+		 * 4. 如果不存在这个ip，那么说明是第一次访问本站，设置访问次数为1
+		 */
+		/*
+		 * 1. 得到appliction
+		 */
+		ServletContext app = config.getServletContext();
+		Map<String,Integer> map = (Map<String, Integer>) app.getAttribute("map");
+		/*
+		 * 2. 获取客户端的ip地址
+		 */
+		String ip = request.getRemoteAddr();
+		/*
+		 * 3. 进行判断
+		 */
+		if(map.containsKey(ip)) {//这个ip在map中存在，说明不是第一次访问
+			int cnt = map.get(ip);
+			map.put(ip, cnt+1);
+		} else {//这个ip在map中不存在，说明是第一次访问
+			map.put(ip, 1);
+		}
+		app.setAttribute("map", map);//把map再放回到app中
+		
+		chain.doFilter(request, response);//肯定放行
+	}
+
+	/**
+	 * 在服务器启动时就会执行本方法，而且本方法只执行一次！
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+		this.config = fConfig;
+	}
+}</xmp></pre>
+<h2 id="h8">禁用资源缓存</h2>
+<pre class="prettyprint linenums">public class NoCacheFilter extends HttpFilter {
+	public void doFilter(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		response.setHeader("cache-control", "no-cache");
+		response.setHeader("pragma", "no-cache");
+		response.setHeader("expires", "0");
+		chain.doFilter(request, response);
+	}
+}</pre>
+<h2 id="h9">过滤器与struts2同时使用需注意</h2>
+<div class="sc_act">过滤器与struts2同时使用需注意,<font color="red"><b>自定义的过滤器必须放在struts的核心过滤器前面配置</b></font>,不然会。。。。。</div>
+</article></div><script src="/biji/temple/defult/global.js"></script></body></html>

@@ -1,0 +1,1930 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Cambria;
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Calibri",sans-serif;}
+h1
+	{mso-style-link:"标题 1 字符";
+	margin-top:17.0pt;
+	margin-right:0cm;
+	margin-bottom:16.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:240%;
+	page-break-after:avoid;
+	font-size:22.0pt;
+	font-family:"Calibri",sans-serif;}
+h2
+	{mso-style-link:"标题 2 字符";
+	margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:173%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Cambria",serif;}
+h3
+	{mso-style-link:"标题 3 字符";
+	margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:173%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"页眉 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"页脚 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{mso-style-link:"文档结构图 字符";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:9.0pt;
+	font-family:宋体;}
+span.a
+	{mso-style-name:"页眉 字符";
+	mso-style-link:页眉;}
+span.a0
+	{mso-style-name:"页脚 字符";
+	mso-style-link:页脚;}
+span.1
+	{mso-style-name:"标题 1 字符";
+	mso-style-link:"标题 1";
+	font-weight:bold;}
+span.a1
+	{mso-style-name:"文档结构图 字符";
+	mso-style-link:文档结构图;
+	font-family:宋体;}
+span.2
+	{mso-style-name:"标题 2 字符";
+	mso-style-link:"标题 2";
+	font-family:"Cambria",serif;
+	font-weight:bold;}
+span.3
+	{mso-style-name:"标题 3 字符";
+	mso-style-link:"标题 3";
+	font-weight:bold;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:15.6pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<p class=MsoNormal><span lang=EN-US>Struts2</span><span style='font-family:
+宋体'>：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.
+</span><span style='font-family:宋体'>简化</span><span lang=EN-US>Servlet</span><span
+style='font-family:宋体'>开发，用</span><span lang=EN-US>Action</span><span
+style='font-family:宋体'>取代之前的</span><span lang=EN-US>Servlet</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.
+</span><span style='font-family:宋体'>开发流程</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+</span><span style='font-family:宋体'>请求数据自动封装</span><span lang=EN-US>&nbsp;
+(params</span><span style='font-family:宋体'>拦截器</span><span lang=EN-US>)</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+struts </span><span style='font-family:宋体'>数据处理</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Map---</span><span
+style='font-family:宋体'>》域对象</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.
+</span><span style='font-family:宋体'>文件上传</span><span lang=EN-US>/</span><span
+style='font-family:宋体'>下载</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.
+</span><span style='font-family:宋体'>数据效验、国际化</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.
+Ognl</span><span style='font-family:宋体'>表达式语言、</span><span lang=EN-US>Struts</span><span
+style='font-family:宋体'>标签</span></p>
+
+<div style='border:none;border-bottom:solid windowtext 1.0pt;padding:0cm 0cm 1.0pt 0cm'>
+
+<p class=MsoNormal style='border:none;padding:0cm'><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (OgnlContext/ValueStack)</span></p>
+
+</div>
+
+<p class=MsoNormal><span style='font-family:宋体'>传统的开发模式：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>基于</span><span lang=EN-US>MVC</span><span
+style='font-family:宋体'>模式项目体系结构！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>1. Hibernate</span><span style='font-family:宋体'>框架</span></h1>
+
+<h2><span lang=EN-US>ORM </span><span style='font-family:宋体'>规则</span></h2>
+
+<p class=MsoNormal><span lang=EN-US>ORM,&nbsp; Object Relation Mapping </span><span
+style='font-family:宋体'>对象关系映射</span><span lang=EN-US>!</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>目标：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>通过</span><span lang=EN-US>orm</span><span
+style='font-family:宋体'>（对象关系映射）</span><span lang=EN-US>, </span><span
+style='font-family:宋体'>可以做到：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.
+</span><span style='font-family:宋体'>不写</span><span lang=EN-US>sql</span><span
+style='font-family:宋体'>，包对象直接保存到数据库中</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.
+</span><span style='font-family:宋体'>不写</span><span lang=EN-US>sql</span><span
+style='font-family:宋体'>，</span> <span style='font-family:宋体'>从数据库中读取，直接获取的是封装好的对象！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>ORM</span><span style='font-family:宋体'>是一种思想，或者说是一种规则的定义，</span>
+<span style='font-family:宋体'>基于</span><span lang=EN-US>orm</span><span
+style='font-family:宋体'>的应用：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.
+hibernate </span><span style='font-family:宋体'>框架</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.
+mybatis </span><span style='font-family:宋体'>框架</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+</span><span style='font-family:宋体'>自定义一套程序！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2><span lang=EN-US>Hibernate</span><span style='font-family:宋体'>框架</span></h2>
+
+<h3><span style='font-family:宋体'>概念</span></h3>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>基于</span><span lang=EN-US>ORM</span><span
+style='font-family:宋体'>的持久层框架，对</span><span lang=EN-US>jdbc</span><span
+style='font-family:宋体'>操作进行了封装！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hibernate</span><span
+style='font-family:宋体'>与具体数据库无关的技术，即可以框数据库平台！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h3><span lang=EN-US>Hibernate</span><span style='font-family:宋体'>开发环境搭建</span></h3>
+
+<p class=MsoNormal><span lang=EN-US>Hibernate</span><span style='font-family:
+宋体'>版本：</span><span lang=EN-US> 3.6</span><span style='font-family:宋体'>版本</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>整体步骤：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.
+</span><span style='font-family:宋体'>下载源码，引入</span><span lang=EN-US>jar</span><span
+style='font-family:宋体'>文件</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.
+</span><span style='font-family:宋体'>写配置</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *
+hibernate.cfg.xml&nbsp; </span><span style='font-family:宋体'>主配置</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *
+Users.hbm.xml&nbsp;&nbsp;&nbsp; </span><span style='font-family:宋体'>映射配置</span><span
+lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.
+Api </span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Configuration&nbsp;&nbsp;
+</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Query</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>步骤实现：</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='font-size:16.0pt;color:red'>1. </span><span
+  style='font-size:16.0pt;font-family:宋体;color:red'>建库、建表</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>-- </span><span style='font-family:宋体'>删除数据库</span></p>
+  <p class=MsoNormal><span lang=EN-US>DROP DATABASE hib_demo;</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-US>-- </span><span style='font-family:宋体'>创建数据库</span></p>
+  <p class=MsoNormal><span lang=EN-US>CREATE DATABASE hib_demo DEFAULT
+  CHARACTER SET utf8;</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-US>-- </span><span style='font-family:宋体'>建表</span></p>
+  <p class=MsoNormal><span lang=EN-US>CREATE TABLE users(</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp; id INT PRIMARY KEY
+  AUTO_INCREMENT,</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp; NAME VARCHAR(20),</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp; age INT</span></p>
+  <p class=MsoNormal><span lang=EN-US>)</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='font-size:16.0pt;color:red'>2. </span><span
+  style='font-size:16.0pt;font-family:宋体;color:red'>引入</span><span lang=EN-US
+  style='font-size:16.0pt;color:red'>hibernate</span><span style='font-size:
+  16.0pt;font-family:宋体;color:red'>核心</span><span lang=EN-US style='font-size:
+  16.0pt;color:red'>jar</span><span style='font-size:16.0pt;font-family:宋体;
+  color:red'>文件</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>源码中：</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>hibernate3.jar&nbsp;&nbsp;
+  +&nbsp;&nbsp; required </span><span style='font-family:宋体'>目录中所有</span><span
+  lang=EN-US>&nbsp; + jpa&nbsp; + </span><span style='font-family:宋体'>数据库驱动包</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>antlr-2.7.6.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>commons-collections-3.1.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>dom4j-1.6.1.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>hibernate-jpa-2.0-api-1.0.0.Final.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>hibernate3.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>javassist-3.12.0.GA.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>jta-1.1.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>mysql-connector-java-5.1.12-bin.jar</span></p>
+  <p class=MsoNormal style='text-indent:20.25pt'><span lang=EN-US>slf4j-api-1.6.1.jar</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='font-size:16.0pt;color:red'>3. </span><span
+  style='font-size:16.0pt;font-family:宋体;color:red'>主配置文件</span><span
+  lang=EN-US style='font-size:16.0pt;color:red'>:&nbsp; hibernate.cfg.xml</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;!DOCTYPE
+  hibernate-configuration PUBLIC</span></u></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &quot;-//Hibernate/Hibernate Configuration DTD 3.0//EN&quot;</span></u></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;&gt;</span></u></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-configuration</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+  </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>session-factory</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#3F5FBF'>&lt;!-- </span><span style='font-size:9.0pt;font-family:宋体;
+  color:#3F5FBF'>数据库连接的参数配置</span><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:#3F5FBF'> --&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>property</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New"'> <span style='color:#7F007F'>name</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;hibernate.connection.url&quot;</span></i><span
+  style='color:teal'>&gt;</span><span style='color:black'>jdbc:mysql:///hib_demo</span><span
+  style='color:teal'>&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>property</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New"'> <span style='color:#7F007F'>name</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;hibernate.connection.driver_class&quot;</span></i><span
+  style='color:teal'>&gt;</span><span style='color:black'>com.mysql.jdbc.Driver</span><span
+  style='color:teal'>&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>property</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New"'> <span style='color:#7F007F'>name</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;hibernate.connection.username&quot;</span></i><span
+  style='color:teal'>&gt;</span><span style='color:black'>root</span><span
+  style='color:teal'>&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>property</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New"'> <span style='color:#7F007F'>name</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;hibernate.connection.password&quot;</span></i><span
+  style='color:teal'>&gt;</span><span style='color:black'>root</span><span
+  style='color:teal'>&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#3F5FBF'>&lt;!-- </span><span style='font-size:9.0pt;font-family:宋体;
+  color:#3F5FBF'>通过数据库方言，告诉</span><u><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:#3F5FBF'>hibernate</span></u><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>如何生产</span><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>sql</span></u><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>。</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'> <u><span
+  lang=EN-US>hibernate</span></u></span><span style='font-size:9.0pt;
+  font-family:宋体;color:#3F5FBF'>会根据配置的方言，生产符合当前数据库语言的</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>SQL</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>语句</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>
+  --&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+   </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>property</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New"'> <span style='color:#7F007F'>name</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;hibernate.dialect&quot;</span></i><span
+  style='color:teal'>&gt;</span><span style='color:black'>org.hibernate.dialect.MySQLDialect</span><span
+  style='color:teal'>&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;
+  </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;/</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>session-factory</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:teal'>&lt;/</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#3F7F7F'>hibernate-configuration</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='font-size:16.0pt;color:red'>4.&nbsp;
+  javabean/ </span><span style='font-size:16.0pt;font-family:宋体;color:red'>映射文件</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>?</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>xml</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>version</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;1.0&quot;</span></i> <span style='color:#7F007F'>encoding</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;UTF-8&quot;</span></i><span
+  style='color:teal'>?&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;!</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>DOCTYPE</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:teal'>hibernate-mapping</span> <span style='color:gray'>PUBLIC</span>
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;&nbsp;&nbsp; <span
+  style='color:teal'>&quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;&nbsp;&nbsp; <span
+  style='color:#3F7F5F'>&quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp; </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>通过</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>XML</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>映射，把对象映射到数据库的表中！</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;--&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>package</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;cn.itcast.a_config&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;Users&quot;</span></i> <span style='color:#7F007F'>table</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;users&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>id</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;userId&quot;</span></i> <span style='color:#7F007F'>column</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;id&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>generator</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>class</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;native&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>generator</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>id</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;userName&quot;</span></i> <span style='color:
+  #7F007F'>column</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;name&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>property</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;age&quot;</span></i> <span style='color:#7F007F'>column</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;age&quot;</span></i><span
+  style='color:teal'>&gt;&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US style='font-size:16.0pt;color:red'>5.&nbsp;
+  App</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F7F5F'>测</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>试类</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> App
+  {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#646464'>@Test</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>保存</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>void</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  testSave() </span><b><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#7F0055'>throws</span></b><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:black'> Exception {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Users
+  users = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Users();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; users.setUserName(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;Jack&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; users.setAge(30);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  1. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建配置管理器对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Configuration
+  config = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Configuration();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  2. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>加载主配置文件，</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'> </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>默认加载</span><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>src</span></u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>/hibernate.cfg.xml</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; config.configure();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  3. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>根据加载的主配置文件，创建对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory
+  sf = config.buildSessionFactory();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  4. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>Session</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session
+  session = sf.openSession();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  5. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>开启事务</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction
+  tx = session.beginTransaction();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  --- </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>保存</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(users);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  6. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>提交事务</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>/</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>关闭</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>session</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx.commit();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.close();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#646464'>@Test</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>获取对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>void</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  testGet() </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>throws</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Exception {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  1. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建配置管理器对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Configuration
+  config = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Configuration();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  2. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>加载主配置文件，</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'> </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>默认加载</span><u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>src</span></u><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>/hibernate.cfg.xml</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; config.configure();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  3. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>根据加载的主配置文件，创建对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SessionFactory
+  sf = config.buildSessionFactory();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  4. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>Session</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session
+  <span style='background:yellow'>session</span> = sf.openSession();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  5. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>开启事务</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction
+  tx = <span style='background:lightgrey'>session</span>.beginTransaction();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  --- </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>获取</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'> (</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>根据主键查询</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>)</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Users
+  users = (Users) <span style='background:lightgrey'>session</span>.get(Users.</span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>,
+  1);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.</span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>out</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>.println(users);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  6. </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>提交事务</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>/</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>关闭</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>session</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tx.commit();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+  style='background:lightgrey'>session</span>.close();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>2. Hibernate</span><span style='font-family:宋体'>框架</span><span
+lang=EN-US>Api</span></h1>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='color:red'>|-- Session&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b><span
+lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+</span><span style='font-family:宋体'>一个与数据库连接的会话信息</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Sesison</span><span
+style='font-family:宋体'>里面维护了一个连接对象，且对常用操作进行封装！</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>更新：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(obj);&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:宋体'>保存一个对象</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.update(obj)&nbsp;&nbsp;
+</span><span style='font-family:宋体'>更新一个对象</span><span lang=EN-US>, </span><span
+style='font-family:宋体;color:red'>注意修改对象的主键一定要在数据库存在</span><span lang=EN-US
+style='color:red'>!</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.saveOrUpdate(obj)&nbsp;
+</span><span style='font-family:宋体'>保存或更新</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>如果有设置主键且主键存在执行更新！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>没有设置主键执行保存！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp; session.delete(obj)&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:宋体'>删除一个对象</span><span lang=EN-US>; </span><span
+style='font-family:宋体;color:red'>注意修改对象的主键一定要在数据库存在</span><span lang=EN-US
+style='color:red'>!</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>主键查询：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Session.get(clazz,id);&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:宋体'>根据主键查询</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Session.load(clazz,id);&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:宋体'>根据主键查询</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>HQL</span><span style='font-family:宋体'>查询：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hibernate
+Query language </span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt;text-indent:21.0pt'><span
+lang=EN-US>Hibernate</span><span style='font-family:宋体'>提供的面向对象的查询语言！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>查询的是对象、对象的属性！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>HQL</span><span style='font-family:宋体'>与</span><span
+lang=EN-US>SQL</span><span style='font-family:宋体'>区别：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hql
+</span><span style='font-family:宋体'>查询的是对象、对象的属性，</span> <span
+style='font-family:宋体'>区分大小写！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+Hql</span><span style='font-family:宋体'>查询的对象一定要有映射！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SQL
+</span><span style='font-family:宋体'>查询的是表、字段，不区分大小写！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>3. Hibernate</span><span style='font-family:宋体'>执行流程</span></h1>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>4. hibernate.cfg.xml </span><span style='font-family:宋体'>配置详解</span></h1>
+
+<p class=MsoNormal><span style='font-family:宋体'>在主配置文件配置的时候，</span><span
+lang=EN-US>hibernate </span><span style='font-family:宋体'>前缀可以省略！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>d</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>查看配置提示：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hibernate-distribution-3.6.0.Final\project\etc\<b><span
+style='color:red'>hibernate.properties</span></b></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>里面有常用配置，如：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #hibernate.dialect
+org.hibernate.dialect.MySQLDialect</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.dialect
+org.hibernate.dialect.MySQLInnoDBDialect</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.dialect
+org.hibernate.dialect.MySQLMyISAMDialect</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.connection.driver_class
+com.mysql.jdbc.Driver</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.connection.url
+jdbc:mysql:///test</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.connection.username
+gavin</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.connection.password</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>自动建表</span><span lang=EN-US>:</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.hbm2ddl.auto
+create-drop&nbsp;&nbsp;&nbsp; </span><span style='font-family:宋体'>每次在创建</span><span
+lang=EN-US>sessionFactory</span><span style='font-family:宋体'>的时候创建</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+</span><span style='font-family:宋体'>表；执行</span><span lang=EN-US>sf.close()</span><span
+style='font-family:宋体'>删除表。</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.hbm2ddl.auto
+create&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+</span><span style='font-family:宋体'>每次都先删除表，再创建新的表</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.hbm2ddl.auto
+update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style='font-family:
+宋体'>如果表不存在则创建，存在就不创建！</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>#hibernate.hbm2ddl.auto
+validate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style='font-family:
+宋体'>检查映射配置与数据库结构是否一致，不一致就报错</span><span lang=EN-US>!&nbsp; (</span><span
+style='font-family:宋体'>严格</span><span lang=EN-US>)</span></p>
+
+<p class=MsoNormal style='margin-left:21.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>也可以通过代码的方式，自动建表：</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>**</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp; &nbsp;*
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>代码方式自动建表</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp; &nbsp;*
+  </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F9FBF'>@param</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:#3F5FBF'> args</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp; &nbsp;*/</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>static</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>void</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  main(String[] args) {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建配置管理器对象，加载主配置文件</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>(</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>会加载映射</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>)</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Configuration
+  cfg = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Configuration().configure();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>自动建表工具类</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SchemaExport
+  export = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> SchemaExport(cfg);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>创建表</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>第一个参数：</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'> </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>是否打印建表语句到控制台</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>第二个参数：</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'> </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>是否执行脚本，生成表</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; export.create(</span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>true</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>, </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>true</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>5. </span><span style='font-family:宋体'>映射配置</span></h1>
+
+<p class=MsoNormal><span style='font-family:宋体'>映射文件</span><span lang=EN-US>,</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>命名</span><span lang=EN-US>: *.hbm.xml</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>作用：</span> <span style='font-family:宋体'>描述“对象”与“表”的映射关系！</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+</span><span style='font-family:宋体'>通过映射文件可以描述一张完整的表！</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;?</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>xml</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>version</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;1.0&quot;</span></i> <span style='color:#7F007F'>encoding</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;UTF-8&quot;</span></i><span
+  style='color:teal'>?&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;!</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>DOCTYPE</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:teal'>hibernate-mapping</span> <span style='color:gray'>PUBLIC</span>
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;&nbsp; <span
+  style='color:teal'>&quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;&nbsp; <span
+  style='color:#3F7F5F'>&quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; </span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>通过</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>XML</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>映射，把对象映射到数据库的表中！</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; package
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示包名；</span><span
+  style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'> </span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>可选，如果没有写，后面的类必须指定类的全名！</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; auto-import=&quot;true&quot;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>默认为</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>true</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>，即在写</span><u><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>hql</span></u><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>的时候，会自动引入包名；</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>如为</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>false</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>，</span><u><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>hql</span></u><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>中对象要写上包名称</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  Query q = session.createQuery(&quot;from Users&quot;);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;--&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>package</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;cn.itcast.b_api&quot;</span></i> <span
+  style='color:#7F007F'>auto-import</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;true&quot;</span></i><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; class
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示映射的一个</span><u><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>javabean</span></u><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  (</span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>可以有多个</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>class</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>节点，但一般一个映射文件对应一个</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>class)</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示映射的类的名称</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>;
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; table
+  (</span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>可选</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>)</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>类的名称，对应的表名</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>,
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>如果不写默认与类名称一样</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; &nbsp;--&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;Users&quot;</span></i> <span style='color:#7F007F'>table</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;t_users&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; id&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示映射的是主键</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>注意：</span><span
+  style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'> </span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>在</span><u><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>hibernate</span></u><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>的映射文件中，必须要有主键映射</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>!</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>那就要求表必须要有主键！</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generator&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示的是主键生成策略</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;
+  (<u>Api</u> : 5.1.2.2.1. Various additional generators)</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  class</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   &nbsp;&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   &nbsp;identity&nbsp; </span><span style='font-size:12.0pt;font-family:宋体;
+  color:#3F5FBF'>主键自增长，</span><span style='font-size:12.0pt;font-family:"Courier New";
+  color:#3F5FBF'> <u><span lang=EN-US>mysql</span></u><span lang=EN-US>/<u>sqlservlet</u></span></span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>等数据库使用的自增长的方式</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   &nbsp;sequence&nbsp; </span><span style='font-size:12.0pt;font-family:宋体;
+  color:#3F5FBF'>以序列的方式实现自增长；</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  native&nbsp;&nbsp; </span><span style='font-size:12.0pt;font-family:宋体;
+  color:#3F5FBF'>表示主键自增长</span><span lang=EN-US style='font-size:12.0pt;
+  font-family:"Courier New";color:#3F5FBF'>: </span><span style='font-size:
+  12.0pt;font-family:宋体;color:#3F5FBF'>根据底层数据库的能力选择</span><span lang=EN-US
+  style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'> identity</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>、</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>sequence</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>等其中一个。</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  assigned&nbsp; </span><span style='font-size:12.0pt;font-family:宋体;
+  color:#3F5FBF'>手动指定主键的值</span><span lang=EN-US style='font-size:12.0pt;
+  font-family:"Courier New";color:#3F5FBF'>&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <u>uuid</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>uuid</u></span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>的值作为主键，确保一定唯一</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;--&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>id</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;userId&quot;</span></i> <span style='color:#7F007F'>column</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;id&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>generator</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>class</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;native&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>generator</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>id</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; property
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示普通字段的映射</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>属性的名称</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; column
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>可选，如果没有指定，与属性名称一致</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; length
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>表示字符长度，只对字符类型有效</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>数据库中字段的类型</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>（如果没有指定，会匹配属性的类型）</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <u>hibernate</u></span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>中指定的类型</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>:&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>小写开头</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  java</span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>中类型</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>:&nbsp;
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>写类的全名</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+  unique&nbsp; </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>设置为</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>true</span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>，表示给当前列添加唯一约束</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp; (</span><span style='font-size:12.0pt;font-family:
+  宋体;color:#3F5FBF'>主键约束</span><span lang=EN-US style='font-size:12.0pt;
+  font-family:"Courier New";color:#3F5FBF'> = </span><span style='font-size:
+  12.0pt;font-family:宋体;color:#3F5FBF'>唯一约束</span><span lang=EN-US
+  style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'> + </span><span
+  style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>非空</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>)</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;--&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;userName&quot;</span></i> <span style='color:
+  #7F007F'>type</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;java.lang.String&quot;</span></i> <span
+  style='color:#7F007F'>column</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;username&quot;</span></i> <span style='color:
+  #7F007F'>length</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;50&quot;</span></i> <span style='color:#7F007F'>unique</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;true&quot;</span></i><span
+  style='color:teal'>&gt;&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;age&quot;</span></i> <span style='color:#7F007F'>column</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;age&quot;</span></i>
+  <span style='color:#7F007F'>type</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;int&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>property</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>&lt;!--
+  </span><span style='font-size:12.0pt;font-family:宋体;color:#3F5FBF'>注意：如果列名称对应的是数据库的关键字，需要处理</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F5FBF'>
+  --&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;desc&quot;</span></i> <span style='color:#7F007F'>column</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;`desc`&quot;</span></i>
+  <span style='color:#7F007F'>length</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;200&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>property</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h1><span lang=EN-US>6. </span><span style='font-family:宋体'>联合主键映射</span></h1>
+
+<p class=MsoNormal><span style='font-family:宋体'>联合主键，</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>多列共同作为主键！</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>数据库，联合主键：</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-US>-- </span><span style='font-family:宋体'>联合主键</span><span
+  lang=EN-US>&nbsp; (hbm:&nbsp;&nbsp;
+  &lt;composite-id&gt;&lt;/composite-id&gt;&nbsp;&nbsp; )</span></p>
+  <p class=MsoNormal><span lang=EN-US>CREATE TABLE test(</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp; id1 INT, </span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp; id2 INT,</span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp; <b><span style='color:red'>PRIMARY
+  KEY(id1,id2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b></span></p>
+  <p class=MsoNormal><span lang=EN-US>);&nbsp; </span></p>
+  <p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoNormal><span lang=EN-US>SELECT * FROM test;</span></p>
+  <p class=MsoNormal><span lang=EN-US>-- </span><span style='font-family:宋体'>插入</span></p>
+  <p class=MsoNormal><span lang=EN-US>INSERT INTO test VALUES(1,1); </span></p>
+  <p class=MsoNormal><span lang=EN-US>INSERT INTO test VALUES(1,2);&nbsp; </span></p>
+  <p class=MsoNormal><span lang=EN-US>INSERT INTO test VALUES(1,2);&nbsp; -- </span><span
+  style='font-family:宋体'>错误</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>需求：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-family:宋体'>保存员工信息</span><span lang=EN-US>: </span><span
+style='font-family:宋体'>名称、地址、部门、年龄</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (</span><span
+style='font-family:宋体'>联合主键：名称、地址</span><span lang=EN-US>)</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>设计</span><span lang=EN-US>javabean</span><span
+style='font-family:宋体'>：</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>写映射：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>App:</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>/**</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;*
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>联合主键对象</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>, </span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>必须要实现可课序列化标记！</span><span
+  style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'> </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;*/</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> <u><span
+  style='background:lightgrey'>CompositeKeys</span></u> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>implements</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  Serializable{</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  String </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0'>name</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  String </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0'>address</span><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;
+  ..</span></p>
+  <p class=MsoNormal><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:black'>}</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>员工</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  Employee {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; &nbsp;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>名称、地址、部门、年龄</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>联合主键对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  CompositeKeys </span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#0000C0'>keys</span><span lang=EN-US style='font-size:
+  9.0pt;font-family:"Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  String </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0'>dept</span><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  Date </span><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0;background:yellow'>birth</span><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; ..</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>Employee</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>的映射：</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;?</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>xml</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>version</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;1.0&quot;</span></i> <span style='color:#7F007F'>encoding</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;UTF-8&quot;</span></i><span
+  style='color:teal'>?&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;!</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>DOCTYPE</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:teal'>hibernate-mapping</span> <span style='color:gray'>PUBLIC</span>
+  </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;&nbsp;&nbsp; <span
+  style='color:teal'>&quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;&nbsp;&nbsp; <span
+  style='color:#3F7F5F'>&quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>package</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;cn.itcast.c_composite&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;Employee&quot; </span></i><span style='color:
+  #7F007F'>table</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;t_employee&quot;</span></i><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>composite-id</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;keys&quot;</span></i><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>key-property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;name&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>key-property</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>key-property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;address&quot;</span></i><span style='color:teal'>&gt;&lt;/</span><span
+  style='color:#3F7F7F'>key-property</span><span style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>composite-id</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;dept&quot; </span></i><span style='color:#7F007F'>length</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;50&quot;</span></i><span
+  style='color:teal'>&gt;&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>property</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'> <span
+  style='color:#7F007F'>name</span><span style='color:black'>=</span><i><span
+  style='color:#2A00FF'>&quot;birth&quot; </span></i><span style='color:#7F007F'>type</span><span
+  style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;date&quot;</span></i><span
+  style='color:teal'>&gt;&lt;/</span><span style='color:#3F7F7F'>property</span><span
+  style='color:teal'>&gt;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>class</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&lt;/</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F7F'>hibernate-mapping</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:teal'>&gt;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  style='font-size:9.0pt;font-family:宋体;color:#3F5FBF'>测试</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=568 valign=top style='width:426.1pt;border:solid black 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> App
+  {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>private</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>static</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  SessionFactory </span><i><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#0000C0'>sf</span></i><span lang=EN-US style='font-size:
+  9.0pt;font-family:"Courier New";color:black'>;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>static</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>sf</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> = </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>new</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  Configuration().configure().buildSessionFactory();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#646464'>@Test</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>void</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  testSave() </span><b><span lang=EN-US style='font-size:9.0pt;font-family:
+  "Courier New";color:#7F0055'>throws</span></b><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:black'> Exception {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session
+  session = </span><i><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0'>sf</span></i><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'>.openSession();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.beginTransaction();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>联合主键对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CompositeKeys
+  keys = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> CompositeKeys();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keys.setName(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;Jack&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keys.setAddress(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#2A00FF'>棠东</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>...&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Employee
+  emp = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Employee();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; emp.setKeys(keys);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; emp.setDept(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#2A00FF'>研发部</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; emp.setBirth(</span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>new</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  Date());</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>保存</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.save(emp);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.getTransaction().commit();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.close();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#646464'>@Test</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>public</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'> </span><b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>void</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>
+  testGet() </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>throws</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> Exception {</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session
+  session = </span><i><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#0000C0'>sf</span></i><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'>.openSession();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.beginTransaction();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F7F5F'>//
+  </span><span style='font-size:9.0pt;font-family:宋体;color:#3F7F5F'>联合主键对象</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CompositeKeys
+  keys = </span><b><span lang=EN-US style='font-size:9.0pt;font-family:"Courier New";
+  color:#7F0055'>new</span></b><span lang=EN-US style='font-size:9.0pt;
+  font-family:"Courier New";color:black'> CompositeKeys();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keys.setName(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;Jack&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; keys.setAddress(</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>&quot;</span><span
+  style='font-size:9.0pt;font-family:宋体;color:#2A00FF'>棠东</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#2A00FF'>...&quot;</span><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Employee
+  employee = (Employee) session.get(Employee.</span><b><span lang=EN-US
+  style='font-size:9.0pt;font-family:"Courier New";color:#7F0055'>class</span></b><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>,
+  keys);</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.</span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>out</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>.println(employee.<span
+  style='background:lightgrey'>getKeys</span>().getName());</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.</span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>out</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>.println(employee.<span
+  style='background:lightgrey'>getKeys</span>().getAddress());</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.</span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>out</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>.println(employee.getDept());</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.</span><i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#0000C0'>out</span></i><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>.println(employee.getBirth());</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.getTransaction().commit();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; session.close();</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; }</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp; </span></p>
+  <p class=MsoNormal align=left style='text-align:left;text-autospace:none'><span
+  lang=EN-US style='font-size:9.0pt;font-family:"Courier New";color:#3F5FBF'>&nbsp;</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>Hibernate配置详解</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>Hibernate配置详解</a></h1><div class="tags"><a href="#h1" title="Hibernate主配置">Hibernate主配置</a><a href="#h2" title="Hibernate映射配置">Hibernate映射配置</a><a href="#h3" title="联合主键映射">联合主键映射</a></div></header><article class="article-content"><h2 id="h1">Hibernate主配置</h2><div class="sc_act">在主配置文件配置的时候，hibernate 前缀可以省略！</div><p>查看配置提示：</p><ul><li>hibernate-distribution-3.6.0.Final\project\etc\<mark>hibernate.properties</mark></li></ul><p>里面有常用配置，如：</p><div class="sc_act">#hibernate.dialect org.hibernate.dialect.MySQLDialect</div><div class="sc_act">#hibernate.dialect org.hibernate.dialect.MySQLInnoDBDialect</div><div class="sc_act">#hibernate.dialect org.hibernate.dialect.MySQLMyISAMDialect</div><div class="sc_act">#hibernate.connection.driver_class com.mysql.jdbc.Driver</div><div class="sc_act">#hibernate.connection.url jdbc:mysql:///test</div><div class="sc_act">#hibernate.connection.username gavin</div><div class="sc_act">#hibernate.connection.password</div><h2 id="h2">Hibernate映射配置</h2><p>通过XML映射，把对象映射到数据库的表中！</p><h3>模板</h3><pre class="prettyprint linenums"><xmp><hibernate-mapping package="" auto-import="">
+	<class name="" table="">
+		<id name="" column="">
+			<generator class="native"></generator>
+		</id>
+		<property name="" column="" length="" type="" unique=""></property>
+		<property name="" column=""></property>
+	</class>
+</hibernate-mapping></xmp></pre><h3>hibernate-mapping标签</h3><p>package属性</p><ul><li>表示包名； 可选，如果没有写，后面的类必须指定类的全名！</li></ul><p>auto-import属性</p><ul><li>默认为true，即在写hql的时候，会自动引入包名; 如为false，在hql语句中对象要写上包名称 session.createQuery("from Users");</li></ul><h3>class标签</h3><div class="sc_act">表示映射的一个javabean对象(可以有多个class节点，但一般一个映射文件对应一个class)</div><p>name属性</p><ul><li>表示映射的类的名称;</li></ul><p>table属性(<mark>可选</mark>)</p><ul><li>类的名称，对应的表名, 如果不写默认与类名称一样</li></ul><h3>id标签</h3><div class="sc_act">表示映射的是主键 <mark> 在hibernate的映射文件中，必须要有主键映射! 那就要求表必须要有主键！<mark></mark></mark></div><ul><li>name属性 ：  类名称</li><li>table属性  ： 数据库中的表名(不写表示数据库的表名和name值一样)</li></ul><h3>generator标签</h3><div class="sc_act">表示的是主键生成策略  (Api查询 : 5.1.2.2.1. Various additional generators)</div><p>class属性</p><ul><li>1. identity  主键自增长， mysql/sqlservlet等数据库使用的自增长的方式</li><li>2. sequence  以序列的方式实现自增长；</li><li>3. native   表示主键自增长: 根据底层数据库的能力选择 identity、sequence等其中一个.</li><li>4. assigned  手动指定主键的值</li><li>5. uuid      uuid的值作为主键，确保一定唯一</li></ul><h3>property标签</h3><p>1. name 属性的名称<br>2. column 可选，如果没有指定，与属性名称一致<br>3. length 表示字符长度，只对字符类型有效<br>4. type 数据库中字段的类型  （如果没有指定，会匹配属性的类型）</p><ul><li>4.1 hibernate中指定的类型:  小写开头</li><li>4.2 java中类型:  写类的全名</li></ul><p>5. unique  设置为true，表示给当前列添加唯一约束 (主键约束 = 唯一约束 + 非空)</p><pre class="prettyprint linenums"><xmp><!-- 注意：如果列名称对应的是数据库的关键字，需要处理 -->
+<property name="desc" column="`desc`" length="200"></property></xmp></pre><h2 id="h3">联合主键映射</h2><div class="sc_act">数据库中创建联合主键</div><pre class="prettyprint linenums">CREATE TABLE test( id1 INT,  id2 INT, PRIMARY KEY(id1,id2));</pre><div class="sc_act">联合主键对象, 必须要实现可序列化标记！ </div><pre class="prettyprint linenums">public class CompositeKeys implements Serializable{
+	private String name;
+	private String address;
+       //getter和setter
+}
+public class Employee {
+	 // 名称、地址、部门、年龄
+	// 联合主键对象
+	private CompositeKeys keys;
+	private String dept;
+	private Date birth;
+       //getter和setter
+}</pre><div class="sc_act">Employee的映射：</div><pre class="prettyprint linenums"><xmp><hibernate-mapping package="cn.itcast.c_composite">
+	<class name="Employee" table="t_employee">
+		<composite-id name="keys">
+			<key-property name="name"></key-property>
+			<key-property name="address"></key-property>
+		</composite-id>
+		
+		<property name="dept" length="50"></property>
+		<!-- hibernate使用timestamp, 生成的数据库日期是: datetime -->
+		<!-- 下面数据库生成的是:date -->
+		<property name="birth" type="date"></property>
+	</class>
+</hibernate-mapping></xmp></pre><div class="sc_act">测试代码</div><pre class="prettyprint linenums">public class App {
+	private static SessionFactory sf;
+	static {
+		sf = new Configuration().configure().buildSessionFactory();
+	}
+
+	@Test
+	public void testSave() throws Exception {
+		Session session = sf.openSession();
+		session.beginTransaction();
+		
+		// 联合主键对象
+		CompositeKeys keys = new CompositeKeys();
+		keys.setName("Jack");
+		keys.setAddress("棠东...");
+		
+		// 对象
+		Employee emp = new Employee();
+		emp.setKeys(keys);
+		emp.setDept("研发部");
+		emp.setBirth(new Date());
+		
+		// 保存
+		session.save(emp);
+		
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	@Test
+	public void testGet() throws Exception {
+		Session session = sf.openSession();
+		session.beginTransaction();
+		
+		// 联合主键对象
+		CompositeKeys keys = new CompositeKeys();
+		keys.setName("Jack");
+		keys.setAddress("棠东...");
+		
+		Employee employee = (Employee) session.get(Employee.class, keys);
+		System.out.println(employee.getKeys().getName());
+		System.out.println(employee.getKeys().getAddress());
+		System.out.println(employee.getDept());
+		System.out.println(employee.getBirth());
+		
+		session.getTransaction().commit();
+		session.close();
+
+	}
+}</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

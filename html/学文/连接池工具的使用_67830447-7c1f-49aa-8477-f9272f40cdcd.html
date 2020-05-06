@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>连接池工具的使用</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>连接池工具的使用</a></h1><div class="tags"><a href="#h1" title="自定义连接池">自定义连接池</a><a href="#h2" title="解决Connection.close方法释放连接问题">解决Connection.close方法释放连接问题</a><a href="#h3" title="DBCP连接池">DBCP连接池</a><a href="#h4" title="CP30连接池">CP30连接池</a></div></header><article class="article-content"><h2 id="h1">自定义连接池</h2><p>自定义连接池实现：</p><ul><li>1）连接池中初始化若干个连接对象</li><li>2）当连接池中连接不足，重新连接数据库获取新的连接对象</li><li>3）总连接对象不能超过最大连接数</li></ul><pre class="prettyprint linenums"><xmp>public class MyPool {
+	//连接参数
+	private static String url = "jdbc:mysql://localhost:3306/day19";
+	private static String user = "root";
+	private static String password = "root";
+	private static String driverClass = "com.mysql.jdbc.Driver";
+
+	//使用集合存储多个连接对象
+	LinkedList<Connection> pool = new LinkedList<Connection>();
+	/**
+	 * 连接池的初始连接数
+	 */
+	private int initSize = 5;
+	/**
+	 * 连接池的最大连接数
+	 */
+	private int maxSize = 8;
+	/**
+	 * 连接池中的当前连接数,用于记录连接中有几个连接对象？
+	 */
+	private int currentSize = 0;
+	
+	public MyPool(){
+		/**
+		 * 创建若干个连接对象，放入到集合中
+		 */
+		for(int i=1;i<=initSize;i++){
+			pool.addLast(createConnection());
+			currentSize++;
+		}
+	}
+	
+	static{
+		try {
+			//注册驱动
+			Class.forName(driverClass);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 创建连接方法
+	 */
+	private Connection createConnection(){
+		try {
+			Connection conn = DriverManager.getConnection(url, user, password);
+			return conn;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 对外提供获取连接的方法
+	 */
+	public Connection getConnection(){
+		/**
+		 * 1)判断连接池中是否还有连接对象，池中有连接，直接取出池中连接
+		 */
+		if(pool.size()>0){
+			/**
+			 * 直接返回连接池中的一个连接对象
+			 */
+			return pool.removeFirst();
+		}
+		
+		/**
+		 * 2）如果初始连接数不足的情况下，需要获取新的连接对象。但不能超过最大连接数
+		 */
+		if(currentSize&lt;maxSize){
+			Connection conn = createConnection();
+			currentSize++;
+			return conn;
+		}
+		
+		/**
+		 * 3)超过最大连接数时，需要处理（抛出异常或让用户等待）
+		 */
+		throw new RuntimeException("超过了最大连接数，请稍后再来");
+	}
+	
+	/**
+	 * 对外提供释放连接的方法
+	 */
+	public void releaseConnection(Connection conn){
+		/**
+		 * 把用完的连接对象放回到连接池中
+		 */
+		pool.addLast(conn);
+	}
+}</xmp></pre><p>如果以上自定义连接要拿到实际应用中使用，还需要不断优化。</p><ul><li>1）比如线程并发问题</li><li>2）达到最大连接数应该先等待，再抛出异常</li><li>3）当连接空闲超过一定时间，连接池要回收连接</li></ul><p><mark>所以这时就使用别人写的连接池工具！！</mark></p><p><a href="/biji/htmlFiles/pool.rar">完全版代码下载</a></p><h2 id="h2">解决Connection.close方法释放连接问题</h2><p>1）静态代理：</p><ul><li>1.1 创建Connection接口的实现类（代理类）</li><li>1.2 在代理类中，重写close方法</li><li>注意： 使用静态代理，需要把原有对象的方法全部实现。</li></ul><p>2）动态代理：</p><p>使用jdk自带的动态代理类Proxy类：<br>用于创建代理类对象方法:</p><ul><li>static Object newProxyInstance(ClassLoader loader, Class<!--?-->[] interfaces, InvocationHandler h)</li><li>参数一：类加载器，可以使用当前项目的任意类获取类加载器</li><li>参数二：代理类需要实现的接口</li><li>参数三： 指定代理类代理了之后要如何处理</li></ul><p>InvocationHandler接口(代理类的处理程序接口)</p><ul><li>调用代理类对象的方法:Object invoke(Object proxy,Method method,Object[] args)</li><li>参数一:代理类对象实例</li><li>参数2: 当前正在调用哪个方法</li><li>参数3:当前调用方法时传入的参数</li></ul><h2 id="h3">DBCP连接池</h2><p>导入dbcp的jar包</p><ul><li>commons-dbcp-1.4.jar  核心包</li><li>commons-pool-1.5.6.jar 辅助包</li></ul><p>使用</p><pre class="prettyprint linenums">try {
+    //1.创建连接池对象
+    BasicDataSource ds = new BasicDataSource();
+    //2.设置连接参数
+    ds.setUrl("jdbc:mysql://localhost:3306/day19");
+    ds.setUsername("root");
+    ds.setPassword("root");
+    ds.setDriverClassName("com.mysql.jdbc.Driver");
+
+    //3.设置连接池参数
+    ds.setInitialSize(5); //初始连接数
+    ds.setMaxActive(8); //最大连接数
+    ds.setMaxWait(3000); //超过最大连接数时，最大等待时间
+    ds.setMaxIdle(3000); //最大空闲时间
+    //4.获取连接
+    for (int i = 1; i &lt;= 9; i++) {
+        Connection conn = ds.getConnection();
+        System.out.println(conn.hashCode());
+        if (i == 5) {
+            //释放连接(不是真正的关闭连接对象，而是把连接对象放回连接池)
+            conn.close();
+        }
+    }
+} catch(SQLException e) {
+    e.printStackTrace();
+}</pre><p>使用配置文件加载(dbcp.properties)</p><pre class="prettyprint linenums">url=jdbc:mysql://localhost:3306/day19
+username=root
+password=root
+driverClassName=com.mysql.jdbc.Driver
+
+initialSize=5
+maxActive=8
+maxWait=3000
+maxIdle=3000</pre><pre class="prettyprint linenums">try {
+    Properties prop = new Properties();
+    prop.load(Demo.class.getResourceAsStream("/dbcp.properties"));
+    //1.创建连接池对象
+    BasicDataSource ds = (BasicDataSource) BasicDataSourceFactory.createDataSource(prop);
+
+    //2.获取连接
+    for (int i = 1; i &lt;= 9; i++) {
+        Connection conn = ds.getConnection();
+        System.out.println(conn.hashCode());
+        if (i == 5) {
+            //释放连接(不是真正的关闭连接对象，而是把连接对象放回连接池)
+            conn.close();
+        }
+    }
+} catch(Exception e) {
+    e.printStackTrace();
+}
+</pre>
+<h2 id="h4">C3P0连接池</h2>
+<p>需导入c3p0的jar包: c3p0-0.9.1.2.jar 核心包<br>使用C3p0连接池</p>
+<p><mark>注意： DataSource接口是Sun公司设计的用于规范连接池实现的接口。</mark><p>
+<pre class="prettyprint linenums">public class Demo {
+
+	@Test
+	public void test1(){
+		try {
+			//1.创建连接池对象
+			ComboPooledDataSource ds = new ComboPooledDataSource();
+			//2.设置连接参数
+			ds.setDriverClass("com.mysql.jdbc.Driver");
+			ds.setJdbcUrl("jdbc:mysql://localhost:3306/day19");
+			ds.setUser("root");
+			ds.setPassword("root");
+			
+			//3.设置连接池参数
+			ds.setInitialPoolSize(5);// 初始化连接数
+			ds.setMaxPoolSize(8);//最大连接数
+			ds.setCheckoutTimeout(3000);//最大等待时间
+			
+			//4.获取连接
+			for(int i=1;i&lt;=9;i++){
+				Connection conn = ds.getConnection();
+				System.out.println(conn);
+				if(i==5){
+					// 把连接对象放回连接池
+					conn.close();
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 使用配置文件方式读取参数信息
+	 * 注意： c3p0会默认查询类路径的c3p0-config.xml文件，文件名不能错！！
+	 */
+	@Test
+	public void test2(){
+		try {
+			//1.创建连接池对象（方式一： 使用默认配置（default-config））
+			//ComboPooledDataSource ds = new ComboPooledDataSource();
+			
+			//2.创建连接池对象（方式二： 使用命名配置（named-config：mysql_day18））
+			ComboPooledDataSource ds = new ComboPooledDataSource("mysql_day18");
+			
+			//2.获取连接
+			for(int i=1;i&lt;=9;i++){
+				Connection conn = ds.getConnection();
+				System.out.println(conn);
+				if(i==5){
+					//把连接对象放回连接池
+					conn.close();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

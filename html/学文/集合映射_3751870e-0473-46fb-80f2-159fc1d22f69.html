@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>集合映射</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>集合映射</a></h1><div class="tags"><a href="#h1" title="集合映射">集合映射</a><a href="#h2" title="多对一">多对一</a><a href="#h3" title="一对多">一对多</a><a href="#h4" title="总结">总结</a></div></header><article class="article-content"><h2 id="h1">集合映射</h2><p>需求：购物填写地址，一个用户，对应多个地址！(地址表字段为user_id,address)</p><h3>javaBean</h3><pre class="prettyprint linenums"><xmp>public class Users {
+
+	private int id;
+	private String name;
+	/*
+	 *  用户对应的多个地址
+	 */
+	// set集合
+	private Set<String> addressSet;
+	// list集合
+	private List<String> addressList = new ArrayList<String>();
+	// map集合
+	private Map<String,String> addressMap = new HashMap<String,String>();
+	//getter与setter略
+}</xmp></pre><h3>映射配置</h3><pre class="prettyprint linenums"><xmp><hibernate-mapping package="cn.itcast.c_collection">
+	<class name="Users" table="t_users">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="50"></property>
+		<!-- 
+			当前用户对应的多个地址 
+				1. 了解
+					当前对象：Users
+					当前表：  t_users
+					当前表主键： id
+				2. 集合属性的映射  【private Set<String> addressSet;】
+					要映射的属性:   集合属性,addressSet 
+					映射到的表：            t_address
+					指定外键字段：       user_id		
+					外键字段之外的其他字段的映射， address	
+		-->
+		<set name="addressSet" table="t_address">
+			<key column="user_id"></key>
+			<element column="address" type="string"></element>
+		</set>
+		
+		<!-- list集合映射 -->
+		<list name="addressList" table="t_addressList">
+			<key column="user_id"></key>
+			<list-index column="idx_"></list-index>
+			<element column="address" type="string"></element>
+		</list>
+		<!-- map集合的映射 -->
+		<map name="addressMap" table="t_addressMap">
+			<key column="user_id"></key>
+			<map-key column="shortName" type="string"></map-key>
+			<element column="address" type="string"></element>
+		</map>
+	</class>
+</hibernate-mapping></xmp></pre><p>上面只是实例,开发中并不会用到(<mark>用于一对多</mark>)<br>集合映射总结，如果保存的数据只有一个可以使使用List/Set集合！如果保存的数据有2个，使用Map集合<br><mark>思考一下</mark>: 如果保存的数据是2个以上，集合元素类型，能否为对象？</p><h2 id="h2">多对一</h2><h3>javaBean</h3><pre class="prettyprint linenums">//地址
+public class Address {
+	private int id;
+	private String name;
+	private String shortName;
+	private String code;
+	
+	// 地址与用户， 是多对一的关系
+	private Users user;
+  …
+}
+//用户
+public class Users {
+	private int id;
+	private String name;
+	private int age;
+}</pre><h3>映射配置</h3><pre class="prettyprint linenums"><xmp><!--  用户映射文件 -->
+<hibernate-mapping package="cn.itcast.d_many2one">
+	<class name="Users" table="t_users">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="50"></property>
+		<property name="age"></property>
+	</class>
+</hibernate-mapping>
+
+<!--  地址映射文件 -->
+<hibernate-mapping package="cn.itcast.d_many2one">
+	<class name="Address" table="t_address">
+		
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="50"></property>
+		<property name="shortName" length="20"></property>
+		<property name="code" length="20"></property>
+		<!-- 
+			多对一的配置:
+				1.映射的对象
+				2.对象对应的外键字段
+				3.对象的类型
+			注意：
+				对象一定是有映射文件进行映射！  (cn.itcast.d_many2one.Users 对应有映射文件)
+		 -->
+		 <many-to-one name="user" column="user_id" class="Users"></many-to-one>
+	</class>
+</hibernate-mapping></xmp></pre><h2 id="h3">一对多</h2><h3>javaBean</h3><pre class="prettyprint linenums"><xmp>//用户
+public class Users {
+	private int id;
+	private String name;
+	private int age;
+	// 用户与地址，是一对多的关系  【注意一定要用接口接收！】
+	private Set<Address> address = new HashSet<Address>();	
+}
+
+//地址
+public class Address {
+	
+	private int id;
+	private String name;
+	private String shortName;
+	private String code;
+	
+	// 地址与用户， 是多对一的关系
+	//private Users user;这里可以不注释掉,多对一和一对多可以同时配置
+}</xmp></pre><h3>映射配置</h3><pre class="prettyprint linenums"><xmp><!-- 说明:只需要改用户的映射文件就好了 -->
+<!--  用户映射文件 -->
+<hibernate-mapping package="cn.itcast.e_one2many">
+	<class name="Users" table="t_users">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="50"></property>
+		<property name="age"></property>
+		<!-- 
+			一对多映射:
+				映射关键点：
+			   1. 映射的集合属性： address
+			   2. 集合属性，映射到的表： t_address
+			   3. 表的外键： user_id
+			   4. 集合属性的类型
+		 -->
+		 <set name="address" table="t_address">
+		 	 <key column="user_id"></key>
+		 	 <one-to-many class="Address"></one>
+		 </set>
+	</class>
+</hibernate-mapping>
+<!--  地址映射文件 -->
+<hibernate-mapping package="cn.itcast.e_one2many">
+	<class name="Address" table="t_address">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" length="50"></property>
+		<property name="shortName" length="20"></property>
+		<property name="code" length="20"></property>
+	</class>
+</hibernate-mapping></xmp></pre><h2 id="h4">总结</h2><h3>一对多与多对一映射</h3><ul><li>可以只配置多对一，只能通过的多的一方维护关系!</li><li>可以只配置一对多，  只能通过一的一方维护关系</li><li>双向配置： 一对多与多对一,   可以通过双向维护关系！</li></ul></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

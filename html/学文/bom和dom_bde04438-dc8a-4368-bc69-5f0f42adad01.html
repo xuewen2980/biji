@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>bom和dom</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>bom和dom</a>
+			</h1>
+			<div class="tags">
+				<a title="BOM入门" href="#h1">BOM入门</a><a title="常用的事件类型" href="#h3">常用的事件类型</a><a
+					title="最常用的DOM方法" href="#h4">最常用的DOM方法</a><a title="正则表达式" href="#h5">正则表达式</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">BOM编程基础</h2>
+			<p>
+				全称 Browser Object Model，浏览器对象模型。<br>JavaScript是由浏览器中内置的javascript脚本解释器程序来执行javascript脚本语言的。<br>为了便于对浏览器的操作，javascript封装了对浏览器的各个对象使得开发者可以方便的操作浏览器。
+			</p>
+			<h3>window中的方法</h3>
+			<ul>
+				<li>alert() 显示一个警告框。</li>
+				<li>confirm() 选择确定框。</li>
+				<li>prompt() 输入框。</li>
+				<li>open() 打开新窗口显示指定的URL（有的浏览器中是打一个新的选项卡）</li>
+				<li>setTimeout(vCode, iMilliSeconds) 超时后执行代码。</li>
+				<li>setInterval(vCode, iMilliSeconds) 定时执行代码，第一次也是先待，到时再执行。</li>
+			</ul>
+			<h2 id="h3">常用的事件类型</h2>
+			<h3>鼠标点击相关：</h3>
+			<ul>
+				<li>onclick 在用户用鼠标左键单击对象时触发。</li>
+				<li>ondblclick 当用户双击对象时触发。</li>
+				<li>onmousedown 当用户用任何鼠标按钮单击对象时触发。</li>
+				<li>onmouseup 当用户在鼠标位于对象之上时释放鼠标按钮时触发。</li>
+			</ul>
+			<h3>鼠标移动相关：</h3>
+			<ul>
+				<li>onmouseout 当用户将鼠标指针移出对象边界时触发。</li>
+				<li>onmousemove 当用户将鼠标划过对象时触发。</li>
+			</ul>
+			<h3>焦点相关的：</h3>
+			<ul>
+				<li>onblur 在对象失去输入焦点时触发。</li>
+				<li>onfocus 当对象获得焦点时触发。</li>
+			</ul>
+			<h3>按键相关的：</h3>
+			<ul>
+				<li>onkeydown 当用户按下键盘按键时触发。</li>
+				<li>onkeyup 当用户释放键盘按键时触发。</li>
+				<li>onkeypress 当用户按下字面键时触发。</li>
+			</ul>
+			<h3>其他：</h3>
+			<ul>
+				<li>onchange 当对象或选中区的内容改变时触发。</li>
+				<li>onload 在浏览器完成对象的装载后立即触发。</li>
+				<li>onsubmit 当表单将要被提交时触发。</li>
+			</ul>
+			<p>
+				location中的重要方法：
+				<mark>reload()</mark>
+				重新装入当前页面
+			</p>
+			<h2 id="h4">最常用的DOM方法</h2>
+			<p>实例:</p>
+			<pre class="prettyprint linenums"><xmp><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript">
+    // 获取dom 树, 获取document 对象.        
+    var dom = window.document;
+    // all 获取页面中所有的标签节点 ,注释和文档类型约束.     
+    function testAll() {
+        var allArr = dom.all;
+        alert(allArr.length);
+        for (var i = 0; i < allArr.length; i++) {
+            //获取节点名称 
+            alert(allArr[i].nodeName);
+        }
+    }
+    // anchors 获取页面中的所有的锚连接.
+    function testAnchors() {
+        var anArr = dom.anchors;
+        alert(anArr.length);
+    }
+    // froms  获取所有的form 表单对象
+    function testForms() {
+        var formArr = dom.forms;
+        alert(formArr.length);
+        alert(formArr[0].nodeName);
+    }
+    // images
+    function testImages() {
+        var imageArr = dom.images;
+        alert(imageArr.length);
+    }
+    // links  获取页面的超链接.
+    function testLinks() {
+        var linkArr = dom.links;
+        //alert(linkArr.length);
+        for (var i = 0; i < linkArr.length; i++) {
+            //alert(linkArr[i].nodeName);
+        }
+        for ( var i in linkArr) {
+            alert(i);
+        }
+    }
+    testLinks();
+    // 获取页面的Body
+    var body = dom.body;
+    alert(body.nodeName);
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>javascript</title>
+</head>
+<body onmousemove="test(this)">
+<img src="xxx" alt="这是一个美女" />
+<img src="xxx" alt="这是一个美女" />
+<img src="xxx" alt="这是一个美女" />
+<a href="http://www.baidu.com">百度一下</a>
+<a href="http://www.google.com">百度两下</a>
+<a href="http://www.baigu.com">百谷一下</a>
+<a name="one"></a>
+<a name="two"></a>
+<form>
+    <label>姓名:</label>
+    <!--默认不写type 就是文本输入框-->
+    <input type="text" />
+</form>
+</body></html></xmp></pre>
+			<h2 id="h5">正则表达式</h2>
+			<pre class="prettyprint linenums">位置：<br>^		开头<br>$		结尾<br>次数：<br>*		0或多个<br>+		1或多个<br>?		0或1个<br>{n}		就是n个<br>{n,}	至少n个<br>{n,m}	最少n个，最多m个<br>通配符：<br>\d		任意数字<br>\D		任意非数字<br>\s		任意空白<br>\S		任意非空白<br>.		任意字符（除'\n'外）<br>组合：<br>[a-z]<br>[0-9]<br>等<br>组：<br>(正则)		匹配括号中正则表达式对应的结果，并暂存这个结果。<br>(?:正则)	匹配括号中正则表达式对应的结果，但不暂存这个结果。<br>\数字		使用第n个组匹配的结果<br>使用正则的工具（RegExp类与相关方法）<br>创建：<br>// 方式一<br>var regex = new RegExp("正则表达式", "标志");<br>// 方式二<br>var regex = /正则表达式/标志<br>参数说明：<br>正则表达式：<br>参见上面的规则<br>标志：<br>g （全文查找出现的所有 pattern）<br>i （忽略大小写）<br>m （多行查找）<br>方法：<br>Regexp.test( str )<br>String.replace( regex, str )</pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

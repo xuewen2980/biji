@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>xml解析必会知识</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>xml解析必会知识</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="xml两种解析方式">xml两种解析方式</a><a href="#h2"
+					title="dom解析">dom解析</a><a href="#h3" title="使用dom4j解析工具读取xml文件">使用dom4j解析工具读取xml文件</a><a
+					href="#h4" title="如何把xml数据封装成对象">如何把xml数据封装成对象</a><a href="#h5"
+					title="XPath表达式语法">XPath表达式语法</a><a href="#h6"
+					title="XPath在dom4j中如何使用">XPath在dom4j中如何使用</a><a href="#h7"
+					title="XML约束分类">XML约束分类</a><a href="#h8"
+					title="SAX解析读取xml文件">SAX解析读取xml文件</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">xml两种解析方式</h2>
+			<ul>
+				<li>DOM解析：一次性把xml文件加载进内存，然后在内存中构建Document树。比较消耗内存，并不适合读取容量大的xml文件。</li>
+				<li>SAX解析： 优势：内存占用非常小。加载一点，解析一点，处理一点，接着释放内存。</li>
+			</ul>
+			<h2 id="h2">dom解析</h2>
+			<p>
+				<mark>须导入dom4j-1.6.1.jar(核心包)</mark>
+			</p>
+			<h3>查标签</h3>
+			<ul>
+				<li>element("name")</li>
+				<li>elements("name")</li>
+				<li>elements();</li>
+				<li>getName（） 标签名称</li>
+				<li>getRootElement(): 根标签</li>
+			</ul>
+			<h3>查属性</h3>
+			<ul>
+				<li>atrributeValue("name") 属性值</li>
+				<li>atrribute("name") 对象</li>
+				<li>atrributes() 属性对象列表</li>
+				<li>getName() : 属性名</li>
+				<li>getValue() 属性值</li>
+			</ul>
+			<h3>查文本</h3>
+			<ul>
+				<li>getText(); 当前标签的文本</li>
+				<li>elementText("name") 子标签的文本</li>
+			</ul>
+			<h3>增</h3>
+			<ul>
+				<li>DocumentHelper.createDocument() 文档</li>
+				<li>addElement("name"); 标签</li>
+				<li>addAtribute（"name","value" ） 属性</li>
+			</ul>
+			<h3>改</h3>
+			<ul>
+				<li>setValue() 修改属性值</li>
+				<li>addAttribute（”同名“） 修改属性值</li>
+				<li>setText() 修改文本内容</li>
+			</ul>
+			<h3>删除</h3>
+			<ul>
+				<li>detach() 标签、属性</li>
+				<li>getParent().remove(标签/属性)</li>
+			</ul>
+			<h2 id="h3">使用dom4j解析工具读取xml文件</h2>
+			<h3>输出格式:</h3>
+			<ul>
+				<li>OutputFormat format =
+					OutputFormat.createCompactFormat();//紧凑的格式.空格和换行去掉了！！ 系统上线了使用</li>
+				<li>OutputFormat format =
+					OutputFormat.createPrettyPrint();//漂亮的格式。包含空格和换行。 测试时使用</li>
+			</ul>
+			<h3>使用</h3>
+			<pre class="prettyprint linenums">public class Demo1 {<br>	public static void main(String[] args) {<br>		try {<br>			//1.创建SAXReader（解析器对象）<br>			SAXReader reader = new SAXReader();<br>			//2.调用read方法，读取xml文件<br>			Document doc = reader.read("./src/contact.xml");<br>			System.out.println(doc);<br>		} catch (DocumentException e) {<br>			e.printStackTrace();<br>		}<br>	}<br>}</pre>
+			<h2 id="h4">如何把xml数据封装成对象</h2>
+			<pre class="prettyprint linenums">public class Demo4 {
+  public static void main(String[] args) throws Exception { 
+     <xmp> List <Contact> list = new ArrayList <Contact> (); </xmp>
+    
+    // 读取xml文档封装到List集合中
+    //1.读取xml文档
+    Document doc = new SAXReader().read("./src/contact.xml");
+
+    //2.读取所有contact标签
+    Iterator < Element > it = doc.getRootElement().elementIterator("contact");
+    while (it.hasNext()) {
+      Element conElem = it.next();
+
+      //2.1 创建Contact对象
+      Contact con = new Contact();
+      //2.2 把contact标签数据放入Contact对象
+      //id
+      con.setId(conElem.attributeValue("id"));
+      //name
+      con.setName(conElem.element("name").getText());
+      con.setGender(conElem.element("gender").getText());
+      con.setPhone(conElem.element("phone").getText());
+      con.setQq(conElem.element("qq").getText());
+      con.setEmail(conElem.element("email").getText());
+
+      //2.3 把Contact对象放入List集合
+      list.add(con);
+    }
+
+    for (Contact contact: list) {
+      System.out.println(contact);
+    }
+  }
+}</pre>
+			<h2 id="h5">XPath表达式语法</h2>
+			<h3>语法</h3>
+			<p>
+				/ 绝对路径 从根标签开始或子元素。<br> // 相对路径 不分层次结构的所有元素。
+			</p>
+			<p>
+				* 通配符 选择所有标签<br>[ ] 条件 选择带条件的元素。例如 first() last()<br>@ 属性
+				选择属性。<br>and 逻辑运算
+			</p>
+			<h3>XPath 使用路径表达式在 XML 文档中选取节点</h3>
+			<img src="/biji/htmlFiles/xpath1.png">
+			<h3>
+				用来查找某个特定的节点或者包含某个指定值的节点。
+				<mark>以方括号[]括起</mark>
+			</h3>
+			<img src="/biji/htmlFiles/xpath2.png">
+			<h3>使用通配符</h3>
+			<img src="/biji/htmlFiles/xpath3.png">
+			<h2 id="h6">XPath在dom4j中如何使用</h2>
+			<h3>导入</h3>
+			<ul>
+				<li>1）在项目中导入xpath支持jar包。jaxen-1.1-beta-6.jar</li>
+			</ul>
+			<h3>使用dom4j提供的xpath方法</h3>
+			<ul>
+				<li>selectNodes(xpath表达式): 查询符合条件的多个节点对象</li>
+				<li>selectSingleNode("xpath表达式"):查询一个节点</li>
+			</ul>
+			<p>使用</p>
+			<pre class="prettyprint linenums">public class Demo2 {
+	public static void main(String[] args) throws Exception {
+		//1）读取xml文件
+		Document doc = new SAXReader().read(new File("./src/contact.xml"));
+		
+		//2)利用xpath方法查询xml文件
+		String xpath = "";
+		
+		//2.1    / 
+		xpath = "/contact-list"; //根标签contact-list
+		xpath = "/contact-list/contact"; //contact-list根标签下的contact子标签
+		
+		//2.2   // 
+		xpath = "//contact"; //选择所有contact标签（不分层次）
+		xpath = "//contact/name"; //选择所有父标签是contact的name标签
+		
+		//2.3   *
+		xpath = "/contact-list/*"; //选择根据标签contact-list下的所有子标签
+		xpath = "/contact-list//*"; //选择根标签contact-list下的所有后代标签（不分层次结构）
+		
+		//2.4 [ ]
+		xpath = "//contact[1]";// 第一个contact标签
+		xpath = "//contact[last()]";//最后一个contact标签
+		
+		//2.5 @ 
+		xpath = "//@id"; // 选择所有id属性
+		xpath = "//contact[@id]"; //选择所有包含id属性的contact标签
+		
+		//2.6 = 
+		xpath = "//contact[@id='002']"; //选择id属性值为002的contact标签
+		
+		//2.7 and  逻辑与
+		//选取id属性为002,且name属性为eric的contact标签
+		xpath = "//contact[@id='002' and @name='eric']";
+		
+		//2.8   text()   选取文本
+		xpath = "//contact[@id='001']/name[1]/text()";//选择第一个name标签的文本
+		xpath = "//name[text()='陈六']";//文本内容为”陈六“的name标签
+		
+		<xmp>List<Node> list = doc.selectNodes(xpath);</xmp>
+		for (Node node : list) {
+			System.out.println(node);
+		}
+	}
+}			</pre>
+			<h2 id="h8">SAX解析读取xml文件</h2>
+			<p>
+				<mark>SAX解析:不需要导入jar包</mark>
+			</p>
+			<h3>使用</h3>
+			<pre class="prettyprint linenums">SAX解析主程序<br>/**<br> * 基于SAX解析读取xml文件<br> * @author xuewen<br> */<br>public class Demo1 {<br>	public static void main(String[] args)throws Exception {<br>		//1.创建SAXParser对象<br>		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();<br>		<br>		//2.调用parse方法，读取和解析xml文件<br>		// 参数一： 指定的文件地址<br>		File file = new File("./src/contact.xml");<br>		//参数二： 指定DefaultHandler的子类<br>		parser.parse(file, new MyDefaultHandler());<br>	}<br>}</pre>
+			<h3>事件处理程序</h3>
+			<pre class="prettyprint linenums">package gz.itcast.b_sax;<br><br>import org.xml.sax.Attributes;<br>import org.xml.sax.SAXException;<br>import org.xml.sax.helpers.DefaultHandler;<br>/**<br> * 事件处理程序<br> * @author xuewen<br> */<br>public class MyDefaultHandler extends DefaultHandler {<br>	/**<br>	 * 遇到文档开始<br>	 */<br>	@Override<br>	public void startDocument() throws SAXException {<br>		System.out.println("文档开始读取");<br>	}<br>	<br>	/**<br>	 * 遇到开始标签<br>	 * @param qName: 当前遇到的标签名称<br>	 */<br>	@Override<br>	public void startElement(String uri, String localName, String qName,<br>			Attributes attributes) throws SAXException {<br>		System.out.println("MyDefaultHandler.startElement()-->"+qName);<br>	}<br>	<br>	/**<br>	 * 遇到文本内容（包括空格换行）<br>	 * @param ch : 表示整个xml文档所有文本内容<br>	 * @param start: 表示当前读到的文本内容的开始位置<br>	 * @param length: 表示当前读到的文本内容的长度<br>	 */<br>	@Override<br>	public void characters(char[] ch, int start, int length)<br>			throws SAXException {<br>		//得到当前读到的文本内容<br>		String content = new String(ch,start,length);<br>		System.out.println("MyDefaultHandler.characters()-->"+content);<br>	}<br>	<br>	/**<br>	 * 遇到结束标签<br>	 * @param qName: 表示当前读取的结束标签名称<br>	 */<br>	@Override<br>	public void endElement(String uri, String localName, String qName)<br>			throws SAXException {<br>		System.out.println("MyDefaultHandler.endElement()-->"+qName);<br>	}<br><br>	/**<br>	 * 遇到结束文档时<br>	 */<br>	@Override<br>	public void endDocument() throws SAXException {<br>		System.out.println("文档读取完毕");<br>	}<br>}</pre>
+			<img src="/biji/htmlFiles/dom与sax.png">
+			<h2 id="h7">XML约束分类</h2>
+			<p>DTD约束：语法结构相对简单。数据类型相对单一。</p>
+			<h3>应用场景</h3>
+			<ul>
+				<li>struts 和 hiberate都是使用了dtd约束（.dtd）</li>
+				<li>三大框架的配置文件。</li>
+			</ul>
+			<p>Schema约束：语法结构相对复杂，数据类型比较丰富。Schema的出现是为了DTD的</p>
+			<h3>应用场景</h3>
+			<ul>
+				<li>spring的配置文件使用schema约束（后缀名xsd）</li>
+			</ul>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>文件上传下载</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>文件上传下载</a></h1><div class="tags"><a href="#h1" title="文件上传入门">文件上传入门</a><a href="#h2" title="工具实现文件上传">工具实现文件上传</a><a href="#h3" title="文件上传的细节">文件上传的细节</a><a href="#h4" title="文件下载">文件下载</a></div></header><article class="article-content"><h2 id="h1">文件上传入门</h2><h3>实现文件上传条件</h3><ul><li>1）表单的提交方式必须是POST方式。（才有content-type属性）</li><li>2）有文件上传表单，表单中有&lt;input type="file"&gt;的选择文件的标签</li><li>3）把表单设置为enctype="multipart/form-data"，提交的数据不再是key-value对，而是字节数据</li></ul><h3>手动解析上传文件</h3><pre class="prettyprint linenums">public class UploadDemo1 extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		//得到实体内容数据
+		InputStream in = request.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		
+		//读取文件的开始符
+		String startTag = br.readLine();
+		
+		//读取文件名： Content-Disposition: form-data; name="img"; filename="news.txt" 
+		String line = br.readLine();
+		String fileName = line.substring(line.lastIndexOf("filename=\"")+10, line.lastIndexOf("\"") );
+		System.out.println("文件名："+fileName);
+		
+		//跳过2行
+		br.readLine();
+		br.readLine();
+		
+		//读取文件的实际内容
+		String str = null;
+		BufferedWriter bw = new BufferedWriter(new FileWriter("E:/files/"+fileName));
+		while((str=br.readLine())!=null){
+			//读到文件结束符时退出循环
+			if((startTag+"--").equals(str)){
+				break;
+			}
+			
+			//把内容写出文件中
+			bw.write(str);
+			bw.newLine();
+			bw.flush();
+		}
+		//关闭
+		bw.close();
+		br.close();
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+}</pre><h2 id="h2">工具实现文件上传</h2><h3>1）导入commoms-fileuload的jar包</h3><ul><li>commons-fileupload-1.2.2.jar  核心包</li><li>commons-io-2.1.jar   辅助包</li></ul><h3>DiskFileItemFactory类</h3><p>DiskFileItemFactory类： 用于创建上传对象，设置文件缓存区大小，设置文件缓存目录。</p><pre class="prettyprint linenums">DiskFileItemFactory factory = new DiskFileItemFactory(10*1024,new File("e:/temp/"));//通过构造方法传入
+setRepository(File repository)//指定临时文件目录，默认值为System.getProperty("java.io.tmpdir");
+setSizeThreshold(int sizeThreshold) 
+//设置内存缓冲区的大小，默认值为10K。当上传文件大于缓冲区大小时， fileupload组件将使用临时文件缓存上传文件。
+</pre>
+<p>factory.setRepository(new File(tempPath));设置这个可以是上传大文件的时候，不是把上传的所有数据一直存入内存，而是当达到factory.setSizeThreshold(2048);所设置的文件大小后，就存入临时文件，利用这个特性可以使上传大文件的时候不会占用大量内存，可以提供用户的并发使用量。</p>
+<h3>ServletFileUpload类</h3>
+<ul>
+	<li>isMultipartContent(request)判断上传表单是否为multipart/form-data类型</li>
+	<li>parseRequest(request)把表单中的每一个输入项包装成一个fileItem 对象,返回list集合</li>
+	<li>setFileSizeMax(long&nbsp;fileSizeMax) 设置上传文件的最大值</li><li>setSizeMax(long&nbsp;sizeMax) 设置上传文件总量的最大值</li><li>setHeaderEncoding(String&nbsp;encoding) 设置编码格式</li><li>setProgressListener(ProgressListener&nbsp;listener) 上传监听器</li>
+</ul>
+<h3>FileItem类</h3>
+<ul><li>getName()获取文件名称</li><li>getContentType()获取文件类型</li><li>getInputStream();获取文件输入流</li><li>FileItem.delete()删除临时文件。</li></ul>
+<pre class="prettyprint linenums"><xmp>ServletFileUpload upload = new ServletFileUpload(factory)
+//设置文件名的编码
+upload.setHeaderEncoding("utf-8");
+List<FileItem> list = upload.parseRequest(request):  用于解析请求数据，提取和封装文件信息。
+//取出第一个上传的文件
+FileItem file = list.get(0);
+
+String fileName = file.getName();//得到文件名(getName())
+
+long fileSize = file.getSize();//得到文件大小
+
+String contentType = file.getContentType();//得到内容类型
+
+InputStream in =file.getInputStream();//得到文件数据内容
+
+//.把文件数据内容存储到服务器端的硬盘中
+
+FileUtils.copyInputStreamToFile( in , new File("e:/files/" + fileName));
+
+//文件上传完毕，手动清理缓存文件
+
+file.delete();</xmp></pre><h2 id="h3">文件上传的细节</h2><h3>限制文件的类型</h3><pre class="prettyprint linenums">//得到文件类型
+String contentType = file.getContentType();
+System.out.println(contentType);
+//如果是图片,才可以上传(image/bmp，jepg，jpg，gif)
+if (!contentType.toLowerCase().matches("image/[a-z]*")) {
+    throw new FileTypeErrorException("文件类型不符合条件！");
+}</pre><h3>限制上传文件大小</h3><ul><li>setFileSizeMax：设置单个文件的最大容量。超过会抛出FileSizeLimitExceededException</li><li>setSizeMax ： 设置所有文件的最大容量。超过会抛出SizeLimitExceededException</li></ul><h3>查看文件上传的进度</h3><ul><li>setProgressListener(进度监听器): 设置文件上传的监听器</li></ul>
+<pre class="prettyprint linenums">public class UploadProgress implements ProgressListener {  
+ private double upRate = 0.0;  
+ private double percent = 0.0;  
+ private long useTime = 0;  
+ private long upSize = 0;  
+ private long allSize = 0;  
+ private int item;  
+   
+ private long beginT =System.currentTimeMillis();  
+ private long curT =System.currentTimeMillis();  
+   
+ public void update(long pBytesRead, longpContentLength, int pItems) {  
+    
+  curT =System.currentTimeMillis();      
+       item = pItems;  
+       allSize = pContentLength;  //byte  
+       upSize = pBytesRead;  //byte  
+       useTime = curT-beginT;  //ms  
+       if(useTime != 0)  
+        upRate =pBytesRead/useTime;   //byte/ms  
+       else  
+        upRate =0.0;  
+       if(pContentLength == 0)  
+       return;  
+       percent =(double)pBytesRead/(double)pContentLength; //百分比  
+         
+         
+    }  
+ public long getAllSize() {  
+  return allSize;  
+ }  
+ public void setAllSize(long allSize) {  
+  this.allSize = allSize;  
+ }  
+ public long getBeginT() {  
+  return beginT;  
+ }  
+ public void setBeginT(long beginT) {  
+  this.beginT = beginT;  
+ }  
+ public long getCurT() {  
+  return curT;  
+ }  
+ public void setCurT(long curT) {  
+  this.curT = curT;  
+ }  
+ public int getItem() {  
+  return item;  
+ }  
+ public void setItem(int item) {  
+  this.item = item;  
+ }  
+ public double getPercent() {  
+  return percent;  
+ }  
+ public void setPercent(double percent) {  
+  this.percent = percent;  
+ }  
+ public double getUpRate() {  
+  return upRate;  
+ }  
+ public void setUpRate(double upRate) {  
+  this.upRate = upRate;  
+ }  
+ public long getUpSize() {  
+  return upSize;  
+ }  
+ public void setUpSize(long upSize) {  
+  this.upSize = upSize;  
+ }  
+ public long getUseTime() {  
+  return useTime;  
+ }  
+ public void setUseTime(long useTime) {  
+  this.useTime = useTime;  
+ }  
+}  </pre></pre><h3>处理文件名重复问题</h3><ul><li>UUID算法</li></ul><h3>得到普通文本控件内容</h3><pre class="prettyprint linenums">//判断该FileItem是否是文件还是普通文本空间
+if (file.isFormField()) {
+    //普通文本空间（text/password/checkbox/radio/select/texearea）
+    //得到控件内容
+    //处理一个普通文本
+    /*String info = file.getString("utf-8");
+						System.out.println("描述："+info);*/
+
+    //处理多个普通文本
+    String fieldName = file.getFieldName();
+    if ("info1".equals(fieldName)) {
+        String info1 = file.getString("utf-8");
+        System.out.println("描述1：" + info1);
+    }
+    if ("info2".equals(fieldName)) {
+        String info2 = file.getString("utf-8");
+        System.out.println("描述2：" + info2);
+    }</pre><h2 id="h4">文件下载</h2><h3>下载方式</h3><ul><li>使用超链接。缺点：1）暴露文件的路径 2）扩展型和安全性不好</li><li>使用servlet程序下载（推荐）</li></ul><pre class="prettyprint linenums">//得到需要下载的文件
+String path = this.getServletContext().getRealPath("/upload/9/1/图片1.png");
+
+File file = new File(path);
+//读取服务器本地的文件
+FileInputStream in =new FileInputStream(file);
+
+/**
+ * 处理URL编码问题
+ */
+String fileName = file.getName();
+//对文件名进行URl编码
+fileName = URLEncoder.encode(fileName, "utf-8");
+
+//判断不同浏览器
+String userAgent = request.getHeader("user-agent");
+String filefix = null;
+if (userAgent.contains("Trident")) {
+    //IE
+    filefix = "filename=" + fileName;
+} else if (userAgent.contains("Firefox")) {
+    //Firefox
+    filefix = "filename*=" + fileName;
+} else {
+    filefix = "filename=" + fileName;
+}
+
+//告诉浏览器以下载方式打开资源
+response.setHeader("Content-Disposition", "attachment;" + filefix);
+
+//把本地文件发送给浏览器
+byte[] buf = new byte[1024];
+int len = 0;
+while ((len = in.read(buf)) != -1) {
+    response.getOutputStream().write(buf, 0, len);
+}
+//关闭
+in .close();</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

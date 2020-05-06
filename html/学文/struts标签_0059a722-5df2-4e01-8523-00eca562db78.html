@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>struts标签</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>struts标签</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="逻辑标签">逻辑标签</a><a href="#h2" title="property标签">property标签</a><a
+					href="#h3" title="set标签">set标签</a><a href="#h4" title="push标签">push标签</a><a
+					href="#h5" title="bean标签">bean标签</a><a href="#h6" title="action标签">action标签</a><a 
+					href="#h7" title="iterator标签">iterator标签</a><a 
+					href="#h8" title="if/elseif/else标签">if/elseif/else标签</a><a 
+					href="#h9" title="url标签">url标签</a><a href="#h10" title="逻辑标签应用">逻辑标签应用</a><a 
+					href="#h11" title="UI标签">UI标签</a><a href="#h12" title="form 标签">form 标签</a><a 
+					href="#h13" title="textfield, password, hidden 标签">textfield, password, hidden 标签</a><a 
+					href="#h14" title="submit 标签">submit 标签</a><a 
+					href="#h15" title="reset 标签">reset 标签</a><a href="#h16" title="label标签">label标签</a><a 
+					href="#h17" title="textarea 标签">textarea 标签</a><a 
+					href="#h18" title="*checkbox 标签">*checkbox 标签</a><a href="#h19" 
+					title="checkboxlist 标签">checkboxlist 标签</a><a href="#h20" title="radio 标签和select 标签">radio 标签和select 标签</a></div>
+					
+		</header>
+		<article class="article-content">
+			<h2 id="h1">逻辑标签</h2>
+			<h2 id="h2">property标签</h2>
+			<pre class="prettyprint linenums"><xmp><s:property value=“#name " default="a default value"></s:property></xmp></pre>
+			<ul>
+				<li>* default：可选属性， 如果需要输出的属性值为null，则显示该属性指定的值</li>
+				<li>* escape：可选属性，指定是否格式化HTML代码。</li>
+				<li>* value： 可选属性，指定需要输出的属性值，如果没有指定该属性，则默认输出ValueStack栈顶的值。</li>
+			</ul>
+			<p>例子 :</p>
+			<pre class="prettyprint linenums"><xmp>    //输出栈顶的值
+    <s:property>//输出: username=username_valueStack, msgxx=msg_valueStack
+
+    //输出html标签
+    <s:property value="%{'<hr> hr的使用'}" escape="false" /> //输出:<hr> hr的使用
+            注:escape="false”时,hr作为html标签使用</xmp>
+			</pre>
+			<h2 id="h3">set标签</h2>
+			<div class="sc_act">set标签用于将某个值放入指定范围。</div>
+			<ul>
+				<li>var:变量的名字,name,id和var表达的含义是一样的,name,id被var替代</li>
+				<li>scope：该属性可以接受application、session、request、 page或
+					action。如果没有设置该属性，则默认放置在action中。</li>
+				<li>value：赋给变量的值.如果没有设置该属性,则将ValueStack栈顶的值赋给变量。</li>
+			</ul>
+			<p>例子:</p>
+			<pre class="prettyprint linenums"><xmp><s:set value="#request.username" var="xxx" scope="request" /><br>
+<s:property value="#request.xxx"/>
+
+<s:set value="#request.username" var="xxx" scope="page"/>
+<s:property value="#attr.xxx"/>
+
+<s:set value="#request.username" var="xxx" />
+<s:property value="xxx"/></xmp></pre>
+			<h2 id="h4">push标签</h2>
+			<div class="sc_act">将对象放入栈顶,不能放入其他范围,当标签结束,会从栈顶删除。</div>
+			<ul>
+				<li>value：要push到堆栈中的值 。</li>
+			</ul>
+			<p>例子:</p>
+			<pre class="prettyprint linenums"><xmp><s:push value="#request.username">
+    <s:property/>
+</s:push>
+     <br>
+测试删除: <s:property/></xmp></pre>
+			<h2 id="h5">bean标签</h2>
+			<div class="sc_act">实例化一个符合JavaBeans规范的类,标签体内可以包含几个param元素,用于调用setter方法给此class的属性赋值.</div>
+			<ul>
+				<li>name:要被实例化的class名字(必须符合JavaBeans规范)</li>
+				<li>var： 赋给变量的值.放置在request作用域中 , 如果没有设置该属性,则对象被放置到栈顶</li>
+			</ul>
+			<p>例子:</p>
+			<pre class="prettyprint linenums"><xmp><s:bean name="cn.itcast.bean.Person" var="myperson">
+       <s:param name="name" value="%{'zhang'}"></s:param>
+       <s:param name="age" value="34"></s:param>
+</s:bean>
+<br>
+<s:property value="#myperson.name"></s:property></xmp></pre>
+			<h2 id="h6">action标签</h2>
+			<div class="sc_act">Action:通过指定命名空间和action名称,该标签允许在jsp页面直接调用Action
+			</div>
+			<ul>
+				<li>name:action名字(不包括后缀,如.action)</li>
+				<li>namespace:action所在命名空间</li>
+				<li>executeResult:Action的result是否需要被执行,默认值是false不执行</li>
+			</ul>
+			<p>例子:</p>
+			<pre class="prettyprint linenums"><xmp><package name="ognl" namespace="/ognl" extends="struts-default">
+   <action name="ognlAction_*" class="cn.itcast.ognl.OgnlAction" method="{1}">
+         <result name="ognl">/ognl/ongl.jsp?msg=${msgxx}</result>
+   </action>   
+</package>   
+
+<s:action name="ognlAction_test" namespace="/ognl" executeResult="true"></s:action></xmp></pre>
+<h2 id="h7">iterator标签</h2><div class="sc_act">标签用于对集合进行迭代，这里的集合包含List、Set和数组。</div><ul><li>value：可选属性，指定被迭代的集合，如果没有设置该属性，则使用ValueStack栈顶的集合。</li><li>var：    可选属性，引用变量的名称.</li></ul><h3>status：可选属性，该属性指定迭代时的IteratorStatus实例。该实例包含如下几个方法：</h3><ul><li>int getCount()，返回当前迭代了几个元素。</li><li>int getIndex()，返回当前迭代元素的索引。</li><li>boolean isEven()，返回当前被迭代元素的索引是否是偶数</li><li>boolean isOdd()，返回当前被迭代元素的索引是否是奇数</li><li>boolean isFirst()，返回当前被迭代元素是否是第一个元素。</li><li>boolean isLast()，返回当前被迭代元素是否是最后一个元素。</li></ul>
+<p>例子</p><pre class="prettyprint linenums"><xmp><s:iterator value="allList">
+    <s:property value="name"/><br>
+</s:iterator>
+   
+<s:iterator value="allList" var="person" begin="2" end="7"  step="2">
+    <s:property value="#person.name"/><s:property value="#person.age"/><br>
+</s:iterator></xmp></pre>
+<pre class="prettyprint linenums"><xmp><s:iterator value="allList" status="st">
+        st.getCount():<s:property value="#st.count"/> &nbsp;&nbsp;
+        st.getIndex():<s:property value="#st.index"/>  &nbsp;&nbsp;
+        st.isEven():<s:property value="#st.even"/>&nbsp;&nbsp;
+        st.isOdd():<s:property value="#st.odd"/>&nbsp;&nbsp;
+        st.isFirst:<s:property value="#st.first"/>&nbsp;&nbsp;
+        st.isLast():<s:property value="#st.last"/><br>
+ </s:iterator>  
+    
+<table border="1">  
+     <s:iterator value="allList" var="person" status="st">
+        <tr class="<s:property value="#st.even?'even':'odd'"/>
+            <td><s:property value="#person.name"/></td>
+        </tr>
+     </s:iterator>  
+</table>
+</xmp></pre>
+<h2 id="h8">if/elseif/else标签</h2><div class="sc_act">if/elseif/else  基本的流程控制.‘If’标签可单独使用也可以和‘Else If’标签和(或)一个多个‘Else’一起使用</div><h2 id="h9">url标签</h2><div class="sc_act">该标签用于创建url,可以通过"param"标签提供request参数. </div><ul><li>value:如果不提供就用当前action,使用value后缀必须加.action</li><li>action:用来生成url的action,如果没有则使用value</li><li>namespace :命名空间</li><li>var:引用变量的名称.</li></ul><h3>使用action</h3>
+<pre class="prettyprint linenums"><xmp><s:url action="ognlTagAction_test" namespace="/ognl" var="myurl">
+         <s:param name="name" value="%{'张老师'}"></s:param>
+         <s:param name="id" value="12"></s:param>
+    </s:url>
+</xmp></pre>
+<h3>使用value</h3>
+<pre class="prettyprint linenums"><xmp><s:url value="ognlTagAction_test.action" namespace="/ognl" var="myurl">
+         <s:param name="id" value="12"></s:param>
+         <s:param name="cnname" value="%{'zhang'}"></s:param>
+</s:url>
+
+<a href="<s:property  value='#myurl'/>">xxxx</a>
+</xmp></pre>
+			<h2 id="h10">逻辑标签应用</h2>
+			<pre class="prettyprint linenums"><xmp><%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib uri="/struts-tags" prefix="s"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>My JSP 'tags.jsp' starting page</title>
+    <style type="text/css">
+/*奇数行的样式*/
+.odd {
+	background-color: gray;
+}
+/*偶数行的样式*/
+.even {
+	background-color: red;
+}
+</style>
+</head>
+
+<body>
+<!-- ognl表达式： 在jsp页面中创建List集合(不需要#) -->
+<s:iterator value="{'eric','jacky','rose','lucy'}" var="name">
+    <s:property value="#name"/>
+	<br />
+</s:iterator>
+
+<hr />
+<!-- ognl表达式： 在jsp页面中创建Map集合（需要#号） -->
+<s:iterator value="#{1:'eric',2:'jacky',3:'rose',4:'lucy'}" var="entry">
+    编号： <s:property value="#entry.key"/>-姓名：<s:property value="#entry.value"/>
+		<br />
+</s:iterator>
+<hr />
+<!-- value: 属性写ognl表达式 -->
+<s:set id="userName" var="userName" value="%{'eric'}"/>
+<!-- 问题 : 这里的value属性的值，struts不把内容当做ognl内容解析 -->
+<s:textfield name="userName" value="%{#request.userName}"></s:textfield>
+<hr />
+<s:bean name="gz.itcast.b_validate.User" var="user">
+    <s:param name="name" value="%{'zhang'}"></s:param>
+    <s:param name="password" value="34"></s:param>
+</s:bean>
+<s:property value="#request.user.name"/> - <s:property value="#request.user.password"/>
+<hr />
+<table border="1">
+    <tr>
+        <th>序号</th>
+        <th>编号</th>
+        <th>姓名</th>
+    </tr>
+    <s:iterator value="#{'101':'eric','102':'jacky','103':'rose','104':'lucy'}"
+			var="entry" status="sta">
+        <tr class="<s:property value="#sta.even?'even':'odd'">">
+        <td><s:property value="#sta.count"/></td>
+        <td><s:property value="#entry.key"/></td>
+        <td><s:property value="#entry.value"/></td>
+        </tr>
+    </s:iterator>
+</table>
+
+<hr />
+<s:set var="age" value="21"/>
+<s:if test="#age==23">
+    23
+</s:if>
+<s:elseif test="#age==21">
+    21
+</s:elseif>
+<s:else>
+    都不等
+</s:else>
+<hr />
+<!--生成一个链接的url内容 -->
+<s:url action="user_register" namespace="/validate" var="myurl">
+</s:url>
+<!--使用url链接 -->
+<a href="<s:property value="#myurl">">链接到UserAction</a>
+<s:debug></s:debug>
+</body>
+</html></xmp></pre>
+<h2 id="h11">UI标签</h2>
+<h3>表单标签的共同属性</h3>
+<img src="/biji/htmlFiles/form_value.png">
+<mark> 该属性只在没有使用 simple 主题时才可以使用</mark>
+<h3>主题</h3>
+<ul><li>1、simple: 把 UI 标签翻译成最简单的 HTML 对应元素, 而且会忽视行标属性</li><li>2、xhtml: xhtml 是默认的主题. 这个主题的模板通过使用一个布局表格提供了一种自动化的排版机制. (默认值)</li><li>3、css_xhtml: 这个主题里的模板与 xhtml 主题里的模板很相似, 但它们将使用 css来进行布局和排版</li><li>4、ajax: 这个主题里的模板以 xhtml 主题里德模板为基础, 但增加了一些 Ajax 功能.</li></ul>
+<h3>修改主题</h3>
+<div class="sc_act">A、通过 UI 标签的 theme属性(只适用于当前的标签)</div><pre class="prettyprint linenums"><xmp><s:textfield name="username"  label="用户名“theme="simple"></s:textfield></xmp></pre><div class="sc_act">B、在一个表单里, 若没有给出某个 UI 标签的 theme 属性, 它将使用这个表单的主题(适用于整个form标签)</div><pre class="prettyprint linenums"><xmp><s:form  action="" method="post" namespace="/ui“ theme="simple"></xmp></pre><div class="sc_act">C、修改 struts.properties 文件中的 struts.ui.theme 属性. (适用整个环境)</div><pre class="prettyprint linenums"><xmp><!-- 设置ui标签的主题 -->
+<constant name="struts.ui.theme" value="simple"></constant></xmp></pre><p><mark>优先级：A&gt;B&gt;C</mark></p>
+<h2 id="h12">form标签</h2><div class="sc_act">form 标签用来呈现 HTML 语言中的表单元素</div><img src="/biji/htmlFiles/form_tag.png">
+<h2 id="h13">textfield, password, hidden 标签</h2><div class="sc_act">textfield 标签将被呈现为一个输入文本字段, password 标签将被呈现为一个口令字段,hidden 标签将被呈现为一个不可见字段. </div><img src="/biji/htmlFiles/tph_tags.png"><div class="sc_act">password 标签扩展自 textfield 标签, 多了一个 showPassword 属性.该属性是布尔型. 默认值为 false, 它决定着在表单回显时是否显示输入的密码. true显示密码 </div>
+<h2 id="h14">submit 标签</h2><div class="sc_act">submit 标签将呈现为一个提交按钮. 根据其 type 属性的值. 这个标签可以提供 3 种呈现效果:</div><ul><li>input: &lt;input type=“submit” …/&gt;</li><li>button: &lt;input type=“button” …/&gt;</li><li>image: &lt;input type=“image” /&gt;</li></ul><img src="/biji/htmlFiles/submit_tag.png">
+<h2 id="h15">reset 标签</h2><div class="sc_act">reset 标签将呈现为一个重置按钮. 根据其 type 属性的值. 这个标签可以提供 2 种呈现效果:</div><ul><li>input: &lt;input type=“reset” …/&gt;</li><li>button: &lt;input type=“button” …/&gt;</li></ul><img src="/biji/htmlFiles/reset_tag.png">
+<h2 id="h16">label标签</h2><div class="sc_act">label 标签将呈现一个 HTML 行标元素</div><img src="/biji/htmlFiles/label_tag.png">
+<h2 id="h17">textarea 标签</h2><div class="sc_act">textarea 标签将呈现为一个 HTML 文本域元素</div><img src="/biji/htmlFiles/textarea_tag.png">
+<h2 id="h18">*checkbox 标签</h2><div class="sc_act">如果某个单选框被选中了, 它的值将为 true, 但如果该单选框未被选中, 在请求中就不会增加一个请求参数. checkbox 标签解决了这个局限性, 它采取的办法是为单选框元素创建一个配对的不可见字段</div><p>&lt;s:checkbox name="cart" label="证件"&gt;&lt;/s:checkbox&gt;</p><p>checkbox 标签有一个<mark>fieldValue</mark>属性, 该属性指定的值将在用户提交表单时作为被选中的单选框的实际值发送到服务器.</p><p>如果没有使用 fieldValue 属性, 单选框的值将为 true 或 false.</p>
+<h2 id="h19">checkboxlist 标签</h2><ul><li>name:必须要有</li><li>list: 显示的内容</li><li>value: 默认值(出现哪个值就会勾选哪个框)</li><li>listValue: 用哪个数据作为显示数据</li><li>listKey: 用哪个数据作为checkbox的value</li></ul><h3>如果集合为list</h3><pre class="prettyprint linenums"><xmp><s:checkboxlist name="list" list="{'Java','.Net','RoR','PHP'}" value="{'Java','.Net'}"></s:checkboxlist>
+//则生成如下html代码：
+<input type="checkbox" name="list" value="Java" checked="checked"/><label>Java</label>
+<input type="checkbox" name="list" value=".Net" checked="checked"/><label>.Net</label>
+<input type="checkbox" name="list" value="RoR"/><label>RoR</label>
+<input type="checkbox" name="list" value="PHP"/><label>PHP</label></xmp></pre><h3>如果集合为MAP</h3><pre class="prettyprint linenums"><xmp><s:checkboxlist name="map" list="#{1:'瑜珈用品',2:'户外用品',3:'球类'}" listKey="key" listValue="value" value="{1,2,3}"></s:checkboxlist>
+//则生成如下html代码：
+<input type="checkbox" name="map" value="1" checked="checked"/><label>瑜珈用品</label>
+<input type="checkbox" name="map" value="2" checked="checked"/><label>户外用品</label>
+<input type="checkbox" name="map" value="3" checked="checked"/><label>球类</label>
+<input type="checkbox" name="map" value="4"/><label>自行车</label></xmp></pre><h3>如果集合里存放的是javabean</h3><pre class="prettyprint linenums"><xmp>//java代码
+Person person1 = new Person(1,"第一个");
+Person person2 = new Person(2,"第二个");
+List<Person> list = new ArrayList<Person>();
+list.add(person1);
+list.add(person2);
+request.setAttribute("persons",list);
+//jsp代码
+//id和name为Person的属性
+<s:checkboxlist name="beans" list="#request.persons" listKey="id" listValue="name"></s:checkboxlist>
+//则生成如下html代码：
+<input type="checkbox" name=“beans" value="1"/><label>第一个</label>
+<input type="checkbox" name=“beans" value="2"/><label>第二个</label></xmp></pre>
+<h2 id="h20">radio 标签和select 标签</h2>
+<div class="sc_act">该标签与checkboxlist标签用法一样</div>
+</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

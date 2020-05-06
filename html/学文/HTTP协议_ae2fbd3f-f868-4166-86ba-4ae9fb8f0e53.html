@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>HTTP协议</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>HTTP协议</a>
+			</h1>
+			<div class="tags">
+				<a title="常见的请求头" href="#h1">常见的请求头</a><a
+					title="HttpServletRequeset对象" href="#h2">HttpServletRequeset对象</a><a
+					title="HttpServletResponse对象" href="#h3">HttpServletResponse对象</a><a
+					title="响应头" href="#h4">响应头</a><a title="请求参数的获取" href="#h5">请求参数的获取</a><a
+					title="request补充" href="#h6">request补充</a><a title="response补充"
+					href="#h7">response补充</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">常见的请求头</h2>
+			<ul>
+				<li>Accept: text/html,image/* --浏览器接收的数据类型</li>
+				<li>Accept-Charset: ISO-8859-1 --浏览器接收的编码格式</li>
+				<li>Accept-Encoding: gzip,compress --浏览器接收的数据压缩格式</li>
+				<li>Accept-Language: en-us,zh- --浏览器接收的语言</li>
+				<li>Host: www.it315.org:80 --当前请求访问哪个主机和端口</li>
+				<li>If-Modified-Since: Tue, 11 Jul 2000 18:23:51 GMT
+					--浏览器最后更新的缓存时间</li>
+				<li>Referer: http://www.it315.org/index.jsp
+					--当前请求来自于哪里（从超链接过来的请求包含此头）</li>
+				<li>User-Agent: Mozilla/4.0 (compatible; MSIE 5.5; Windows NT
+					5.0) ---浏览器类型</li>
+				<li>Cookie: name=eric ---浏览器保存的cookie信息</li>
+				<li>Connection: close/Keep-Alive
+					--浏览器和服务器连接状态。close：关闭连接。keep-alive:保持连接。</li>
+				<li>Date: Tue, 11 Jul 2000 18:23:51 GMT --请求发出时间</li>
+			</ul>
+			<h2 id="h2">HttpServletRequeset对象</h2>
+			<p>请求行：</p>
+			<ul>
+				<li>request.getMethod()； 请求方式</li>
+				<li>request.getRequestURI() 请求资源</li>
+				<li>request.getRequestURL()</li>
+				<li>request.getProtocol() 协议版本</li>
+			</ul>
+			<p>请求头：</p>
+			<ul>
+				<li>request.getHeader("name"): 根据请求头获取请求值</li>
+				<li>request.getHeaderNames(): 获取所有请求头名称</li>
+			</ul>
+			<p>实体内容：</p>
+			<ul>
+				<li>request.getInputStream();</li>
+			</ul>
+			<h2 id="h3">HttpServletResponse对象</h2>
+			<p>HttpServletResponse对象用于设置响应信息。</p>
+			<p>响应行</p>
+			<ul>
+				<li>response.setStatus(); 设置状态码</li>
+			</ul>
+			<p>响应头：</p>
+			<ul>
+				<li>response.setHeader(name,value); 设置响应头</li>
+			</ul>
+			<p>实体内容</p>
+			<ul>
+				<li>response.getWriter().writer() 以字符格式发送实体内容</li>
+				<li>response.getOutputStream().writer() 以字节格式发送实体内容</li>
+			</ul>
+			<h2 id="h4">响应头</h2>
+			<ul>
+				<li><mark>Location</mark>: http://www.it315.org/index.jsp
+					--重定向地址。通常和302状态码配合使用，完成请求重定向效果</li>
+				<li>Server:apache tomcat --服务器类型</li>
+				<li>Content-Encoding: gzip --服务器发送给浏览器的数据压缩格式</li>
+				<li>Content-Length: 80 --服务器发送给浏览器数据长度</li>
+				<li>Content-Language: zh-cn --服务器发送给浏览器数据语言</li>
+				<li><mark>Content-Type</mark>: text/html; charset=GB2312
+					--服务器发送给浏览器数据类型</li>
+				<li>Last-Modified: Tue, 11 Jul 2000 18:23:51 GMT --服务器资源最后修改时间</li>
+				<li><mark>Refresh</mark>: 1;url=http://www.it315.org
+					--定时刷新或每隔n秒跳转页面</li>
+				<li><mark>Content-Disposition</mark>: attachment;
+					filename=aaa.zip --告诉浏览器以下载方式打开资源</li>
+				<li>Transfer-Encoding: chunked</li>
+				<li>Set-Cookie:SS=Q0=5Lb_nQ; path=/search --服务器发送给浏览器的cookie信息</li>
+				<li>Expires: -1 <mark>--建议浏览器不使用缓存</mark></li>
+				<li>Cache-Control: no-cache</li>
+				<li>Pragma: no-cache</li>
+				<li>Connection: close/Keep-Alive
+					--服务器和浏览器连接状态。close：关闭连接。keep-alive:保持连接。</li>
+				<li>Date: Tue, 11 Jul 2000 18:23:51 GMT --响应发送的时间</li>
+			</ul>
+			<h2 id="h5">请求参数的获取</h2>
+			<p>获取参数方式：</p>
+			<ul>
+				<li>GET：request.getQueryString();</li>
+				<li>POST：request.getInputStream();</li>
+			</ul>
+			<p>通用获取参数方式：（不分Post和Get）</p>
+			<ul>
+				<li>request.getParameter(name) : 根据参数名获取参数值（获取一个参数值）</li>
+				<li>request.getParameterValues(name): 根据参数名获取参数值(获取多个参数值)</li>
+				<li>request.getParameterNames() 获取所有参数名称</li>
+				<li>request.getParameterMap(): 获取所有参数</li>
+			</ul>
+			<h2 id="h6">request补充</h2>
+			<img src="/biji/htmlFiles/req.png">
+			<p>
+				<mark>浏览器类型判断</mark>
+			</p>
+			<pre class="prettyprint linenums">/**
+ * 案例【user-agent】 浏览器类型
+ * @author xuewen
+ */
+public class RequestDemo3 extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=utf-8");
+		String userAgent = request.getHeader("user-agent");
+//		System.out.println(userAgent);
+		//注:win10自带Micifle Enge是:
+		//Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 Edge/15.15063
+		if(userAgent.contains("Firefox")){
+			response.getWriter().write("你正在使用火狐浏览器");
+		}else if(userAgent.contains("Chrome")){
+			response.getWriter().write("你正在使用谷歌浏览器");
+		}else if(userAgent.contains("Trident")){
+			response.getWriter().write("你正在是IE浏览器");
+		}else{
+			response.getWriter().write("识别不了的浏览器");
+		}
+		/**
+		 * 代表下载资源文件
+		 * referer: 表示当前请求来自于哪里
+		 */
+		String referer = request.getHeader("referer");
+		System.out.println("referer="+referer);
+	}
+}</pre>
+			<h2 id="h7">response补充</h2>
+			<h3>404+404错误页面</h3>
+			<pre class="prettyprint linenums">response.setStatus(404);
+response.sendError(404); // 404+404错误页面
+</pre>
+			<h3>请求重定向（ 跳转到其他页面 ）</h3>
+			<pre class="prettyprint linenums">//设置302状态码
+response.setStatus(302);
+//设置location响应头
+response.setHeader("location", "/jiuye08_https/adv.html");
+//等价于response.sendRedirect(location);
+</pre>
+			<h3>定时跳转</h3>
+			<pre class="prettyprint linenums">//每隔n秒跳转页面
+response.getWriter().write("注册成功！3秒之后会跳转到主页");
+//设置refresh
+response.setHeader("refresh", "3;/jiuye08_https/adv.html");</pre>
+			<h3>文件下载</h3>
+			<p>告诉浏览器以下载的方法打开</p>
+			<div class="sc_act">response.setHeader("content-disposition", "attachment;filename=" + file.getName());</div>
+			<pre class="prettyprint linenums">File file = new File("e:/mm.jpg");
+/**
+* 告诉浏览器以下载的方法打开
+ */
+response.setHeader("content-disposition", "attachment;filename=" + file.getName());
+/**
+ * 文件下载
+ */
+//1)读取本地文件
+FileInputStream in =new FileInputStream(file);
+
+//2)写出给浏览器(字节内容)
+OutputStream out = response.getOutputStream();
+byte[] buf = new byte[1024];
+int len = 0;
+//边读边写
+while ((len = in.read(buf)) != -1) {
+    out.write(buf, 0, len);
+}
+//关闭
+in .close();
+out.close();</pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

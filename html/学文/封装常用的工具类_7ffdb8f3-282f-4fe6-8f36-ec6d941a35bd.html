@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/biji/temple/defult/style_defult.css">
+<script src="/biji/js/jquery.min.js"></script>
+<script>
+	window._deel = {
+		url : 'www.xuewen.cn'
+	}
+</script>
+<title>封装常用的工具类</title>
+</head>
+<body>
+	<div id="article">
+		<header class="article-header">
+			<h1 class="article-title">
+				<a>封装常用的工具类</a>
+			</h1>
+			<div class="tags">
+				<a href="#h1" title="XML工具类">XML工具类</a><a href="#h2" title="JDBC工具类">JDBC工具类</a><a
+					href="#h6" title="SQLUtil">SQLUtil</a><a href="#h3" title="WebUtil">WebUtil</a><a
+					href="#h4" title="DAO工具类">DAO工具类</a><a href="#h5"
+					title="Servlet工具类">Servlet工具类</a><a href="#h7"
+					title="Action工具类">Action工具类</a><a href="#h8"
+					title="MD5加密">MD5加密</a><a href="#h9"
+					title="随机验证码">随机验证码</a>
+			</div>
+		</header>
+		<article class="article-content">
+			<h2 id="h1">XML工具类</h2>
+			<pre class="prettyprint linenums">public class XMLutil {
+	public static final String PATH = "";
+	/**
+	 * 读取xml文档,返回document对象
+	 */
+	public static Document getDocument(){
+		try {
+			Document document = new SAXReader().read(new File(PATH));
+			return document;
+		} catch (Exception e) {
+			e.printStackTrace();
+			//转换为运行时处理异常即可
+			throw new RuntimeException(e);
+		}
+	}
+	/**
+	 * 传入document对象,写入到xml文件中
+	 */
+	public static void writeXml(Document document){
+		try {
+			OutputStream out = new FileOutputStream("contact.xml");
+			OutputFormat format = OutputFormat.createPrettyPrint();
+			XMLWriter writer = new XMLWriter(out,format);
+			writer.write(document);
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}</pre>
+			<h2 id="h2">JDBC工具类</h2>
+			<p>jdcb配置文件properties</p>
+			<pre class="prettyprint linenums">public class JdbcUtil {
+	private static String url = null;
+	private static String user = null;
+	private static String password = null;
+	private static String driverClass = null;
+	private static final String PATH="/jdbc.properties";//jdbc.properties放在src下面
+	static{
+		try {
+			//读取jdbc.properties文件
+			Properties prop = new Properties();
+			//使用类路径方式读取配置文件
+			InputStream in = JdbcUtil.class.getResourceAsStream(PATH); 
+			//加载文件
+			prop.load(in);
+			//读取配置文件的内容
+			url = prop.getProperty("url");
+			user = prop.getProperty("user");
+			password = prop.getProperty("password");
+			driverClass = prop.getProperty("driverClass");
+			
+			//注册驱动程序
+			Class.forName(driverClass);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 获取连接方法
+	 */
+	public static Connection getConnection(){
+		try {
+			Connection conn = DriverManager.getConnection(url, user, password);
+			return conn;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 释放资源方法
+	 */
+	public static void close(ResultSet rs,Statement stmt,Connection conn){
+		if(rs!=null){
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		if(stmt!=null){
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		if(conn!=null){
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
+	 * 释放资源方法
+	 */
+	public static void close(Statement stmt,Connection conn){
+		if(stmt!=null){
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		if(conn!=null){
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+	}
+}</pre>
+			<p>jdbc的xml配置(c3p0)</p>
+			<pre class="prettyprint linenums">public class JdbcUtil {
+	//创建连接池对象
+	private static DataSource ds = new ComboPooledDataSource(); 
+	/**
+	 * 获取连接池对象
+	 */
+	public static DataSource getDataSource(){
+		 //注意： 不要这么写，这样会导致的连接很快用完了
+		//DataSource ds = new ComboPooledDataSource(); 
+		return ds;
+	}
+}</pre>
+			<h2 id="h6">SQLUtil</h2>
+			<pre class="prettyprint linenums"><xmp>public class SQLUtil {
+	public static void update(String sql, Object[] values) {
+		try {
+			ComboPooledDataSource ds = new ComboPooledDataSource();
+			Connection conn = ds.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			ParameterMetaData pmd = stmt.getParameterMetaData();
+			// 得到sql中有几个参数
+			int count = pmd.getParameterCount();
+
+			// 可以把参数值放入数组中
+			// 新的赋值方式
+			for (int i = 1; i <= count; i++) {
+				// setObject可以设置任何类型参数
+				stmt.setObject(i, values[i - 1]);
+			}
+
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static <T> List<T> query(String sql, Object[] values, Class<T> clazz) {
+		try {
+			ComboPooledDataSource ds = new ComboPooledDataSource();
+			Connection conn = ds.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ParameterMetaData pmd = stmt.getParameterMetaData();
+			// 得到参数数量
+			int paramCount = pmd.getParameterCount();
+			// 如果是null，则不赋值了
+			if (values != null) {
+				// 参数赋值
+				for (int i = 1; i <= paramCount; i++) {
+					stmt.setObject(i, values[i - 1]);
+				}
+			}
+			ResultSet rs = stmt.executeQuery();
+
+			// 问题:得到表有几列，每个列的名称是什么
+			// 得到结果集的元数据
+			ResultSetMetaData rsmd = rs.getMetaData();
+			// 得到列数量
+			int columnCount = rsmd.getColumnCount();
+			List<T> list = new ArrayList<>();
+			while (rs.next()) {// 行
+				// 每一行数据就是一个对象
+				// 构造对象
+				T obj = clazz.newInstance();
+				// 遍历每列
+				for (int i = 1; i <= columnCount; i++) {
+					// 得到表的列值
+					Object value = rs.getObject(i);
+					// 通过结果集元数据可以得到字段名称
+					String columnName = rsmd.getColumnName(i);
+					// 表中的每列的值就封装到对象的每个属性中
+					// 约定一个前提： 表中的每个字段名称和javabean对象中属性名称保持一致！！！！
+					// 把值拷贝到javabean对象中
+					BeanUtils.copyProperty(obj, columnName, value);
+				}
+				list.add(obj);
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}</xmp></pre>
+			<h2 id="h3">WebUtil</h2>
+			<pre class="prettyprint linenums"><xmp>public class WebUtil {
+	/**
+	 * 把request对象中的参数，逐个封装到javabean对象中
+	 */
+	public static <T> T copyRequestToBean(HttpServletRequest request,Class<T> clazz){
+		//1)得到request的所有参数
+		/**
+		 * <key ,value>
+		 * 		<参数名称，String[]> 
+		 */
+		try {
+			Map map = request.getParameterMap();
+			//构造对象
+			T t = clazz.newInstance();
+			//约定前提： 参数名称和javabean的属性名称保持一致！！！！
+			BeanUtils.copyProperties(t, map);
+			return t;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			throw new RuntimeException(e1);
+		}
+	}
+	/**
+	 * 返回UUID算法生成的字符串
+	 * @return
+	 */
+	public static String uuid(){
+		return UUID.randomUUID().toString().replace("-", "");
+	}
+	
+	static SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+	static SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy/MM/dd");
+	static SimpleDateFormat sdf4 = new SimpleDateFormat("yyyyMMddhhmmss");
+	/**
+	 * 返回当前日期的字符串
+	 */
+	public static String getCurrentDate(){
+		return sdf1.format(new Date());
+	}
+	
+	/**
+	 * 用于生成订单号
+	 */
+	public static String getOrderNumber(Object obj){
+		return obj.hashCode()+sdf4.format(new Date());
+	}
+}</xmp>
+			</pre>
+			<h2 id="h4">DAO工具类</h2>
+			<pre class="prettyprint linenums"><xmp>public class BaseDao<T> {
+	// 具体的dao上面的泛型类型
+	private Class targetClass;
+	// 表名
+	private String tableName;
+	/**
+	 * 需要解决的问题： 约定: 具体泛型类型的类名 和 表名 保持一致！！！！
+	 *  1）得到具体的业务dao运行过程中的泛型具体类型（Student/Teacher）,可以封装ResultSet 
+	 *  2) 得到泛型具有类型名称，就是表名
+	 */
+	public BaseDao() {
+		// 1)this : 代表当前运行的dao对象
+		// 2)this.getClass(): 代表当前运行dao对象的Class对象
+		Class clazz = this.getClass(); // public class TeacherDao extends
+
+		// 3)clazz.getGenericSuperclass()： 得到当前dao对象的父类（参数化类型)BaseDao<Teacher>
+		Type type = clazz.getGenericSuperclass(); // BaseDao<Teacher>
+
+		// 4)把父类的类型强转成子类（参数化类型: ParameterizedType）
+		ParameterizedType param = (ParameterizedType) type; // BaseDao<Teacher>
+		// 5)param.getActualTypeArguments():得到参数化类型 上面的泛型类型列表
+		Type[] types = param.getActualTypeArguments(); // <Teacher>
+		// 6)取出泛型类型列表中的第一个泛型类型
+		Type target = types[0]; // Teacher
+		// 7)强制成Class类型
+		targetClass = (Class) target;
+		// System.out.println(targetClass.getSimpleName());
+		tableName = targetClass.getSimpleName().toLowerCase();
+	}
+
+	public List<T> findAll() {
+		try {
+			QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+			return (List<T>) qr.query("select * from " + tableName + "",new BeanListHandler(targetClass));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public T findById(int id) {
+		try {
+			QueryRunner qr = new QueryRunner(JdbcUtil.getDataSource());
+			return (T) qr.query("select * from " + tableName + " where id=?",
+new BeanHandler(targetClass), new Object[] { id });
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+}</xmp>
+			</pre>
+			<h2 id="h5">Servlet工具类</h2>
+			<pre class="prettyprint linenums">public class BaseServlet extends HttpServlet {
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// 1)获取action的参数值
+		String action = request.getParameter("action");
+		//2）根据不同的参数值调用不同的方法（约定前提：方法名和action的参数值一致的！！！)
+		try {
+			/**
+			 * 通过反射得到指定方法名的方法对象，且调用方法
+			 */
+			Method method = this.getClass().getDeclaredMethod(action,
+					HttpServletRequest.class, HttpServletResponse.class);
+			// 执行方法
+			method.invoke(this, request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+}</pre>
+<h2 id="h7">Action工具类</h2>
+<pre class="prettyprint linenums"><xmp>public class BaseAction extends ActionSupport implements RequestAware,SessionAware,ApplicationAware{
+	
+	protected Map<String,Object> requestMap;//操作request域
+	protected Map<String,Object> sessionMap;//操作session域
+	protected Map<String,Object> applicationMap;//操作context域
+	
+	public void setRequest(Map<String, Object> requestMap) {
+		this.requestMap = requestMap;
+	}
+
+	public void setSession(Map<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
+	}
+
+	public void setApplication(Map<String, Object> applicationMap) {
+		this.applicationMap = applicationMap;
+	}
+	
+}</xmp>
+</pre>
+<h2 id="h8">MD5加密</h2>
+<pre class="prettyprint linenums">public class MD5Util {
+
+	/**
+	 * 传入原始密码，返回加密之后的密码字符串
+	 * @param password
+	 * @return
+	 */
+	public static String md5(String password){
+		try {
+			//1)创建加密类对象
+			MessageDigest md = MessageDigest.getInstance("md5");
+			//2）进行加密
+			byte[] byteArray = md.digest(password.getBytes());
+			//-127 -36 -101 -37 82 -48 77 -62 0    54  -37 -40 49 62 -48 85 
+			//                                    "36"
+			StringBuffer sb = new StringBuffer();
+			for(byte b:byteArray){
+				//System.out.print(b+" ");
+				//把每个10进制的字节数值    转换 为   2位字符的十六进制的字符串
+				sb.append(numToHex(b));
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * 传入一个10进制的字节数值，返回2位的十六进制的字符串
+	 * @param num
+	 * @return
+	 */
+	private static String numToHex(byte num){
+		/**
+		 * byte类型：
+		 * 		无符号位 ： 取值范围：   0 ~ 255
+		 *      有符号为： 取值范围：   -128 ~ 127 
+		 */
+		int targetNum = 0;
+		//如果是负数，则先转为正数，再进行计算；否则，直接使用
+		if(num<0){
+			targetNum = 256+num;
+		}else{
+			targetNum = num;
+		}
+		//第一位字符的值
+		int first = targetNum/16;
+		//第二位字符的值
+		int sencond = targetNum%16;
+	
+		return strArray[first]+strArray[sencond];
+	}
+	
+	private static String[] strArray = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"};
+	
+	
+	public static void main(String[] args) {
+		String result = md5("1234"); // 81dc9bdb52d04dc20036dbd8313ed055
+		System.out.println(result);  // 81dc9bdb52d04dc20036dbd8313ed055
+		///System.out.println(Integer.toHexString(-36));
+	}
+}</pre>
+<h2 id="h9">随机验证码</h2>
+<pre class="prettyprint linenums">public class ValidateCodeUtils {
+	/**
+	 * 生成验证码
+	 * @param args
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	static Random ran = new Random();
+	/**
+	 * 生成一张图片，且写出到指定的输出流位置
+	 * @param out
+	 * @throws IOException
+	 */
+	public static String genNewCode(OutputStream out) throws IOException {
+		int width = 120;
+		int height = 50;
+		//在内存中制作一张图片
+		BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+		
+		//绘画这种图片
+		//拿到画笔
+		Graphics g = image.getGraphics();
+		
+		//把底色变成灰色
+		g.setColor(Color.GRAY);//颜色
+		g.fillRect(0, 0, width, height);
+		
+		//写四个随机数字 5623
+		String number = "";
+		for(int i=1;i<=4;i++){
+			number += ran.nextInt(10);
+		}
+		g.setColor(Color.BLACK);
+		//字体
+		g.setFont(new Font("黑体",Font.ITALIC,35));
+		//写字
+		g.drawString(number, 20, 40);
+		
+		//写随机颜色干扰线
+		for(int i=1;i<=30;i++){
+			int x1 = ran.nextInt(width);
+			int x2 = ran.nextInt(width);
+			int y1 = ran.nextInt(height);
+			int y2 = ran.nextInt(height);
+			g.setColor(getRandomColr());
+			g.drawLine(x1, y1, x2, y2);
+		}
+		
+		//把图片写出到硬盘
+		ImageIO.write(image, "png", out);
+		return number;
+	}
+	
+	/**
+	 * 生成随机颜色
+	 */
+	private static Color getRandomColr(){
+		int r = ran.nextInt(256);
+		int g = ran.nextInt(256);
+		int b = ran.nextInt(256);
+		return new Color(r,g,b);
+	}
+	//测试
+	public static void main(String[] args) throws Exception {
+		OutputStream out = new FileOutputStream("e:/code1.png");
+		genNewCode(out);
+	}
+}</pre>
+		</article>
+	</div>
+	<script src="/biji/temple/defult/global.js"></script>
+</body>
+</html>

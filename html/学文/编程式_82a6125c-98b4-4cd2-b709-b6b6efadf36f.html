@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>编程式</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>编程式</a></h1><div class="tags"><a href="#h1" title="编程式增强">编程式增强</a><a href="#h2" title="声明式增强">声明式增强</a></div></header><article class="article-content"><h2 id="h1">编程式增强</h2><h3>创建一个接口和实现类</h3><pre class="prettyprint linenums"><xmp>public interface Greeting {
+	void sayHello(String name);
+}
+public class GreetingImpl implements Greeting{
+	@Override
+	public void sayHello(String name) {
+		System.out.println("Hello"+name);
+	}
+	public void show() {
+		System.out.println("show(0)");
+	}
+}</xmp></pre><h3>（2）编写前置增强和后置增强（这里我将两个增强合并，即实现两个接口）</h3><pre class="prettyprint linenums"><xmp>/**
+ * 前置增强和后置增强
+ * 下午12:30:17
+ * @author xuewen
+ */
+public class BeforeAndAfterAdvice implements MethodBeforeAdvice,AfterReturningAdvice{
+
+	@Override
+	public void afterReturning(Object arg0, Method arg1, Object[] arg2,
+			Object arg3) throws Throwable {
+		System.out.println("After");
+	}
+
+	@Override
+	public void before(Method arg0, Object[] arg1, Object arg2)
+			throws Throwable {
+		System.out.println("Before");
+	}
+}</xmp></pre><h3>测试</h3><pre class="prettyprint linenums"><xmp>ProxyFactory proxyFactory = new ProxyFactory();//创建代理工厂
+proxyFactory.setTarget(new GreetingImpl());//创建目标对象
+proxyFactory.addAdvice(new BeforeAndAfterAdvice());//添加前置后置增强
+//从代理工厂获取代理对象
+GreetingImpl greeting = (GreetingImpl)proxyFactory.getProxy();
+//调用代理的方法
+greeting.sayHello("jack");
+System.out.println();
+greeting.show();</xmp></pre><h3>运行效果</h3><pre class="prettyprint linenums"><xmp>Before
+Hellojack
+After
+
+Before
+show(0)
+After</xmp></pre><h3>环绕增强（当把两个接口合并时，其实完全可以用一个接口就行）</h3><div class="sc_act">环绕增强类需要实现 org.aopalliance.intercept.MethodInterceptor接口。注意，这个接口不是 Spring 提供的，它是 AOP 联盟写的，Spring 只是借用了它。</div><pre class="prettyprint linenums"><xmp>public class GreetAroundAdvice implements MethodInterceptor{
+	@Override
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		before();
+		Object result = invocation.proceed();
+		after();
+		return result;
+	}
+	public void before() {
+		System.out.println("before");
+	}
+	public void after() {
+		System.out.println("after");
+	}
+}</xmp></pre><h3>测试</h3><pre class="prettyprint linenums"><xmp>ProxyFactory proxyFactory = new ProxyFactory();
+proxyFactory.setTarget(new GreetingImpl());
+proxyFactory.addAdvice(new GreetAroundAdvice());
+GreetingImpl greeting = (GreetingImpl)proxyFactory.getProxy();
+greeting.sayHello("战三");
+System.out.println();
+greeting.show();</xmp></pre><h3>运行效果:</h3><pre class="prettyprint linenums"><xmp>before
+Hello战三
+after
+
+before
+show(0)
+after</xmp></pre><h2 id="h2">声明式增强</h2><ul><li>1 . 直接new出来的对象</li><li>2. 不处于session的管理(即没有与任何一个session关联)</li><li>3. 对象在数据库中没有对应的记录！</li></ul></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

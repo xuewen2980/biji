@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>关联关系的维护和其他数据库中的映射</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>关联关系的维护和其他数据库中的映射</a></h1><div class="tags"><a href="#h1" title="关系维护">关系维护</a><a href="#h2" title="多对多映射">多对多映射</a><a href="#h3" title="一对一">一对一</a></div></header><article class="article-content"><h2 id="h1">关系维护</h2><p>保存:通过的一方维护关联关系！ 这样可以少生产sql update语句<br><mark>注意:不能重复维护关系！</mark></p><h3>解除关系:</h3><ul><li>方式一:如果需要解除集合,使用clear()方法</li><li>方式二:如果是对象,使用setXxx(null);</li><li>删除数据:如果解除了关系,做删除操作会报违反外键约束异常</li></ul><h3>Inverse属性</h3><p>Inverse属性在维护关联关系的时候的作用！表示的是控制权是否转移！<br>在一的一方设置，如set标签节点<br>Inverse  反转</p><ul><li>true   反转,   控制权转移，当前方没有控制权</li><li>false  不反转,  控制权不转移，当前方有控制权！</li></ul><div class="sc_act">inverse=false , 即有控制权才可以解除关系！如果为true, 没有控制权，不能解除关系（不报错）!</div><h2 id="h2">多对多映射</h2><div class="sc_act">实例:项目和开发人员的关系映射</div><h3>设计javaBean</h3><pre class="prettyprint linenums"><xmp>// 开发人员
+public class Person {
+    private int personId;
+    private String name;
+	
+    //参与的多个项目
+    private Set<Project> projects = new HashSet<Project>();
+    //set与get
+}
+// 项目
+public class Project {
+
+    private int id;
+    private String name;
+    // 保存多个开发人员
+    private Set<Person> person = new HashSet<Person>();
+    //set与get
+}</xmp></pre><h3>写映射文件</h3><pre class="prettyprint linenums"><xmp><!-- 开发人员映射 -->
+<hibernate-mapping package="cn.itcast.c_many2many">
+    <class name="Person" table="t_person">
+	<id name="personId">
+	    <generator class="native"></generator>
+	</id>
+	<property name="name" length="20"></property>
+	<!-- 多对多映射配置:-->
+	<set name="projects" table="t_relation">
+	    <key column="person_id"></key>
+	    <many-to-many column="project_id" class="Project"></many-to-many>
+	</set>
+    </class>
+</hibernate-mapping>
+<!-- 项目映射 -->
+<hibernate-mapping package="cn.itcast.c_many2many">
+    <class name="Project" table="t_project">
+	<id name="id" column="id">
+	    <generator class="native"></generator>
+	</id>
+	<property name="name" length="20"></property>
+		<!-- 
+		    多对多配置：
+			table  集合元素映射的中间表
+			key    中间表外键字段
+			many-to-many
+				column 当前外键字段对应的字段
+				class  集合元素的类型
+		    inverse 
+			true 表示控制权转移！当前方(Project) 没有控制权!
+		 -->
+	<set name="person" table="t_relation" inverse="true" lazy="extra">
+	    <key column="project_id"></key>
+	    <many-to-many column="person_id" class="Person"></many-to-many>
+	</set>
+	</class>
+</hibernate-mapping></xmp></pre><h3>总结</h3><p>一对多与多对多中，inverse属性在维护关联关系时候作用的区别?</p><ul><li>一对多， 是否设置外键的值！</li><li>多对多， 是否删除中间表数据！</li></ul><h2 id="h3">一对一</h2><div class="sc_act">实例:用户与身份证一对一</div><p><mark>第一种方式映射</mark></p><h3>设计javaBean</h3><pre class="prettyprint linenums">// 用户的身份证对象
+// 一对一映射, 无外键方
+public class IdCard {
+    private String cardNo;
+    private String place;
+    private Date date;
+    // 身份证，对应的用户信息
+    private User user;
+    //set与get
+}
+// 用户对象
+// 一对一映射， 有外键方
+public class User {
+    private int id;
+    private String name;
+    private char sex;
+    // 用户关联的身份证信息, 在数据库中是外键
+    private IdCard idCard;
+    //set与get
+}</pre><h3>映射配置</h3><pre class="prettyprint linenums"><xmp><!-- 身份证 -->
+<hibernate-mapping package="cn.itcast.d_one2one">
+    <class name="IdCard" table="t_idcard">
+	<id name="cardNo">
+	    <generator class="assigned"></generator>
+	</id>
+	<property name="place" length="200"></property>
+	<property name="date" type="date"></property>
+	<!-- 一对一映射： 无外键方 -->
+	<one-to-one name="user" class="User"></one-to-one>
+    </class>
+</hibernate-mapping>
+<!-- 用户 -->
+<hibernate-mapping package="cn.itcast.d_one2one">
+    <class name="User" table="t_user">
+	<id name="id">
+	    <generator class="native"></generator>
+	</id>
+	<property name="name" length="50"></property>
+	<property name="sex" type="character" length="1"></property>
+	<!-- 一对一，有外键方：-->
+	<many-to-one name="idCard" column="card_id" class="IdCard" unique="true"></many-to-one>
+    </class>
+</hibernate-mapping></xmp></pre><p><mark>第二种方式:</mark></p><h3>设计javaBean</h3><pre class="prettyprint linenums">// 用户对象
+// 一对一映射， 有外键方
+public class User {
+    private int id;
+    private String name;
+    private char sex;
+    // 用户关联的身份证信息, 在数据库中是外键
+    private IdCard idCard;
+    //get和set
+}
+// 用户的身份证对象
+// 一对一映射, 无外键方
+public class IdCard {
+
+    private String cardNo;
+    private String place;
+    private Date date;
+    // 身份证，对应的用户信息
+    private User user;
+    //get和set	
+}</pre><h3>映射配置</h3><pre class="prettyprint linenums"><xmp><!-- 身份证映射 -->
+<hibernate-mapping package="cn.itcast.d_one2one2">
+	<class name="IdCard" table="t_idcard">
+		<id name="cardNo">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="place" length="200"></property>
+		<property name="date" type="date"></property>
+		<!-- 一对一映射： 无外键方 -->
+		<one-to-one name="user" class="User"></one-to-one>
+	</class>
+</hibernate-mapping>
+<!-- 用户映射 -->
+<hibernate-mapping package="cn.itcast.d_one2one2">
+	<class name="User" table="t_user">
+		
+		<id name="id">
+			<!-- 指定了主键生成策略为“外键策略”， 把别的表的主键作为当前表的主键！ -->
+			<generator class="foreign">
+				<param name="property">idCard</param>
+			</generator>
+		</id>
+		<property name="name" length="50"></property>
+		<property name="sex" type="character" length="1"></property>
+		<!-- 
+			特殊的一对一映射，主键生成策略为“外键”
+			constrained="true"  在主键上，添加外键约束！
+		 -->
+		<one-to-one name="idCard" class="IdCard" constrained="true"></one-to-one>		 
+	</class>
+</hibernate-mapping></xmp></pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>Hibernate入门</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>Hibernate入门</a></h1><div class="tags"><a href="#h1" title="Hibernate环境搭建步骤">Hibernate环境搭建步骤</a><a href="#h2" title="Api">Api</a><a href="#h3" title="Session">Session</a></div></header><article class="article-content"><h2 id="h1">Hibernate环境搭建步骤</h2><h3>1.建表</h3><pre class="prettyprint linenums">CREATE TABLE users(id INT PRIMARY KEY AUTO_INCREMENT,NAME VARCHAR(20),age INT)</pre><h3>2. 下载源码，引入jar文件</h3><div class="sc_act">hibernate3.jar   +   required 目录中所有  + jpa  + 数据库驱动包 也就是以下jar包</div><ul><li>antlr-2.7.6.jar</li><li>commons-collections-3.1.jar</li><li>dom4j-1.6.1.jar</li><li>hibernate-jpa-2.0-api-1.0.0.Final.jar</li><li>hibernate3.jar</li><li>javassist-3.12.0.GA.jar</li><li>jta-1.1.jar</li><li>mysql-connector-java-5.1.12-bin.jar</li><li>slf4j-api-1.6.1.jar</li></ul><h3>3. 写配置</h3><div class="sc_act">* hibernate.cfg.xml  主配置文件</div><pre class="prettyprint linenums"><xmp><!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+    	<!-- 数据库连接的参数配置 -->
+    	<property name="hibernate.connection.url">jdbc:mysql:///hib_demo</property>
+    	<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    	<property name="hibernate.connection.username">root</property>
+    	<property name="hibernate.connection.password">root</property>
+    	<!-- 通过数据库方言，告诉hibernate如何生产sql。 hibernate会根据配置的方言，生产符合当前数据库语言的SQL语句 -->
+    	<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    </session-factory>
+</hibernate-configuration></xmp></pre><div class="sc_act">* Users.hbm.xml    映射配置文件</div><pre class="prettyprint linenums"><xmp><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!-- 通过XML映射，把对象映射到数据库的表中！-->
+<hibernate-mapping package="cn.itcast.a_config">
+	
+	<class name="Users" table="users">
+		<id name="userId" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="userName" column="name"></property>
+		<property name="age" column="age"></property>
+	</class>
+
+</hibernate-mapping></xmp></pre>
+<h3>4.测试方法</h3>
+<pre class="prettyprint linenums">// 保存
+	public void save() throws Exception {
+		// 对象
+		Users users = new Users();
+		users.setUserName("Jack");
+		users.setAge(30);
+
+		// 1. 创建配置管理器对象
+		Configuration config = new Configuration();
+		// 2. 加载主配置文件， 默认加载src/hibernate.cfg.xml
+		config.configure();
+		// 3. 根据加载的主配置文件，创建对象
+		SessionFactory sf = config.buildSessionFactory();
+		// 4. 创建Session对象
+		Session session = sf.openSession();
+		// 5. 开启事务
+		Transaction tx = session.beginTransaction();
+
+		// --- 保存
+		session.save(users);
+
+		// 6. 提交事务/关闭session
+		tx.commit();
+		session.close();
+
+	}
+
+	// 获取对象
+	public void get() throws Exception {
+		// 1. 创建配置管理器对象
+		Configuration config = new Configuration();
+		// 2. 加载主配置文件， 默认加载src/hibernate.cfg.xml
+		config.configure();
+		// 3. 根据加载的主配置文件，创建对象
+		SessionFactory sf = config.buildSessionFactory();
+		// 4. 创建Session对象
+		Session session = sf.openSession();
+		// 5. 开启事务
+		Transaction tx = session.beginTransaction();
+
+		// --- 获取 (根据主键查询)
+		Users users = (Users) session.get(Users.class, 1);
+		
+		System.out.println(users);
+
+		// 6. 提交事务/关闭session
+		tx.commit();
+		session.close();
+
+	}</pre>
+<h2 id="h2">Api</h2><ul><li>Configuration</li><li>SessionFactory</li><li>Transaction</li><li>Session</li><li>Query</li></ul><h2 id="h3">Session</h2><div class="sc_act">一个与数据库连接的会话信息 Sesison里面维护了一个连接对象，且对常用操作进行封装！</div><p>更新：</p><ul><li>session.save(obj);    保存一个对象</li><li>session.update(obj)  更新一个对象, 注意修改对象的主键一定要在数据库存在!</li><li>session.saveOrUpdate(obj)  保存或更新 如果有设置主键且主键存在执行更新！没有设置主键执行保存！</li><li>session.delete(obj)     删除一个对象; 注意修改对象的主键一定要在数据库存在!</li></ul><p>查询</p><div class="sc_act">主键查询</div><ul><li>Session.get(clazz,id);根据主键查询,如果没有查询到,则返回null</li><li>Session.load(clazz,id);根据主键查询,如果没有查询到,则返回的对象不能使用,一用就抛异常</li></ul><div class="sc_act">HQL查询</div><ul><li>Hibernate Query language</li></ul><div class="sc_act">Hibernate提供的面向对象的查询语言！</div><ul><li>查询的是对象、对象的属性！</li></ul><div class="sc_act">HQL与SQL区别</div><ul><li>Hql 查询的是对象、对象的属性， 区分大小写！</li><li>Hql查询的对象一定要有映射！</li><li>SQL 查询的是表、字段，不区分大小写！</li></ul></article></div><script src="/biji/temple/defult/global.js"></script></body></html>

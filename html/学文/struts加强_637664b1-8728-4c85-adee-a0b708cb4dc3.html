@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="/biji/temple/defult/style_defult.css">    <script src="/biji/js/jquery.min.js"></script>    <script>window._deel = {url: 'www.xuewen.cn'}</script>    <title>struts进阶</title></head><body><div id="article"><header class="article-header"><h1 class="article-title"><a>struts进阶</a></h1><div class="tags"><a href="#h1" title="路径通配符">路径通配符</a><a href="#h2" title="Action三种使用方式">Action三种使用方式</a><a href="#h3" title="strus2的常量配置">strus2的常量配置</a><a href="#h4" title="全局视图配置">全局视图配置</a><a href="#h5" title="Action的属性注入">Action的属性注入</a><a href="#h6" title="sruts2的数据共享的三种方式">sruts2的数据共享的三种方式</a><a href="#h7" title="请求参数数据的封装">请求参数数据的封装</a><a href="#h8" title="自定义类型转换">自定义类型转换</a></div></header><article class="article-content"><h2 id="h1">路径通配符</h2><p>* (星号) :表示路径的通配符。  {1}  （表示获取第一个通配符的实际内容）</p><div class="sc_act">好处:减少了Action的配置</div><pre class="prettyprint linenums"><xmp><action name="*_*" class="gz.itcast.b_path.{1}Action" method="{2}">
+	<result name="{2}">/{1}/{2}.jsp</result>
+</action></xmp></pre><h2 id="h2">Action三种使用方式</h2><ul><li>第一种方式，不实现Action接口</li><li>第二种方式，实现Action接口</li><li>第三种方式， 继承ActionSupport类（推荐）</li></ul><h2 id="h3">strus2的常量配置</h2><div class="sc_act">指定默认编码集,作用于HttpServletRequest的setCharacterEncoding方法 和freemarker 、velocity的输出</div><pre class="prettyprint linenums"><xmp><constant name="struts.i18n.encoding" value="UTF-8"></constant></xmp></pre><div class="sc_act">自定义后缀</div><pre class="prettyprint linenums"><xmp><constant name="struts.action.extension" value="action,do,,"></constant></xmp></pre><div class="sc_act">设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好关闭</div><pre class="prettyprint linenums"><xmp><constant name="struts.serve.static.browserCache" value="false"></constant></xmp></pre><div class="sc_act">当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开</div><pre class="prettyprint linenums"><xmp><constant name="struts.configuration.xml.reload" value="true"></constant></xmp></pre><div class="sc_act">开发模式下使用,这样可以打印出更详细的错误信息</div><pre class="prettyprint linenums"><xmp><constant name="struts.devMode" value="true" ></constant></xmp></pre><div class="sc_act">默认的视图主题</div><pre class="prettyprint linenums"><xmp><constant name="struts.ui.theme" value="simple" ></constant></xmp></pre><div class="sc_act">与spring集成时，指定由spring负责action对象的创建</div><pre class="prettyprint linenums"><xmp><constant name="struts.objectFactory" value="spring" ></constant></xmp></pre><div class="sc_act">该属性设置Struts 2是否支持动态方法调用，该属性的默认值是true。如果要关闭动态方法调用，可设置为 false</div><pre class="prettyprint linenums"><xmp><constant name="struts.enable.DynamicMethodInvocation" value="false"></constant></xmp></pre><div class="sc_act">上传文件的大小限制</div><pre class="prettyprint linenums"><xmp><constant name="struts.multipart.maxSize" value=“10701096"></constant></xmp></pre><h2 id="h4">全局视图配置</h2><pre class="prettyprint linenums"><xmp><!-- 全局视图配置: 把该包下的所有action共用的视图都机集中在这里写 -->
+<global-results>
+    <result name="success">/login.jsp</result>
+</global-results></xmp></pre><h2 id="h5">Action的属性注入</h2><p>Action属性注入的步骤</p><ul><li>1）在Action类中声明一个成员变量，用于接收xml配置文件传入内容</li><li>2）在Action类提供一个该变量的setter方法，该方法接收了xml配置的内容</li></ul><pre class="prettyprint linenums"><xmp><action name="upload" class="gz.itcast.d_ioc.UploadAction" method="upload">
+    //使用该配置可以往Action对象的属性注入内容(只要有setter都可以使用param进行注入)
+    //name: setter方法名。setSavePath -> savePath
+    <param name="savePath">e:/images/</param>
+    <result>/login.jsp</result>
+</action></xmp></pre><h2 id="h6">sruts2的数据共享的三种方式</h2><h3>ServletActionContext类</h3><ul><li>getRequest() : 获取request对象</li><li>getRequest().getSession() :　获取session对象</li><li>getServletContext() : 获取ServletContext对象</li></ul><div class="sc_act">1）该方式依赖servlet的api，耦合比较高</div><div class="sc_act">2）如果要通过域对象来获取域对象的相关信息必须使用该方式</div><div class="sc_act">如果单纯的使用域对象来存取数据 ，不推荐使用这种方式</div><div class="sc_act">如果用到了request/session/servletcontext对象中的除存取数据以外的其他方法，就必须得使用ServletActionContext来获取数据</div><h3>ActionContext</h3><ul><li>getContextMap() ：　获取操作request域对象数据的map集合</li><li>getSession() :    	获取操作session域对象数据的map集合</li><li>getApplication()  获取操作context域对象数据的map集合</li></ul><div class="sc_act">1）不依赖servlet的api，耦合性低</div><div class="sc_act">2）只能用在Action对象的一个方法中。不能在所有方法中都是用同一个ActionContext</div><h3>使用  RequestAware  ,   SessionAware   ApplicationAware 接口注入操作对应域对象数据的Map集合</h3><p><mark>当Action对象的方法比较多的时候，推荐使用这种方法</mark></p><ul><li>1）不依赖servlet的api</li><li>2）可以在Action对象的所有方法中共享Map集合</li></ul><h2 id="h7">请求参数数据的封装</h2>
+<h3>直接赋值给简单数据类型</h3><p>使用注入方式添加字段的set方法即可<br>表单的name属性值为<mark>字段名</mark></p>
+<h3>赋值给一个javabean对象</h3><p>需添加bean对象的get和set方法<br>表单的name属性值为<mark>对象名.字段名</mark></p>
+<h3>赋值给一个集合</h3><p>需添加集合对象的get和set方法<br>表单的name属性值为<mark>集合对象名[索引].泛型字段名</mark></p>
+<p>参数类型不是想要的怎么办<mark>?</mark></p><h2 id="h8">自定义类型转换</h2><p>默认情况下，页面的日期类型只能接收 yyyy-MM-dd类型，如果要转换yyyy/MM/dd这种类型，则需要使用自定义类型转换器进行转换。</p><div class="sc_act">strut2提供了自定义类型转换器的基类： StrutsTypeConverter类</div><p>代码实例</p><pre class="prettyprint linenums">public class MyDateConverter extends StrutsTypeConverter{
+	
+	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd");
+
+	/**
+	 * 从页面的数据到服务器的类型转换
+	 * 参数一： context： 值栈上下文对象
+	 * 参数二： values:  从页面传递过来的参数值
+	 * 参数三： toClass: 转换到的类型。String-&gt;java.util.Date
+	 */
+	@Override
+	public Object convertFromString(Map context, String[] values, Class toClass) {
+		System.out.println("进入了转换器");
+		try {
+			//1)判断values是否为空
+			if(values==null || values.length==0){
+				return null;
+			}
+			
+			if(values.length&gt;1){
+				//多个值的情况
+				Date[] dates = new Date[values.length];
+				//2)取出数据进行转换
+				for(int i=0;i&lt;dates.length;i++){
+					Date date = sdf1.parse(values[i]);
+					dates[i] = date;
+				}
+				return dates;
+			}else{
+				//一个值的情况
+				Date date = sdf1.parse(values[0]);
+				return date;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 从服务器到页面的类型转换
+	 */
+	@Override
+	public String convertToString(Map context, Object o) {
+		return null;
+	}
+}</pre><h3>绑定自定义转换器的方式</h3><p>局部绑定(只能绑定一个Action)</p><ul><li>1）建立一个 Action的文件名-conversion.properties</li><li>2）一定和绑定的Action放在同一个目录下。</li></ul><pre class="prettyprint linenums">user.birth=gz.itcast.g_convert.MyDateConverter</pre><p>全局绑定（绑定整个项目多个Action）（推荐使用）</p><ul><li>1）建立一个xwork-conversion.properties</li><li>2）该文件一定放在src目录下。</li></ul><pre class="prettyprint linenums">java.util.Date=gz.itcast.g_convert.MyDateConverter</pre></article></div><script src="/biji/temple/defult/global.js"></script></body></html>
